@@ -75,12 +75,12 @@ const roles = [
   {
     role: 'Retail Partnership Lead',
     work: 'Recruits stores, secures signed agreements, and manages the Manatee Safe shelf tag rollout.',
-    deliverables: '4–6 signed agreements, weekly reach logs, end-of-season partner summary.',
+    deliverables: '4 to 6 signed agreements, weekly reach logs, end-of-season partner summary.',
   },
   {
     role: 'Field Operations Lead',
     work: 'Maps drains, logs GPS data, calculates mortality distance, and runs the marking sessions.',
-    deliverables: 'Geodatabase with 30–40 entries, photo archive, county data package.',
+    deliverables: 'Geodatabase with 30 to 40 entries, photo archive, county data package.',
   },
   {
     role: 'Documentation Lead',
@@ -264,19 +264,19 @@ export function TeamPageClient() {
                 <Fade delay={0.24}>
                   <div className="mt-8 flex flex-wrap gap-3">
                     <Link
-                      href="#roles"
+                      href="/about"
                       className="group inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg"
                     >
-                      Team roles
+                      About the campaign
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
                         →
                       </span>
                     </Link>
                     <Link
-                      href="#context"
+                      href="/mission"
                       className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
                     >
-                      Institutional context
+                      Our mission
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
                         →
                       </span>
@@ -304,11 +304,9 @@ export function TeamPageClient() {
                   <div className="absolute inset-0 ring-1 ring-inset ring-white/5" />
                 </div>
                 <div className="border-t border-white/10 px-6 py-5">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">
-                    Student-led, county-facing
-                  </p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Quiet Observation</p>
                   <p className="mt-2 text-sm leading-7 text-[#f3efe5]">
-                    The team is small on purpose so ownership stays clear and the handoff stays clean.
+                    A collaborative student team working together to document and submit a civic science project.
                   </p>
                 </div>
               </motion.div>
@@ -322,11 +320,7 @@ export function TeamPageClient() {
             <DividerLabel label="01 / Snapshot" />
             <SectionTitle
               eyebrow="Core structure"
-              title={
-                <>
-                  A few simple facts keep the team page easy to read.
-                </>
-              }
+              title={<>A few simple facts about <Accent>the team</Accent>.</>}
             />
 
             <div className="mt-8 border-t border-[#e2dbc9]">
@@ -352,11 +346,7 @@ export function TeamPageClient() {
             <DividerLabel label="02 / Roles" />
             <SectionTitle
               eyebrow="Accountability structure"
-              title={
-                <>
-                  Every role has ownership, and every ownership line leads to a deliverable.
-                </>
-              }
+              title={<>Every role leads to <Accent>a deliverable</Accent>.</>}
               dark
             />
 
@@ -370,9 +360,9 @@ export function TeamPageClient() {
                       </p>
                     </div>
                     <div>
-                      <p className="text-[10px] uppercase tracking-[0.18em] text-[#8f978a]">Owns</p>
+                      <p className="text-[10px] uppercase tracking-[0.18em] text-[#8f978a]">Work</p>
                       <p className="mt-2 text-[14px] leading-[1.9] text-[#b8afa1]">
-                        {member.owns}
+                        {member.work}
                       </p>
                     </div>
                     <div>
@@ -394,11 +384,7 @@ export function TeamPageClient() {
             <DividerLabel label="03 / Institutional context" />
             <SectionTitle
               eyebrow="Why it matters"
-              title={
-                <>
-                  This is a student project, and it is also a serious one.
-                </>
-              }
+              title={<>Student project with <Accent>professional standards</Accent>.</>}
             />
 
             <div
@@ -434,7 +420,7 @@ export function TeamPageClient() {
                     Operational facts
                   </p>
                   <div className="mt-5 border-t border-[#e2dbc9]">
-                    <Row left="Field season" right="June 1 – Sept 30, 2026" />
+                    <Row left="Field season" right="June 1 to Sept 30, 2026" />
                     <Row left="Jurisdiction" right="Brevard County" />
                     <Row left="Watershed" right="Indian River Lagoon" />
                   </div>
@@ -450,11 +436,7 @@ export function TeamPageClient() {
             <DividerLabel label="04 / Operating principles" />
             <SectionTitle
               eyebrow="Method and tone"
-              title={
-                <>
-                  The work is student-led, but the standards are professional.
-                </>
-              }
+              title={<>Student-led work with <Accent>professional-grade standards</Accent>.</>}
               dark
             />
 
@@ -480,11 +462,7 @@ export function TeamPageClient() {
             <DividerLabel label="05 / Sequence" />
             <SectionTitle
               eyebrow="How the work unfolds"
-              title={
-                <>
-                  The project follows a simple order: identify the gap, make it visible, leave something usable.
-                </>
-              }
+              title={<>Identify the gap, make it visible, <Accent>leave something usable</Accent>.</>}
             />
 
             <div className="grid gap-0 border-t border-[#e2dbc9]">
@@ -514,11 +492,7 @@ export function TeamPageClient() {
             <DividerLabel label="06 / Competition portfolio" />
             <SectionTitle
               eyebrow="Where the same work fits"
-              title={
-                <>
-                  The same evidence can support multiple competitions because the facts stay the same.
-                </>
-              }
+              title={<>Same evidence, <Accent>multiple competition destinations</Accent>.</>}
               dark
             />
 
@@ -544,11 +518,7 @@ export function TeamPageClient() {
             <DividerLabel label="07 / Closing" />
             <SectionTitle
               eyebrow="Closing"
-              title={
-                <>
-                  The team page should feel calm, specific, and capable.
-                </>
-              }
+              title={<>Team page feels calm, specific, <Accent>and capable</Accent>.</>}
             />
 
             <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
@@ -568,17 +538,17 @@ export function TeamPageClient() {
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Link
-                    href="#roles"
+                    href="/about"
                     className="inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
                   >
-                    Team roles
+                    About the campaign
                     <span aria-hidden>→</span>
                   </Link>
                   <Link
-                    href="#top"
+                    href="/mission"
                     className="inline-flex items-center gap-2 rounded-full border border-[#e2dbc9] bg-white/60 px-5 py-3 text-sm font-medium text-[#173027] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
                   >
-                    Back to top
+                    Our mission
                     <span aria-hidden>→</span>
                   </Link>
                 </div>

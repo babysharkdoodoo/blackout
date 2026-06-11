@@ -18,36 +18,53 @@ const stats = [
 const chain = [
   {
     n: '01',
-    head: 'Fertilizer is applied',
-    body:
-      "During Florida's rainy season, fertilizer can be applied to lawns, landscapes, and turf right when runoff risk is highest. The county ordinance is already in place, but many residents do not know it exists.",
-    data: 'Residential fertilizer use often peaks during the same window the ordinance restricts.',
+    head: 'Fertilizer applied',
+    body: 'Residents apply nitrogen and phosphorus fertilizer during the rainy season, peaking when runoff risk is highest.',
+    data: 'Residential fertilizer use often peaks during the summer blackout window.',
     source: 'FDEP / Brevard County estimates',
   },
   {
     n: '02',
-    head: 'Stormwater carries it away',
-    body:
-      'Rain moves nitrogen off soil and pavement into storm drains. There is no treatment step between the drain and the lagoon.',
-    data: 'Brevard County has a large storm drain network feeding the Indian River Lagoon watershed.',
+    head: 'Nitrogen mobilized',
+    body: 'Rain and storm events mobilize nitrogen across impervious neighborhood surfaces like driveways.',
+    data: 'Stormwater runoff moves dissolved nitrogen off lawns and pavement.',
     source: 'Brevard County Stormwater Utility',
   },
   {
     n: '03',
-    head: 'The lagoon responds',
-    body:
-      'Extra nitrogen helps fuel blooms that block sunlight and weaken seagrass beds below the surface.',
-    data: 'Lagoon seagrass has not fully recovered from earlier bloom-driven losses.',
-    source: 'SJRWMD seagrass survey',
+    head: 'Untreated runoff',
+    body: 'Storm drains carry the untreated residential runoff directly to local lagoon outfalls.',
+    data: 'Brevard County has a large storm drain network feeding the lagoon directly.',
+    source: 'Brevard County Stormwater Utility',
   },
   {
     n: '04',
-    head: 'The ecosystem feels it',
-    body:
-      'Seagrass is food and habitat. When it declines, manatees and other species lose the foundation they depend on.',
-    data: 'Manatee mortality and habitat loss are tied to broader lagoon stress.',
-    source: 'FWC / related monitoring reports',
+    head: 'Nutrients fuel blooms',
+    body: 'Elevated nitrogen levels in the estuary fuel cyanobacteria and algal blooms.',
+    data: 'Algal bloom intensity correlates with peak seasonal nitrogen loading.',
+    source: 'SJRWMD monitoring database',
   },
+  {
+    n: '05',
+    head: 'Sunlight blocked',
+    body: 'Algal blooms block critical sunlight from reaching benthic seagrass beds.',
+    data: 'Light attenuation surveys show severe blocks during active bloom periods.',
+    source: 'SJRWMD light surveys',
+  },
+  {
+    n: '06',
+    head: 'Seagrass dies',
+    body: 'Deprived of essential sunlight, the delicate estuarine seagrass beds die off rapidly.',
+    data: 'Seagrass maps show severe acreage loss in high-bloom lagoon segments.',
+    source: 'SJRWMD seagrass survey',
+  },
+  {
+    n: '07',
+    head: 'Manatees starve',
+    body: 'Manatees lose their primary food source and experience catastrophic starvation across the lagoon.',
+    data: 'FWC reports link manatee mortality clusters directly to seagrass loss zones.',
+    source: 'FWC mortality database',
+  }
 ]
 
 const actions = [
@@ -261,42 +278,36 @@ export default function MissionPageClient() {
               <div className="max-w-3xl">
                 <Fade delay={0.05}>
                   <h1 className="max-w-4xl font-sans text-[clamp(3rem,6vw,6rem)] font-semibold leading-[0.94] tracking-[-0.06em] text-[#f4efe5]">
-                    A local ordinance,
-                    <br />
-                    a missing habit,
-                    <br />
-                    and a lagoon under <Accent>pressure</Accent>.
+                    Lawn care choices <Accent>impact lagoon survival.</Accent>
                   </h1>
                 </Fade>
 
                 <Fade delay={0.12}>
                   <p className="mt-6 max-w-xl text-[1.05rem] leading-8 text-[#c1c8ba]">
-                    The issue is not that Brevard County has done nothing. The issue is that a rule already exists,
-                    but the people who need to follow it often never hear about it in the first place.
+                    A law that protects manatees already exists. Almost nobody in Brevard County knows it is there.
                   </p>
                 </Fade>
 
                 <Fade delay={0.18}>
                   <p className="mt-4 max-w-xl text-base leading-7 text-[#9fa79a]">
-                    BLACKOUT was built to close that gap without turning the page into a pile of generic cards or a
-                    noisy design system.
+                    BLACKOUT activates this law through community surveys, point-of-purchase retail shelf tags, and storm drain markings.
                   </p>
                 </Fade>
 
                 <Fade delay={0.24}>
                   <div className="mt-8 flex flex-wrap gap-3">
                     <Link
-                      href="#foundation"
+                      href="/about"
                       className="group inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg"
                     >
-                      Read the foundation
+                      Read about BLACKOUT
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
                     </Link>
                     <Link
-                      href="#ordinance"
+                      href="/ordinance"
                       className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
                     >
-                      See the ordinance
+                      Read the ordinance
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
                     </Link>
                   </div>
@@ -317,8 +328,7 @@ export default function MissionPageClient() {
                   <div className="border-t border-white/10 px-6 py-5">
                     <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Indian River Lagoon</p>
                     <p className="mt-2 text-sm leading-7 text-[#f3efe5]">
-                      A quiet, observational image replaces the heavy side card so the hero feels closer to the About
-                      page and gives the page more breathing room.
+                      Algal blooms fuel seagrass die-off, blocking sunlight and leaving manatees without their primary food source.
                     </p>
                   </div>
                 </div>
@@ -353,7 +363,7 @@ export default function MissionPageClient() {
               eyebrow="Project foundation"
               title={
                 <>
-                  A law that protects manatees already exists. The work is about making it <Accent>matter</Accent>.
+                  A law protects manatees. <Accent>Nobody knows it is there.</Accent>
                 </>
               }
               dark
@@ -410,7 +420,7 @@ export default function MissionPageClient() {
               eyebrow="Manatees, seagrass, and the lagoon"
               title={
                 <>
-                  The Indian River Lagoon lost <Accent>too much seagrass</Accent>, and the manatees paid for it.
+                  The lagoon seagrass loss <Accent>impacts manatee survival.</Accent>
                 </>
               }
             />
@@ -419,10 +429,10 @@ export default function MissionPageClient() {
               {[
                 'In 2021, more than 1,100 manatees died in the Indian River Lagoon — the largest single-year manatee die-off ever recorded in the United States.',
                 'The lagoon spans 156 miles and supports more than 4,300 species, making it one of the most biodiverse estuaries in North America.',
-                'The causal chain is simple: fertilizer → storm drain → bloom → seagrass loss → manatee starvation. BLACKOUT attacks the chain at the first step.',
+                'The causal chain is simple: fertilizer, storm drain, bloom, seagrass loss, manatee starvation. BLACKOUT attacks the chain at the first step.',
               ].map((text) => (
                 <Fade key={text}>
-                  <div className="rounded-[1.35rem] border border-[#e2dbc9] bg-white/75 p-6 backdrop-blur-sm">
+                  <div className="rounded-[1.35rem] border border-[#e2dbc9] bg-white/75 p-6 backdrop-blur-sm h-full">
                     <p className="text-[14px] leading-[1.9] text-[#5a625b]">{text}</p>
                   </div>
                 </Fade>
@@ -438,7 +448,7 @@ export default function MissionPageClient() {
               eyebrow="How the problem moves"
               title={
                 <>
-                  A chain you can trace step by step, from lawn care to <Accent>lagoon harm</Accent>.
+                  A seven-step chain <Accent>leading to lagoon harm.</Accent>
                 </>
               }
               dark
@@ -475,7 +485,7 @@ export default function MissionPageClient() {
               eyebrow="The work"
               title={
                 <>
-                  Measure awareness first, make the rule visible, and leave a system that can <Accent>outlast the team</Accent>.
+                  Measure awareness and make <Accent>the rule visible.</Accent>
                 </>
               }
             />
@@ -483,7 +493,7 @@ export default function MissionPageClient() {
             <div className="grid gap-4 md:grid-cols-3">
               {actions.map((item) => (
                 <Fade key={item.title}>
-                  <div className="rounded-[1.35rem] border border-[#e2dbc9] bg-white/75 p-6 backdrop-blur-sm">
+                  <div className="rounded-[1.35rem] border border-[#e2dbc9] bg-white/75 p-6 backdrop-blur-sm h-full">
                     <h3 className="font-sans text-xl font-semibold tracking-[-0.03em] text-[#173027]">{item.title}</h3>
                     <p className="mt-3 text-[14px] leading-[1.85] text-[#5a625b]">{item.body}</p>
                   </div>
@@ -500,7 +510,7 @@ export default function MissionPageClient() {
               eyebrow="Team structure"
               title={
                 <>
-                  The team is split by responsibility so the project feels <Accent>real, organized, and repeatable</Accent>.
+                  Defined team roles <Accent>ensure project repeatability.</Accent>
                 </>
               }
               dark
@@ -509,7 +519,7 @@ export default function MissionPageClient() {
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {roles.map((role) => (
                 <Fade key={role}>
-                  <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md">
+                  <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md h-full">
                     <p className="text-[14px] leading-[1.85] text-[#a6ad9f]">{role}</p>
                   </div>
                 </Fade>
@@ -525,7 +535,7 @@ export default function MissionPageClient() {
               eyebrow="Wave 1 and Wave 2"
               title={
                 <>
-                  The survey is the project’s strongest evidence because it shows what people <Accent>knew before</Accent> and <Accent>knew after</Accent>.
+                  Survey delta proves what <Accent>residents knew after.</Accent>
                 </>
               }
             />
@@ -533,7 +543,7 @@ export default function MissionPageClient() {
             <div className="grid gap-4 lg:grid-cols-3">
               {surveyPoints.map((point) => (
                 <Fade key={point}>
-                  <div className="rounded-[1.35rem] border border-[#e2dbc9] bg-white/75 p-6 backdrop-blur-sm">
+                  <div className="rounded-[1.35rem] border border-[#e2dbc9] bg-white/75 p-6 backdrop-blur-sm h-full">
                     <p className="text-[14px] leading-[1.85] text-[#5a625b]">{point}</p>
                   </div>
                 </Fade>
@@ -558,25 +568,25 @@ export default function MissionPageClient() {
               eyebrow="Point of purchase"
               title={
                 <>
-                  The store tag matters because it meets the buyer at the exact moment the fertilizer decision is being made.
+                  Shelf tags reach buyers <Accent>at purchase decision.</Accent>
                 </>
               }
               dark
             />
 
             <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
-              <div className="space-y-4 text-[15px] leading-[1.9] text-[#b8afa1]">
+              <div className="space-y-4">
                 {storePoints.map((point) => (
                   <Fade key={point}>
                     <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md">
-                      <p>{point}</p>
+                      <p className="text-[14px] leading-[1.85] text-[#b8afa1]">{point}</p>
                     </div>
                   </Fade>
                 ))}
               </div>
 
               <Fade delay={0.08}>
-                <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md">
+                <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md h-full">
                   <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Tag content</p>
                   <p className="mt-3 text-[15px] leading-[1.85] text-[#a6ad9f]">
                     The tag includes the ordinance name, the blackout dates, the manatee connection, and a QR code to
@@ -599,7 +609,7 @@ export default function MissionPageClient() {
               eyebrow="Permanent reminder"
               title={
                 <>
-                  The drain markers make the connection <Accent>physical</Accent>, local, and hard to ignore.
+                  Drain markers connect <Accent>runoff to lagoon harm.</Accent>
                 </>
               }
             />
@@ -607,7 +617,7 @@ export default function MissionPageClient() {
             <div className="grid gap-4 lg:grid-cols-3">
               {drainPoints.map((point) => (
                 <Fade key={point}>
-                  <div className="rounded-[1.35rem] border border-[#e2dbc9] bg-white/75 p-6 backdrop-blur-sm">
+                  <div className="rounded-[1.35rem] border border-[#e2dbc9] bg-white/75 p-6 backdrop-blur-sm h-full">
                     <p className="text-[14px] leading-[1.85] text-[#5a625b]">{point}</p>
                   </div>
                 </Fade>
@@ -633,7 +643,7 @@ export default function MissionPageClient() {
               eyebrow="Documentation and handoff"
               title={
                 <>
-                  A clean project needs a clean system: sheets, photos, drive folders, meeting minutes, and a handoff package that can survive the team.
+                  Clean documentation system <Accent>enables county handoff.</Accent>
                 </>
               }
               dark
@@ -641,7 +651,7 @@ export default function MissionPageClient() {
 
             <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
               <Fade>
-                <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md">
+                <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md h-full">
                   <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Documentation system</p>
                   <p className="mt-3 text-[14px] leading-[1.9] text-[#a6ad9f]">
                     The guide uses a simple three-platform architecture: Google Sheets for field logs, Google Photos
@@ -651,7 +661,7 @@ export default function MissionPageClient() {
               </Fade>
 
               <Fade delay={0.08}>
-                <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md">
+                <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md h-full">
                   <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Handoff outcome</p>
                   <p className="mt-3 text-[14px] leading-[1.9] text-[#a6ad9f]">
                     The final package includes the drain database, survey instrument, tag template, monitoring
@@ -670,15 +680,15 @@ export default function MissionPageClient() {
               eyebrow="Why the same work can win in multiple places"
               title={
                 <>
-                  BLACKOUT is not one story retold a dozen ways. It is one set of facts framed for different rubrics, each with a different reason to care.
+                  One set of facts <Accent>framed for multiple rubrics.</Accent>
                 </>
               }
             />
 
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-4 lg:grid-cols-3">
               {competitionNotes.map((note) => (
                 <Fade key={note}>
-                  <div className="rounded-[1.35rem] border border-[#e2dbc9] bg-white/75 p-6 backdrop-blur-sm">
+                  <div className="rounded-[1.35rem] border border-[#e2dbc9] bg-white/75 p-6 backdrop-blur-sm h-full">
                     <p className="text-[14px] leading-[1.85] text-[#5a625b]">{note}</p>
                   </div>
                 </Fade>
@@ -706,7 +716,7 @@ export default function MissionPageClient() {
               eyebrow="Closing"
               title={
                 <>
-                  The whole project is built to feel <Accent>calm, specific, and real</Accent> — not crowded, vague, or overly decorated.
+                  A civic project <Accent>built with operational discipline.</Accent>
                 </>
               }
               dark
@@ -714,7 +724,7 @@ export default function MissionPageClient() {
 
             <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
               <Fade>
-                <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md">
+                <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md h-full">
                   <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">What stays true</p>
                   <div className="mt-4 space-y-3 text-[14px] leading-[1.85] text-[#a6ad9f]">
                     <p>The law already exists.</p>
@@ -736,17 +746,17 @@ export default function MissionPageClient() {
                   </p>
                   <div className="mt-6 flex flex-wrap gap-3">
                     <Link
-                      href="#foundation"
+                      href="/about"
                       className="inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
                     >
-                      Back to the foundation
+                      Read about BLACKOUT
                       <span aria-hidden>→</span>
                     </Link>
                     <Link
-                      href="#top"
+                      href="/ordinance"
                       className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
                     >
-                      Back to top
+                      Read the ordinance
                       <span aria-hidden>→</span>
                     </Link>
                   </div>

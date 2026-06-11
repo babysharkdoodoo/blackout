@@ -108,30 +108,15 @@ export function ApproachSection() {
           <div>
             <Reveal delay={0.08}>
               <h2 className="max-w-4xl text-[clamp(2.2rem,5vw,4rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-[#163127]">
-                We do not create a new solution.
-
-                <span className="text-[#6f8167]"> We activate the one that already exists.</span>
+                We do not invent solutions. <span className="text-[#6f8167]">We activate them.</span>
               </h2>
             </Reveal>
 
             <Reveal delay={0.14}>
               <p className="mt-6 max-w-2xl text-[1rem] leading-[1.9] text-[#5f675f]">
-BLACKOUT activates the Summer Fertilizer Blackout Ordinance through three coordinated interventions: measuring awareness, reaching residents at the point of purchase, and placing reminders where runoff enters the lagoon.
+                BLACKOUT activates the Summer Fertilizer Blackout Ordinance through three coordinated interventions: measuring awareness, reaching residents at the point of purchase, and placing reminders where runoff enters the lagoon.
               </p>
             </Reveal>
-{/* 
-            <Reveal delay={0.2}>
-              <div className="mt-8 flex flex-wrap gap-3">
-                {['Original data', 'Decision point', 'Permanent reminder'].map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full bg-white px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f8167] shadow-[0_8px_24px_rgba(0,0,0,0.04)]"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </Reveal> */}
 
             <Reveal delay={0.26}>
               <div className="mt-12 border-t border-[#e6e0d4] pt-8">
@@ -172,16 +157,16 @@ BLACKOUT activates the Summer Fertilizer Blackout Ordinance through three coordi
         <Reveal delay={0.24}>
           <div className="mt-12 flex flex-wrap items-center gap-4 border-t border-[#e6e0d4] pt-8">
             <Link
-              href="#top"
+              href="/mission"
               className="rounded-full bg-[#163127] px-6 py-3 text-sm font-medium text-[#faf7f0] transition-transform duration-300 hover:-translate-y-0.5 hover:bg-[#223a2e]"
             >
-              Back to top
+              Why the lagoon collapses
             </Link>
             <Link
-              href="#problem"
+              href="/ordinance"
               className="text-sm text-[#6f8167] underline decoration-[#6f8167]/25 underline-offset-4 transition-colors hover:text-[#163127] hover:decoration-[#163127]/35"
             >
-              Review the problem
+              Read the ordinance details
             </Link>
           </div>
         </Reveal>

@@ -49,8 +49,8 @@ export function Hero() {
           shouldReduceMotion
             ? undefined
             : {
-                transform: 'translate3d(0,0,0)',
-              }
+              transform: 'translate3d(0,0,0)',
+            }
         }
       >
         <Image
@@ -109,9 +109,9 @@ export function Hero() {
               custom={0.28}
               className="mt-6 max-w-xl text-[15px] leading-[1.85] text-[#b8afa1] sm:text-[16px]"
             >
-Brevard County already passed the Summer Fertilizer Blackout Ordinance.
-BLACKOUT activates it through community awareness, retail partnerships,
-and visible reminders that help residents comply.
+              Brevard County already passed the Summer Fertilizer Blackout Ordinance.
+              BLACKOUT activates it through community awareness, retail partnerships,
+              and visible reminders that help residents comply.
             </motion.p>
 
             <motion.div

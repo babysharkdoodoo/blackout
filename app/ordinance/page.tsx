@@ -36,28 +36,39 @@ const ordinanceSections = [
 const chain = [
   {
     n: '01',
-    title: 'Fertilizer on the lawn',
-    body:
-      'Residential fertilizer use often peaks in the same window the ordinance restricts. That is the first point where the chain can be interrupted.',
+    title: 'Fertilizer applied',
+    body: 'Residents apply nitrogen and phosphorus fertilizer during the summer rainy season when runoff risk is highest.',
   },
   {
     n: '02',
-    title: 'Rain carries nutrients to drains',
-    body:
-      'Stormwater moves nitrogen off the ground and into the drainage system. There is no treatment step between the drain and the lagoon.',
+    title: 'Nitrogen mobilized',
+    body: 'Rain and storm events mobilize nitrogen across impervious neighborhood surfaces and driveways.',
   },
   {
     n: '03',
-    title: 'The lagoon responds',
-    body:
-      'Excess nutrients help fuel blooms, block sunlight, and weaken seagrass beds below the surface.',
+    title: 'Untreated runoff',
+    body: 'Storm drains carry the untreated residential runoff directly to local lagoon outfall channels.',
   },
   {
     n: '04',
-    title: 'Manatees lose food',
-    body:
-      'When seagrass disappears, manatees lose the primary food source they depend on. The ordinance exists to interrupt that outcome earlier.',
+    title: 'Nutrients fuel blooms',
+    body: 'Elevated nitrogen levels fuel aggressive cyanobacteria and macroalgal blooms.',
   },
+  {
+    n: '05',
+    title: 'Sunlight blocked',
+    body: 'Algal blooms block critical sunlight from reaching the benthic floor, preventing photosynthesis.',
+  },
+  {
+    n: '06',
+    title: 'Seagrass dies',
+    body: 'Deprived of essential sunlight, the delicate estuarine seagrass beds die off rapidly.',
+  },
+  {
+    n: '07',
+    title: 'Manatees starve',
+    body: 'Manatees lose their primary food source and experience catastrophic starvation across the lagoon.',
+  }
 ]
 
 const principles = [
@@ -267,15 +278,13 @@ export default function OrdinancePage() {
               <div className="max-w-3xl">
                 <Fade delay={0.05}>
                   <h1 className="max-w-3xl font-sans text-[clamp(3rem,6vw,6rem)] font-semibold leading-[0.94] tracking-[-0.06em] text-[#f4efe5]">
-                    The law says no fertilizer
-                    <br />
-                    from <Accent>June 1</Accent> to <Accent>September 30</Accent>.
+                    No fertilizer from <Accent>June 1 to September 30.</Accent>
                   </h1>
                 </Fade>
 
                 <Fade delay={0.12}>
                   <p className="mt-6 max-w-xl text-[1.05rem] leading-8 text-[#c1c8ba]">
-                    Brevard County already passed this ordinance. The rule exists. The gap is awareness, not legislation.
+                    A law that protects manatees already exists. Almost nobody in Brevard County knows it is there.
                   </p>
                 </Fade>
 
@@ -291,7 +300,7 @@ export default function OrdinancePage() {
                       href="/mission"
                       className="group inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg"
                     >
-                      Why it matters
+                      Read our mission
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
                     </Link>
                     <Link
@@ -326,7 +335,7 @@ export default function OrdinancePage() {
                 <div className="border-t border-white/10 px-6 py-5">
                   <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Underwater manatee</p>
                   <p className="mt-2 text-sm leading-7 text-[#f3efe5]">
-                    A quiet image gives the hero breathing room and keeps this page distinct from the Problem page.
+                    Brevard County's ordinance legally prohibits nitrogen and phosphorus fertilizers from June 1 to September 30.
                   </p>
                 </div>
               </motion.div>
@@ -338,7 +347,7 @@ export default function OrdinancePage() {
         <LightBand>
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <DividerLabel label="01 / What it says" />
-            <SectionTitle eyebrow="Plain language" title={<>The county already set the rule. The question is whether people know it exists.</>} />
+            <SectionTitle eyebrow="Plain language" title={<>Brevard County set rules. <Accent>Do residents know they exist?</Accent></>} />
             <div className="mt-8 border-t border-[#e2dbc9]">
               {ordinanceSections.map((item, index) => (
                 <Fade key={item.title} delay={index * 0.06}>
@@ -353,7 +362,7 @@ export default function OrdinancePage() {
         <DarkBand>
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <DividerLabel label="02 / Context" />
-            <SectionTitle eyebrow="Why it matters" title={<>The lagoon lost too much seagrass, and the manatees paid for it.</>} dark />
+            <SectionTitle eyebrow="Why it matters" title={<>The lagoon seagrass loss <Accent>impacts manatee survival.</Accent></>} dark />
             <div className="mt-8 border-t border-white/10">
               {stats.map((stat, index) => (
                 <Fade key={stat.label} delay={index * 0.04}>
@@ -376,7 +385,7 @@ export default function OrdinancePage() {
         <LightBand>
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <DividerLabel label="03 / Causal chain" />
-            <SectionTitle eyebrow="How the problem moves" title={<>Four steps long. Fully documented. Completely reversible.</>} />
+            <SectionTitle eyebrow="How the problem moves" title={<>A seven-step chain, <Accent>completely reversible.</Accent></>} />
             <div className="mt-8 border-t border-[#e2dbc9]">
               {chain.map((step, index) => (
                 <Fade key={step.n} delay={index * 0.05}>
@@ -399,7 +408,7 @@ export default function OrdinancePage() {
         <DarkBand>
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <DividerLabel label="04 / Intervention" />
-            <SectionTitle eyebrow="What BLACKOUT does" title={<>BLACKOUT intervenes at step one, where communication can still change the outcome.</>} dark />
+            <SectionTitle eyebrow="What BLACKOUT does" title={<>We intervene at step one <Accent>to change outcomes.</Accent></>} dark />
 
             <div className="max-w-3xl space-y-6 text-[15px] leading-[1.9] text-[#b8afa1]">
               <p>
@@ -434,7 +443,7 @@ export default function OrdinancePage() {
         <DarkBand>
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <DividerLabel label="06 / How it unfolds" />
-            <SectionTitle eyebrow="A simple sequence" title={<>The project is designed as a narrative: first find the gap, then make the rule visible, then leave something usable.</>} dark />
+            <SectionTitle eyebrow="A simple sequence" title={<>A structured project sequence <Accent>that cannot be reversed.</Accent></>} dark />
             <div className="mt-8 border-t border-white/10">
               {process.map((step) => (
                 <Fade key={step.n}>
@@ -457,7 +466,7 @@ export default function OrdinancePage() {
         <LightBand>
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <DividerLabel label="07 / Team structure" />
-            <SectionTitle eyebrow="Roles and accountability" title={<>The team is split by responsibility so the project feels <Accent>real, organized, and repeatable</Accent>.</>} />
+            <SectionTitle eyebrow="Roles and accountability" title={<>Defined team roles <Accent>ensure project repeatability.</Accent></>} />
             <div className="mt-8 border-t border-[#e2dbc9]">
               {roles.map((item) => (
                 <Fade key={item.role}>
@@ -475,7 +484,7 @@ export default function OrdinancePage() {
         <DarkBand>
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <DividerLabel label="08 / Competition framing" />
-            <SectionTitle eyebrow="Why the same work can win in multiple places" title={<>BLACKOUT is one set of facts framed for different rubrics, each with a different reason to care.</>} dark />
+            <SectionTitle eyebrow="Why the same work can win in multiple places" title={<>One set of facts <Accent>framed for multiple rubrics.</Accent></>} dark />
 
             <div className="max-w-3xl space-y-6 text-[15px] leading-[1.9] text-[#b8afa1]">
               {competitionNotes.map((note) => (
@@ -496,7 +505,7 @@ export default function OrdinancePage() {
         <LightBand>
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <DividerLabel label="09 / Closing" />
-            <SectionTitle eyebrow="Closing" title={<>The whole project is built to feel <Accent>calm, specific, and real</Accent> — not crowded, vague, or overly decorated.</>} />
+            <SectionTitle eyebrow="Closing" title={<>A civic project <Accent>built with operational discipline.</Accent></>} />
 
             <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
               <div className="space-y-3 text-[14px] leading-[1.85] text-[#5a625b]">
@@ -517,7 +526,7 @@ export default function OrdinancePage() {
                     href="/mission"
                     className="inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
                   >
-                    Mission
+                    Read our mission
                     <span aria-hidden>→</span>
                   </Link>
                   <Link

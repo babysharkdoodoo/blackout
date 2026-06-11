@@ -207,33 +207,30 @@ export function AboutPageClient() {
 
                 <Fade delay={0.12}>
                   <p className="mt-6 max-w-xl text-[1.05rem] leading-8 text-[#c1c8ba]">
-                    BLACKOUT is a student-led environmental compliance activation initiative for Brevard County’s
-                    Summer Fertilizer Blackout Ordinance. The project is built around one idea: the law already
-                    exists, but almost nobody knows it is there.
+                    A law that protects manatees already exists. Almost nobody in Brevard County knows it is there.
                   </p>
                 </Fade>
 
                 <Fade delay={0.18}>
                   <p className="mt-4 max-w-xl text-base leading-7 text-[#9fa79a]">
-                    The goal is not spectacle. The goal is to make a real rule easier to notice, easier to understand,
-                    and easier to follow — then leave behind a system that keeps working.
+                    BLACKOUT activates this law through community awareness, retail partnerships, and storm drain marking.
                   </p>
                 </Fade>
 
                 <Fade delay={0.24}>
                   <div className="mt-8 flex flex-wrap gap-3">
                     <Link
-                      href="#foundation"
+                      href="/mission"
                       className="group inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg"
                     >
-                      Read the foundation
+                      Read our mission
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
                     </Link>
                     <Link
-                      href="#ordinance"
+                      href="/ordinance"
                       className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
                     >
-                      See the ordinance
+                      Read the ordinance
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
                     </Link>
                   </div>
@@ -254,8 +251,7 @@ export function AboutPageClient() {
                   <div className="border-t border-white/10 px-6 py-5">
                     <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Indian River Lagoon</p>
                     <p className="mt-2 text-sm leading-7 text-[#f3efe5]">
-                      A quiet observational image replaces the side card so the hero feels closer to the rest of the
-                      site, but still different from the problem page.
+                      The Indian River Lagoon supports a rich ecosystem of over 4,300 species but faces collapse from nutrient runoff.
                     </p>
                   </div>
                 </div>
@@ -292,7 +288,7 @@ export function AboutPageClient() {
               eyebrow="Project foundation"
               title={
                 <>
-                  A law that protects manatees already exists. The work is about making it <Accent>matter</Accent>.
+                  A law protects manatees. <Accent>Nobody knows it is there.</Accent>
                 </>
               }
               dark
@@ -302,10 +298,10 @@ export function AboutPageClient() {
               <div className="space-y-6 text-[15px] leading-[1.9] text-[#b8afa1]">
                 <Fade>
                   <p>
+                    A law that protects manatees already exists. Almost nobody in Brevard County knows it is there.
                     BLACKOUT is designed as a complete year-long project, not a single event. The guide is built for
                     five students and one parent volunteer, with a clear sequence that keeps the work credible from the
-                    first survey to the final handoff. The project is meant to win in CmPS and also build a strong
-                    HOSA Community Awareness portfolio using the same evidence.
+                    first survey to the final handoff.
                   </p>
                 </Fade>
                 <Fade delay={0.06}>
@@ -360,9 +356,7 @@ export function AboutPageClient() {
               ))}
             </div>
           </div>
-        </LightBand>
-
-        {/* Process */}
+        </LightBand>         {/* Process */}
         <DarkBand>
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <DividerLabel label="04 / How it unfolds" />
@@ -370,11 +364,31 @@ export function AboutPageClient() {
               eyebrow="A simple sequence"
               title={
                 <>
-                  The project is designed as a narrative: first find the gap, then make the rule visible, then leave something usable.
+                  The strict field timeline <Accent>cannot be reversed.</Accent>
                 </>
               }
               dark
             />
+
+            <div className="mb-10 rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Project Flowchart</p>
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs font-mono font-medium text-white/90">
+                <span className="rounded bg-white/5 px-2.5 py-1.5 border border-white/10 text-[#a3b18a]">Wave 1 Survey Closes</span>
+                <span className="text-[#8f978a]">&rarr;</span>
+                <span className="rounded bg-white/5 px-2.5 py-1.5 border border-white/10">Drain Marking Begins</span>
+                <span className="text-[#8f978a]">&rarr;</span>
+                <span className="rounded bg-white/5 px-2.5 py-1.5 border border-white/10">Store Tags Go Up</span>
+                <span className="text-[#8f978a]">&rarr;</span>
+                <span className="rounded bg-white/5 px-2.5 py-1.5 border border-white/10">Outreach Runs</span>
+                <span className="text-[#8f978a]">&rarr;</span>
+                <span className="rounded bg-white/5 px-2.5 py-1.5 border border-white/10">Wave 2 Survey Closes</span>
+                <span className="text-[#8f978a]">&rarr;</span>
+                <span className="rounded bg-white/5 px-2.5 py-1.5 border border-white/10 text-emerald-400">Applications Written</span>
+              </div>
+              <p className="mt-4 text-center text-xs font-semibold text-red-400">
+                Warning: This sequence cannot be reversed at any step.
+              </p>
+            </div>
 
             <div className="grid gap-0 border-t border-white/10">
               {process.map((step) => (
@@ -400,7 +414,7 @@ export function AboutPageClient() {
               eyebrow="Roles and accountability"
               title={
                 <>
-                  The team is split by responsibility so the project feels <Accent>real, organized, and repeatable</Accent>.
+                  Defined team roles <Accent>ensure project repeatability.</Accent>
                 </>
               }
             />
@@ -424,7 +438,7 @@ export function AboutPageClient() {
               eyebrow="Why the work matters"
               title={
                 <>
-                  The Indian River Lagoon lost too much seagrass, and the manatees paid for it.
+                  Lagoon seagrass loss <Accent>impacts manatee survival.</Accent>
                 </>
               }
               dark
@@ -449,7 +463,7 @@ export function AboutPageClient() {
               eyebrow="Why the same work can win in multiple places"
               title={
                 <>
-                  BLACKOUT is not one story retold a dozen ways. It is one set of facts framed for different rubrics, each with a different reason to care.
+                  One set of facts <Accent>framed for multiple rubrics.</Accent>
                 </>
               }
             />
@@ -484,7 +498,7 @@ export function AboutPageClient() {
               eyebrow="Closing"
               title={
                 <>
-                  The whole project is built to feel <Accent>calm, specific, and real</Accent> — not crowded, vague, or overly decorated.
+                  A civic project <Accent>built with operational discipline.</Accent>
                 </>
               }
               dark
@@ -510,17 +524,17 @@ export function AboutPageClient() {
                   </p>
                   <div className="mt-6 flex flex-wrap gap-3">
                     <Link
-                      href="#foundation"
+                      href="/mission"
                       className="inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
                     >
-                      Back to the foundation
+                      Read our mission
                       <span aria-hidden>→</span>
                     </Link>
                     <Link
-                      href="#top"
+                      href="/ordinance"
                       className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
                     >
-                      Back to top
+                      Read the ordinance
                       <span aria-hidden>→</span>
                     </Link>
                   </div>

@@ -9,9 +9,9 @@ const heroImage =
   'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1600&q=80'
 
 const programTargets = [
-  { label: 'Partner stores', value: '4–6', note: 'Signed agreements per season' },
+  { label: 'Partner stores', value: '4 to 6', note: 'Signed agreements per season' },
   { label: 'Tag placement', value: 'At display', note: 'Directly on fertilizer shelving' },
-  { label: 'Season duration', value: 'Jun 1–Sep 30', note: 'Tags remain in place throughout' },
+  { label: 'Season duration', value: 'Jun 1 to Sep 30', note: 'Tags remain in place throughout' },
   { label: 'Reach tracking', value: 'Weekly', note: 'Customer traffic logged by partner' },
   { label: 'Tag design', value: 'Manatee Safe', note: 'Branded with ordinance dates' },
 ]
@@ -45,12 +45,12 @@ const partnerSteps = [
 ]
 
 const retailPartners = [
-  { name: 'Partner A — Brevard County', type: 'Hardware', status: 'Outreach pending', active: false },
-  { name: 'Partner B — Brevard County', type: 'Garden center', status: 'Outreach pending', active: false },
-  { name: 'Partner C — Brevard County', type: 'Hardware', status: 'Outreach pending', active: false },
-  { name: 'Partner D — Brevard County', type: 'Nursery', status: 'Outreach pending', active: false },
-  { name: 'Partner E — Brevard County', type: 'Garden center', status: 'Outreach pending', active: false },
-  { name: 'Partner F — Brevard County', type: 'Hardware', status: 'Outreach pending', active: false },
+  { name: 'Partner A: Brevard County', type: 'Hardware', status: 'Outreach pending', active: false },
+  { name: 'Partner B: Brevard County', type: 'Garden center', status: 'Outreach pending', active: false },
+  { name: 'Partner C: Brevard County', type: 'Hardware', status: 'Outreach pending', active: false },
+  { name: 'Partner D: Brevard County', type: 'Nursery', status: 'Outreach pending', active: false },
+  { name: 'Partner E: Brevard County', type: 'Garden center', status: 'Outreach pending', active: false },
+  { name: 'Partner F: Brevard County', type: 'Hardware', status: 'Outreach pending', active: false },
 ]
 
 function Fade({
@@ -148,13 +148,15 @@ function Row({
         dark ? 'border-white/10' : 'border-[#e2dbc9]'
       }`}
     >
-      <p
-        className={`text-[11px] uppercase tracking-[0.18em] ${
-          dark ? 'text-[#8f978a]' : 'text-[#7c8576]'
-        }`}
-      >
-        {left}
-      </p>
+      <div>
+        <p
+          className={`text-[11px] uppercase tracking-[0.18em] ${
+            dark ? 'text-[#8f978a]' : 'text-[#7c8576]'
+          }`}
+        >
+          {left}
+        </p>
+      </div>
       <div className={`text-[14px] leading-[1.9] ${dark ? 'text-[#b8afa1]' : 'text-[#5a625b]'}`}>
         {right}
       </div>
@@ -239,19 +241,19 @@ export function RetailPartnersPageClient() {
                 <Fade delay={0.24}>
                   <div className="mt-8 flex flex-wrap gap-3">
                     <Link
-                      href="#how-it-works"
+                      href="/about"
                       className="group inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg"
                     >
-                      How it works
+                      About the campaign
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
                         →
                       </span>
                     </Link>
                     <Link
-                      href="#partners"
+                      href="/mission"
                       className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
                     >
-                      Partner list
+                      Our mission
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
                         →
                       </span>
@@ -279,9 +281,9 @@ export function RetailPartnersPageClient() {
                   <div className="absolute inset-0 ring-1 ring-inset ring-white/5" />
                 </div>
                 <div className="border-t border-white/10 px-6 py-5">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Point of purchase</p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Quiet Observation</p>
                   <p className="mt-2 text-sm leading-7 text-[#f3efe5]">
-                    A nursery or hardware aisle is where the ordinance can be seen at the exact moment it matters.
+                    Quiet observation: Customer browsing plant fertilizer shelves in Brevard County.
                   </p>
                 </div>
               </motion.div>
@@ -293,7 +295,7 @@ export function RetailPartnersPageClient() {
         <LightBand>
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <DividerLabel label="01 / Snapshot" />
-            <SectionTitle eyebrow="Program summary" title={<>A small, repeatable shelf tag program with a clear season and a clear log.</>} />
+            <SectionTitle eyebrow="Program summary" title={<>Repeatable shelf tag program with <Accent>a clear log</Accent>.</>} />
 
             <div className="mt-8 border-t border-[#e2dbc9]">
               {programTargets.map((item, index) => (
@@ -321,7 +323,7 @@ export function RetailPartnersPageClient() {
               eyebrow="The intervention"
               title={
                 <>
-                  Shelf tags meet the buyer <Accent>at the display</Accent> and turn a retail decision into a compliance moment.
+                  Shelf tags meet the buyer <Accent>at the display</Accent>.
                 </>
               }
               dark
@@ -376,7 +378,7 @@ export function RetailPartnersPageClient() {
             <DividerLabel label="03 / Current partner status" />
             <SectionTitle
               eyebrow="Outreach list"
-              title={<>A simple live list keeps the project organized without turning the page into a dashboard.</>}
+              title={<>Live retail partner list keeps <Accent>project organized</Accent>.</>}
             />
 
             <div id="partners" className="mt-8 overflow-hidden rounded-[2rem] border border-[#e2dbc9] bg-white/75">
@@ -411,7 +413,7 @@ export function RetailPartnersPageClient() {
             <DividerLabel label="04 / What partners agree to" />
             <SectionTitle
               eyebrow="The ask"
-              title={<>The agreement is intentionally small: access, placement, and a weekly log.</>}
+              title={<>Agreement requires retail access and <Accent>weekly log</Accent>.</>}
               dark
             />
 
@@ -451,7 +453,7 @@ export function RetailPartnersPageClient() {
             <DividerLabel label="05 / Partner with BLACKOUT" />
             <SectionTitle
               eyebrow="Next step"
-              title={<>A short conversation is enough to start the season.</>}
+              title={<>Short conversation starts the <Accent>retail partnership</Accent>.</>}
             />
 
             <div className="rounded-[2rem] border border-[#e2dbc9] bg-white/70 p-6 lg:p-8">
@@ -484,7 +486,7 @@ export function RetailPartnersPageClient() {
             <DividerLabel label="06 / Closing" />
             <SectionTitle
               eyebrow="Closing"
-              title={<>The shelf is where the ordinance becomes visible in everyday life.</>}
+              title={<>Shelf tags make the ordinance <Accent>visible in life</Accent>.</>}
               dark
             />
 
@@ -504,17 +506,17 @@ export function RetailPartnersPageClient() {
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Link
-                    href="#how-it-works"
+                    href="/about"
                     className="inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
                   >
-                    Back to how it works
+                    About the campaign
                     <span aria-hidden>→</span>
                   </Link>
                   <Link
-                    href="#top"
+                    href="/ordinance"
                     className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
                   >
-                    Back to top
+                    Read the law
                     <span aria-hidden>→</span>
                   </Link>
                 </div>

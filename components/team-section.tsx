@@ -65,7 +65,7 @@ export function TeamSection() {
   return (
     <section
       id="team"
-      className="relative overflow-hidden bg-[#060807] py-20 text-white font-[family-name:var(--font-archivo)] lg:py-28"
+      className="relative overflow-hidden bg-[#060807] py-20 text-white font-sans lg:py-28"
     >
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#a3b18a]/10 to-transparent" />
@@ -87,8 +87,7 @@ export function TeamSection() {
           <div>
             <Reveal delay={0.08}>
               <h2 className="max-w-4xl text-[clamp(2.35rem,5vw,4.25rem)] font-semibold leading-[1.02] tracking-[-0.05em] text-[#f4efe5]">
-                Five students. Defined roles.
-                <span className="text-[#a3b18a]"> No ambiguity about who owns what.</span>
+                Five students. Defined roles. <span className="text-[#a3b18a]">No ambiguity about ownership.</span>
               </h2>
             </Reveal>
 

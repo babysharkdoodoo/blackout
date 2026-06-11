@@ -12,14 +12,14 @@ const heroBg =
 const stats = [
   { k: 'Wave 1', v: 'Pre-intervention baseline' },
   { k: 'Wave 2', v: 'Post-intervention follow-up' },
-  { k: 'Sample', v: '100–150 households' },
+  { k: 'Sample', v: '100 to 150 households' },
   { k: 'Method', v: 'Door-to-door' },
 ]
 
 const auditMetrics = [
   {
     label: 'Target households per wave',
-    value: '100–150',
+    value: '100 to 150',
     note: 'Within the designated campaign zone.',
   },
   {
@@ -277,17 +277,17 @@ export function SurveyPageClient() {
                 <Fade delay={0.24}>
                   <div className="mt-8 flex flex-wrap gap-3">
                     <Link
-                      href="#survey"
+                      href="/about"
                       className="group inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg"
                     >
-                      Open the survey
+                      About the campaign
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
                     </Link>
                     <Link
-                      href="#method"
+                      href="/ordinance"
                       className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
                     >
-                      Read the method
+                      Read the law
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
                     </Link>
                   </div>
@@ -313,9 +313,9 @@ export function SurveyPageClient() {
                   <div className="absolute inset-0 ring-1 ring-inset ring-white/5" />
                 </div>
                 <div className="border-t border-white/10 px-6 py-5">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Field instrument</p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Quiet Observation</p>
                   <p className="mt-2 text-sm leading-7 text-[#f3efe5]">
-                    A single visual anchor keeps the hero calm while the page focuses on the audit logic.
+                    An underwater manatee swimming peacefully in the Indian River Lagoon.
                   </p>
                 </div>
               </motion.div>
@@ -323,10 +323,54 @@ export function SurveyPageClient() {
           </div>
         </section>
 
+        {/* Survey Section - Front and Center */}
+        <section className="relative bg-[#060807] py-16 text-[#f3efe5] sm:py-20 lg:py-24 border-t border-white/5">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(163,177,138,0.08),transparent_50%)] animate-pulse" style={{ animationDuration: '6s' }} />
+          <div className="relative mx-auto max-w-4xl px-6 lg:px-10">
+            <DividerLabel label="01 / Live Instrument" />
+            <SectionTitle
+              eyebrow="Wave 1 Operational Audit"
+              title={<>Fertilizer ordinance awareness <Accent>field verification form</Accent></>}
+              dark
+            />
+            
+            <Fade delay={0.1}>
+              <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.02] p-6 sm:p-10 shadow-[0_24px_80px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300 hover:border-white/15">
+                <div className="absolute -left-16 -top-16 h-32 w-32 rounded-full bg-[#a3b18a]/10 blur-3xl pointer-events-none" />
+                <div className="absolute -right-16 -bottom-16 h-32 w-32 rounded-full bg-emerald-500/5 blur-3xl pointer-events-none" />
+                
+                <div className="border-b border-white/10 pb-6 mb-8">
+                  <div className="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                      <p className="text-[10px] font-mono font-bold tracking-[0.22em] text-[#8f978a] uppercase">
+                        Document ref: BLK-SRV-2026A
+                      </p>
+                      <h3 className="mt-2 font-sans text-2xl font-semibold tracking-[-0.03em] text-[#f3efe5]">
+                        Ordinance Awareness Verification
+                      </h3>
+                    </div>
+                    <div className="flex items-center gap-2.5 border border-emerald-500/20 bg-emerald-500/5 px-4 py-2 rounded-full">
+                      <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="text-[11px] font-medium tracking-wide uppercase text-emerald-400">Wave 1: Active</span>
+                    </div>
+                  </div>
+                  <p className="mt-4 text-[14px] leading-[1.8] text-[#b8afa1]">
+                    This standardized door-to-door instrument establishes our pre-intervention baseline. Responses are completely anonymous and feed into the county handoff package.
+                  </p>
+                </div>
+
+                <div className="text-[#111814] rounded-2xl overflow-hidden bg-white/95 shadow-2xl">
+                  <SurveyForm />
+                </div>
+              </div>
+            </Fade>
+          </div>
+        </section>
+
         {/* Snapshot */}
         <LightBand>
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="01 / Snapshot" />
+            <DividerLabel label="02 / Snapshot" />
             <SectionTitle eyebrow="Snapshot" title={<>The project in <Accent>one glance</Accent>.</>} />
             <div className="mt-8 border-t border-[#e2dbc9]">
               {stats.map((item, index) => (
@@ -338,81 +382,13 @@ export function SurveyPageClient() {
           </div>
         </LightBand>
 
-        {/* Live instrument */}
-        <DarkBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="02 / Live instrument" />
-            <SectionTitle
-              eyebrow="Wave 1 operational audit"
-              title={<>The field form is the baseline capture for the entire project.</>}
-              dark
-            />
-
-            <div id="survey" className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-              <div className="space-y-8">
-                <div className="border-t border-white/10 pt-8">
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-[#8f978a]">Field context</p>
-                  <p className="mt-4 max-w-xl text-[15px] leading-[1.9] text-[#b8afa1]">
-                    This standardized instrument is deployed across the campaign zone before any outreach, tagging, or drain marking begins. The right side mirrors the questions used at residential access points.
-                  </p>
-                </div>
-
-                <div className="border-t border-white/10 pt-8">
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-[#8f978a]">Wave status</p>
-                  <div className="mt-5 space-y-3">
-                    <div className="flex items-center justify-between border border-emerald-900/15 bg-emerald-50/80 px-4 py-3 text-[#111814]">
-                      <div className="flex items-center gap-2.5">
-                        <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                        <span className="text-[13px] font-medium text-emerald-900">Wave 1 — Live baseline</span>
-                      </div>
-                      <span className="text-[10px] uppercase tracking-[0.18em] text-emerald-700">Active</span>
-                    </div>
-
-                    <div className="flex items-center justify-between border border-white/10 bg-white/[0.03] px-4 py-3">
-                      <div className="flex items-center gap-2.5">
-                        <span className="h-2 w-2 rounded-full bg-[#c7c0b0]" />
-                        <span className="text-[13px] font-medium text-[#b8afa1]">Wave 2 — Post-intervention</span>
-                      </div>
-                      <span className="text-[10px] uppercase tracking-[0.18em] text-[#8f978a]">Pending</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="border-t border-white/10 pt-8">
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-[#8f978a]">Data directive</p>
-                  <p className="mt-4 max-w-xl text-[15px] leading-[1.9] text-[#b8afa1]">
-                    Verified door-to-door metadata acts as the primary baseline anchor. Digital supplements can help verify coverage, but they do not replace direct physical collection.
-                  </p>
-                </div>
-              </div>
-
-              <Fade delay={0.1}>
-                <div className="overflow-hidden border border-white/10 bg-white/[0.035]">
-                  <div className="border-b border-white/10 px-6 py-5">
-                    <p className="text-[10px] font-mono font-bold tracking-[0.22em] text-[#8f978a] uppercase">
-                      Document ref: BLK-SRV-2026A
-                    </p>
-                    <h3 className="mt-2 font-sans text-2xl font-semibold tracking-[-0.03em] text-[#f3efe5]">
-                      Fertilizer Ordinance Awareness Verification
-                    </h3>
-                    <p className="mt-1 text-[13px] text-[#a6ad9f]">Brevard County residential sampling protocol</p>
-                  </div>
-                  <div className="p-6">
-                    <SurveyForm />
-                  </div>
-                </div>
-              </Fade>
-            </div>
-          </div>
-        </DarkBand>
-
         {/* Method */}
         <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10 border-t border-[#e2dbc9]/60">
             <DividerLabel label="03 / Method" />
-            <SectionTitle eyebrow="Two-wave audit logic" title={<>The baseline must finish before the intervention starts.</>} />
+            <SectionTitle eyebrow="Two-wave audit logic" title={<>Baseline finishes before the <Accent>intervention starts</Accent>.</>} />
 
-            <div id="method" className="max-w-3xl space-y-6 text-[15px] leading-[1.9] text-[#5a625b]">
+            <div className="max-w-3xl space-y-6 text-[15px] leading-[1.9] text-[#5a625b]">
               <p>
                 Wave 1 anchors the pre-intervention dataset. It is collected in full resolution before any BLACKOUT awareness collateral, storm drain markers, or retail shelf tags are placed in the field.
               </p>
@@ -430,7 +406,7 @@ export function SurveyPageClient() {
         <DarkBand>
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <DividerLabel label="04 / Technical parameters" />
-            <SectionTitle eyebrow="Survey specifications" title={<>A small set of numbers keeps the fieldwork consistent.</>} dark />
+            <SectionTitle eyebrow="Survey specifications" title={<>Small metrics keep the <Accent>fieldwork consistent</Accent>.</>} dark />
 
             <div className="mt-8 border-t border-white/10">
               {auditMetrics.map((item, index) => (
@@ -446,7 +422,7 @@ export function SurveyPageClient() {
         <LightBand>
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <DividerLabel label="05 / Data flow" />
-            <SectionTitle eyebrow="What the data feeds" title={<>The survey delta is reused everywhere the project needs proof.</>} />
+            <SectionTitle eyebrow="What the data feeds" title={<>Survey delta provides the <Accent>necessary project proof</Accent>.</>} />
 
             <div className="max-w-3xl space-y-4 text-[15px] leading-[1.9] text-[#5a625b]">
               {wavePoints.map((item) => (
@@ -475,7 +451,7 @@ export function SurveyPageClient() {
         <DarkBand>
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <DividerLabel label="06 / Outputs" />
-            <SectionTitle eyebrow="Where the survey goes next" title={<>One instrument, multiple destinations.</>} dark />
+            <SectionTitle eyebrow="Where the survey goes next" title={<>One instrument, <Accent>multiple destinations</Accent>.</>} dark />
 
             <div className="max-w-3xl space-y-6 text-[15px] leading-[1.9] text-[#b8afa1]">
               {pipelines.map((item) => (
@@ -492,7 +468,7 @@ export function SurveyPageClient() {
         <LightBand>
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
             <DividerLabel label="07 / Closing" />
-            <SectionTitle eyebrow="Closing" title={<>The survey is the project’s cleanest proof that the work changed something measurable.</>} />
+            <SectionTitle eyebrow="Closing" title={<>Survey proves the work <Accent>changed something measurable</Accent>.</>} />
 
             <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
               <div className="space-y-3 text-[14px] leading-[1.85] text-[#5a625b]">
@@ -510,17 +486,17 @@ export function SurveyPageClient() {
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Link
-                    href="#survey"
+                    href="/about"
                     className="inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
                   >
-                    Open the instrument
+                    About the campaign
                     <span aria-hidden>→</span>
                   </Link>
                   <Link
-                    href="#top"
+                    href="/mission"
                     className="inline-flex items-center gap-2 rounded-full border border-[#e2dbc9] bg-white/60 px-5 py-3 text-sm font-medium text-[#173027] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
                   >
-                    Back to top
+                    View our mission
                     <span aria-hidden>→</span>
                   </Link>
                 </div>

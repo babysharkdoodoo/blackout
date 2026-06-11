@@ -39,11 +39,11 @@ const steps = [
     head: 'Blooms block sunlight',
     body: 'Extra nutrients fuel algal growth, which shades out seagrass beds.',
   },
-{
-  n: '4',
-  head: 'Manatees starve',
-  body: 'Without healthy seagrass beds, manatees lose access to their primary food source.'
-}
+  {
+    n: '4',
+    head: 'Manatees starve',
+    body: 'Without healthy seagrass beds, manatees lose access to their primary food source.'
+  }
 ]
 
 function Reveal({
@@ -169,7 +169,7 @@ export function ProblemSection() {
 
         <Reveal delay={0.14}>
           <p className="mt-6 max-w-2xl text-[1rem] leading-[1.9] text-[#5f675f]">
-Brevard County prohibits nitrogen and phosphorus fertilizer application from June 1 through September 30. The ordinance was created to reduce nutrient pollution before it reaches the lagoon, but its impact depends on residents knowing it exists and following it.
+            Brevard County prohibits nitrogen and phosphorus fertilizer application from June 1 through September 30. The ordinance was created to reduce nutrient pollution before it reaches the lagoon, but its impact depends on residents knowing it exists and following it.
           </p>
         </Reveal>
 
@@ -203,8 +203,8 @@ Brevard County prohibits nitrogen and phosphorus fertilizer application from Jun
                 </p>
 
                 <blockquote className="mt-4 max-w-xl font-sans text-[1.5rem] leading-[1.25] tracking-[-0.02em] text-[#163127]">
-The ordinance is the solution.
-The gap is activation.
+                  The ordinance is the solution.
+                  The gap is activation.
                 </blockquote>
 
                 <p className="mt-4 text-sm leading-[1.85] text-[#5f675f]">

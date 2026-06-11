@@ -41,7 +41,7 @@ export function OrdinanceSection() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section className="relative overflow-hidden bg-[#060807] py-20 text-white font-[family-name:var(--font-archivo)] lg:py-28">
+    <section className="relative overflow-hidden bg-[#060807] py-20 text-white font-sans lg:py-28">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#a3b18a]/10 to-transparent" />
         <div className="absolute left-[-8%] top-[8%] h-72 w-72 rounded-full bg-[#a3b18a]/8 blur-3xl" />
