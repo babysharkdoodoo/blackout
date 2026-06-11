@@ -108,19 +108,18 @@ export function ApproachSection() {
           <div>
             <Reveal delay={0.08}>
               <h2 className="max-w-4xl text-[clamp(2.2rem,5vw,4rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-[#163127]">
-                We do not start with a vague campaign.
-                <span className="text-[#6f8167]"> We start with a behavior chain and interrupt it.</span>
+                We do not create a new solution.
+
+                <span className="text-[#6f8167]"> We activate the one that already exists.</span>
               </h2>
             </Reveal>
 
             <Reveal delay={0.14}>
               <p className="mt-6 max-w-2xl text-[1rem] leading-[1.9] text-[#5f675f]">
-                BLACKOUT uses three coordinated prongs to reach the same person in three different
-                places: before purchase, at the drain, and through direct survey evidence.
-                The goal is simple. Make the ordinance visible, measurable, and hard to ignore.
+BLACKOUT activates the Summer Fertilizer Blackout Ordinance through three coordinated interventions: measuring awareness, reaching residents at the point of purchase, and placing reminders where runoff enters the lagoon.
               </p>
             </Reveal>
-
+{/* 
             <Reveal delay={0.2}>
               <div className="mt-8 flex flex-wrap gap-3">
                 {['Original data', 'Decision point', 'Permanent reminder'].map((item) => (
@@ -132,7 +131,7 @@ export function ApproachSection() {
                   </span>
                 ))}
               </div>
-            </Reveal>
+            </Reveal> */}
 
             <Reveal delay={0.26}>
               <div className="mt-12 border-t border-[#e6e0d4] pt-8">
