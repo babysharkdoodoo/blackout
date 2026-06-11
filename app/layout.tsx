@@ -3,6 +3,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import { SmoothScrollProvider } from './smooth-scroll-provider'
+import { RetailPartnerUI } from './retail-partner-ui'
 
 const inter = Inter({
   variable: '--font-inter',
@@ -148,7 +149,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-background text-foreground antialiased">
+        <div id="top" aria-hidden="true" />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <RetailPartnerUI />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

@@ -39,11 +39,11 @@ const steps = [
     head: 'Blooms block sunlight',
     body: 'Extra nutrients fuel algal growth, which shades out seagrass beds.',
   },
-  {
-    n: '4',
-    head: 'Food disappears',
-    body: 'When seagrass declines, manatees lose the food source they depend on.',
-  },
+{
+  n: '4',
+  head: 'Manatees starve',
+  body: 'Without healthy seagrass beds, manatees lose access to their primary food source.'
+}
 ]
 
 function Reveal({
@@ -163,21 +163,19 @@ export function ProblemSection() {
         <Reveal delay={0.08}>
           <h2 className="max-w-4xl font-sans text-[clamp(2.2rem,5vw,4rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-[#163127]">
             North America&apos;s most biodiverse estuary is slipping away.
-            <span className="text-[#6f8167]"> A law that could help already exists.</span>
+            <span className="text-[#6f8167]"> The solution already exists.</span>
           </h2>
         </Reveal>
 
         <Reveal delay={0.14}>
           <p className="mt-6 max-w-2xl text-[1rem] leading-[1.9] text-[#5f675f]">
-            Nitrogen fertilizer used during Florida&apos;s rainy season can wash into storm drains,
-            feed algal blooms, block sunlight, kill seagrass, and leave manatees with less food.
-            The ordinance interrupts that chain at the source.
+Brevard County prohibits nitrogen and phosphorus fertilizer application from June 1 through September 30. The ordinance was created to reduce nutrient pollution before it reaches the lagoon, but its impact depends on residents knowing it exists and following it.
           </p>
         </Reveal>
 
         <Reveal delay={0.2}>
           <div className="mt-8 flex flex-wrap gap-3">
-            {['Student-led', 'Existing ordinance', 'Lagoon protection'].map((item) => (
+            {['Student-led', 'Ordinance activation', 'Community '].map((item) => (
               <span
                 key={item}
                 className="rounded-full bg-white px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f8167] shadow-[0_8px_24px_rgba(0,0,0,0.04)]"
@@ -205,8 +203,8 @@ export function ProblemSection() {
                 </p>
 
                 <blockquote className="mt-4 max-w-xl font-sans text-[1.5rem] leading-[1.25] tracking-[-0.02em] text-[#163127]">
-                  When seagrass disappears, manatees lose the primary food source they depend on
-                  to survive.
+The ordinance is the solution.
+The gap is activation.
                 </blockquote>
 
                 <p className="mt-4 text-sm leading-[1.85] text-[#5f675f]">
@@ -238,13 +236,13 @@ export function ProblemSection() {
                   href="#approach"
                   className="rounded-full bg-[#163127] px-6 py-3 text-sm font-medium text-[#faf7f0] transition-transform duration-300 hover:-translate-y-0.5 hover:bg-[#223a2e]"
                 >
-                  See the approach
+                  Learn how BLACKOUT works
                 </Link>
                 <Link
-                  href="#top"
+                  href="/ordinance"
                   className="text-sm text-[#6f8167] underline decoration-[#6f8167]/25 underline-offset-4 transition-colors hover:text-[#163127] hover:decoration-[#163127]/35"
                 >
-                  Back to top
+                  View the ordinance
                 </Link>
               </div>
             </Reveal>

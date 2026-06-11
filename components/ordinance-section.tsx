@@ -62,20 +62,18 @@ export function OrdinanceSection() {
           <div>
             <Reveal delay={0.08}>
               <h2 className="max-w-4xl text-[clamp(2.3rem,5vw,4.2rem)] font-semibold leading-[1.02] tracking-[-0.05em] text-[#f4efe5]">
-                The law already exists.
-                <span className="text-[#a3b18a]"> The problem is making it matter.</span>
+                The ordinance already exists.
+                <span className="text-[#a3b18a]"> The gap is activation.</span>
               </h2>
             </Reveal>
 
             <Reveal delay={0.16}>
               <p className="mt-6 max-w-2xl text-[1rem] leading-[1.9] text-[#b8afa1]">
-                Brevard County&apos;s Summer Fertilizer Blackout Ordinance restricts nutrient fertilizer
-                during the rainy season, when runoff is most likely to reach the lagoon. BLACKOUT
-                exists to turn that rule into awareness and action.
+                Brevard County&apos;s Blackout Ordinance restricts nitrogen and phosphorus fertilizer from June 1 through September 30. BLACKOUT activates the ordinance through awareness, retail partnerships, and visible reminders that help residents comply.
               </p>
             </Reveal>
 
-            <Reveal delay={0.22}>
+            {/* <Reveal delay={0.22}>
               <div className="mt-8 flex flex-wrap gap-3">
                 {['Existing ordinance', 'Rainy season window', 'Student-led awareness'].map((item) => (
                   <span
@@ -86,7 +84,7 @@ export function OrdinanceSection() {
                   </span>
                 ))}
               </div>
-            </Reveal>
+            </Reveal> */}
 
             <Reveal delay={0.28}>
               <div className="mt-12 max-w-2xl border-t border-white/10 pt-8">
@@ -94,8 +92,9 @@ export function OrdinanceSection() {
                   Why it matters
                 </p>
                 <p className="mt-4 text-[clamp(1.45rem,3vw,2.1rem)] font-medium leading-[1.22] tracking-[-0.03em] text-[#f4efe5]">
-                  It interrupts the chain before fertilizer becomes runoff, runoff becomes bloom,
-                  and bloom becomes food loss.
+The ordinance is the solution.
+
+BLACKOUT helps people see it, understand it, and follow it.
                 </p>
               </div>
             </Reveal>
@@ -129,7 +128,9 @@ export function OrdinanceSection() {
                     Core issue
                   </p>
                   <p className="mt-2 text-sm leading-[1.8] text-[#b8afa1]">
-                    The ordinance is real. The barrier is public awareness and consistent compliance.
+                   The ordinance exists.
+
+Most residents simply do not know about it.
                   </p>
                 </div>
               </div>

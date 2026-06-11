@@ -7,7 +7,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 
 const facts = [
   { value: '1,101', label: 'manatee deaths in 2021' },
-  { value: '58%', label: 'seagrass lost in the lagoon' },
+  { value: '58%', label: 'seagrass lost' },
 ]
 
 const fadeUp = {
@@ -99,7 +99,7 @@ export function Hero() {
               custom={0.18}
               className="mt-5 max-w-xl text-[clamp(1.08rem,2.2vw,1.55rem)] font-medium leading-[1.2] tracking-[-0.02em] text-white/30"
             >
-              It should not be this hard to make it matter.
+              The ordinance exists. Awareness does not.
             </motion.p>
 
             <motion.p
@@ -109,9 +109,9 @@ export function Hero() {
               custom={0.28}
               className="mt-6 max-w-xl text-[15px] leading-[1.85] text-[#b8afa1] sm:text-[16px]"
             >
-              BLACKOUT is a student-led effort using Brevard County&apos;s Summer Fertilizer
-              Blackout Ordinance to protect the lagoon, the seagrass beneath it, and the manatees
-              that depend on both.
+Brevard County already passed the Summer Fertilizer Blackout Ordinance.
+BLACKOUT activates it through community awareness, retail partnerships,
+and visible reminders that help residents comply.
             </motion.p>
 
             <motion.div
