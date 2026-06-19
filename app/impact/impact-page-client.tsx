@@ -12,7 +12,7 @@ const seasonStatus = [
   { k: 'Season', v: '2026', note: 'First field season', status: 'active' },
   { k: 'Wave 1 survey', v: 'Open', note: 'Pre-intervention baseline', status: 'active' },
   { k: 'Wave 2 survey', v: 'Pending', note: 'Post-intervention follow-up', status: 'pending' },
-  { k: 'County handoff', v: 'Planned', note: 'Oct to Nov 2026', status: 'pending' },
+  { k: 'County handoff', v: 'Planned', note: 'Oct - Nov 2026', status: 'pending' },
 ]
 
 const evidenceStreams = [
@@ -259,19 +259,19 @@ export function ImpactPageClient() {
                 <Fade delay={0.24}>
                   <div className="mt-8 flex flex-wrap gap-3">
                     <Link
-                      href="/about"
+                      href="#streams"
                       className="group inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg"
                     >
-                      About the campaign
+                      Evidence streams
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
                         →
                       </span>
                     </Link>
                     <Link
-                      href="/ordinance"
+                      href="#sustainability"
                       className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
                     >
-                      Read the law
+                      Sustainability
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
                         →
                       </span>
@@ -299,9 +299,9 @@ export function ImpactPageClient() {
                   <div className="absolute inset-0 ring-1 ring-inset ring-white/5" />
                 </div>
                 <div className="border-t border-white/10 px-6 py-5">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Quiet Observation</p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Runoff pathway</p>
                   <p className="mt-2 text-sm leading-7 text-[#f3efe5]">
-                    Quiet observation: Fertilizer runoff flowing off a field toward a water channel in Brevard County.
+                    Impact becomes visible when fertilizer runoff is no longer abstract and the chain is documented.
                   </p>
                 </div>
               </motion.div>
@@ -315,7 +315,11 @@ export function ImpactPageClient() {
             <DividerLabel label="01 / Season status" />
             <SectionTitle
               eyebrow="Live overview"
-              title={<>Season snapshot keeps the work <Accent>easy to read</Accent>.</>}
+              title={
+                <>
+                  A short season snapshot keeps the work easy to read without turning the page into a dashboard.
+                </>
+              }
             />
 
             <div className="mt-8 border-t border-[#e2dbc9]">
@@ -356,7 +360,11 @@ export function ImpactPageClient() {
             <DividerLabel label="02 / Evidence streams" />
             <SectionTitle
               eyebrow="What survives"
-              title={<>Six document types, each <Accent>independently verifiable</Accent>.</>}
+              title={
+                <>
+                  Six document types. Each one independently verifiable and useful beyond the student team.
+                </>
+              }
               dark
             />
 
@@ -393,7 +401,11 @@ export function ImpactPageClient() {
             <DividerLabel label="03 / What changes" />
             <SectionTitle
               eyebrow="Community and county"
-              title={<>Work changes behavior and <Accent>leaves a county system</Accent>.</>}
+              title={
+                <>
+                  The work changes behavior in the community and leaves Brevard County with a system it can actually keep using.
+                </>
+              }
             />
 
             <div className="grid gap-8 lg:grid-cols-2">
@@ -430,7 +442,11 @@ export function ImpactPageClient() {
             <DividerLabel label="04 / Sustainability" />
             <SectionTitle
               eyebrow="The handoff goal"
-              title={<>Not permanent student involvement. <Accent>A complete transfer.</Accent></>}
+              title={
+                <>
+                  Not permanent student involvement. <Accent>A complete transfer.</Accent>
+                </>
+              }
               dark
             />
 
@@ -451,17 +467,17 @@ export function ImpactPageClient() {
                   </p>
                   <div className="mt-6 flex flex-wrap gap-3">
                     <Link
-                      href="/about"
+                      href="#streams"
                       className="inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
                     >
-                      About the campaign
+                      Evidence streams
                       <span aria-hidden>→</span>
                     </Link>
                     <Link
-                      href="/ordinance"
+                      href="#top"
                       className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
                     >
-                      Read the law
+                      Back to top
                       <span aria-hidden>→</span>
                     </Link>
                   </div>
@@ -477,7 +493,11 @@ export function ImpactPageClient() {
             <DividerLabel label="05 / Closing" />
             <SectionTitle
               eyebrow="Closing"
-              title={<>Every field activity <Accent>produces lasting evidence</Accent>.</>}
+              title={
+                <>
+                  Every field activity produces a document. <Accent>Every document survives.</Accent>
+                </>
+              }
             />
 
             <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
@@ -496,17 +516,17 @@ export function ImpactPageClient() {
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Link
-                    href="/about"
+                    href="#sustainability"
                     className="inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
                   >
-                    About the campaign
+                    Sustainability
                     <span aria-hidden>→</span>
                   </Link>
                   <Link
-                    href="/mission"
+                    href="#top"
                     className="inline-flex items-center gap-2 rounded-full border border-[#e2dbc9] bg-white/60 px-5 py-3 text-sm font-medium text-[#173027] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
                   >
-                    Our mission
+                    Back to top
                     <span aria-hidden>→</span>
                   </Link>
                 </div>

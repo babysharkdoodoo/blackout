@@ -1,198 +1,178 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 
-const facts = [
-  { value: '1,101', label: 'manatee deaths in 2021' },
-  { value: '58%', label: 'seagrass lost' },
+const images = [
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Indian%20River%20Lagoon%20Area.jpg',
+    label: 'Indian River Lagoon',
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Floridian%20seagrass%20bed.jpg',
+    label: 'Seagrass beds',
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Manatee%20photo.jpg',
+    label: 'Manatee habitat',
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Storm%20Drain.JPG',
+    label: 'Storm drain pathway',
+  },
 ]
 
 const fadeUp = {
   hidden: { opacity: 0, y: 18 },
-  show: (delay = 0) => ({
+  show: {
     opacity: 1,
     y: 0,
     transition: {
-      delay,
       duration: 0.7,
       ease: [0.22, 1, 0.36, 1],
     },
-  }),
+  },
 }
 
 export function Hero() {
-  const shouldReduceMotion = useReducedMotion()
-  const [loaded, setLoaded] = useState(false)
+  const reduceMotion = useReducedMotion()
+  const [index, setIndex] = useState(0)
 
   useEffect(() => {
-    setLoaded(true)
-  }, [])
+    if (reduceMotion) return
+
+    const timer = window.setInterval(() => {
+      setIndex((current) => (current + 1) % images.length)
+    }, 5000)
+
+    return () => window.clearInterval(timer)
+  }, [reduceMotion])
+
+  const activeImage = images[index]
 
   return (
     <section
       id="top"
-      className="relative isolate min-h-[100svh] overflow-hidden bg-[#060807] font-sans text-white"
+      className="relative isolate h-[100svh] overflow-hidden bg-[#07110d] text-white"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(163,177,138,0.16),transparent_30%),radial-gradient(circle_at_top_right,rgba(255,255,255,0.06),transparent_22%),linear-gradient(180deg,#0a0f0d_0%,#050706_100%)]" />
-      <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:radial-gradient(circle_at_center,black,transparent_82%)]" />
+      <div aria-hidden="true" className="absolute inset-0">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={activeImage.src}
+            src={activeImage.src}
+            alt=""
+            draggable={false}
+            referrerPolicy="no-referrer"
+            className="absolute inset-0 h-full w-full object-cover"
+            initial={{ opacity: 0, scale: 1.03 }}
+            animate={{
+              opacity: 0.34,
+              scale: reduceMotion ? 1 : 1.07,
+            }}
+            exit={{ opacity: 0 }}
+            transition={{
+              opacity: { duration: 1 },
+              scale: { duration: 5.2, ease: 'easeOut' },
+            }}
+          />
+        </AnimatePresence>
+
+        <div className="absolute inset-0 bg-gradient-to-r from-[#07110d] via-[#07110d]/78 to-[#07110d]/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07110d] via-transparent to-[#07110d]/20" />
+      </div>
 
       <motion.div
-        aria-hidden="true"
-        initial={{ opacity: 0, scale: 1.04 }}
-        animate={loaded ? { opacity: 1, scale: 1 } : {}}
-        transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute inset-0"
-        style={
-          shouldReduceMotion
-            ? undefined
-            : {
-              transform: 'translate3d(0,0,0)',
-            }
-        }
+        initial="hidden"
+        animate="show"
+        transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
+        className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-12"
       >
-        <Image
-          src="/lagoon-hero.png"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center opacity-24"
-        />
+        <motion.p
+          variants={fadeUp}
+          className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#b9c89c]"
+        >
+          Brevard County fertilizer blackout
+        </motion.p>
+
+        <motion.h1
+          variants={fadeUp}
+          className="max-w-4xl text-[clamp(2.8rem,8vw,5.7rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-[#f5efe3]"
+        >
+          The rule exists.
+          <br />
+          Awareness does not.
+        </motion.h1>
+
+        <motion.p
+          variants={fadeUp}
+          className="mt-6 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] leading-[1.5] text-white/70"
+        >
+          Brevard County restricts summer nitrogen and phosphorus fertilizer use to
+          reduce runoff into storm drains and the Indian River Lagoon.
+        </motion.p>
+
+        <motion.div
+          variants={fadeUp}
+          className="mt-8 flex flex-col gap-3 sm:flex-row"
+        >
+          <Link
+            href="#ordinance"
+            className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07110d] transition hover:bg-white"
+          >
+            Read the ordinance
+          </Link>
+
+          <Link
+            href="#mission"
+            className="inline-flex items-center justify-center rounded-full border border-white/18 px-6 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
+          >
+            See the project
+          </Link>
+        </motion.div>
+
+        <motion.div
+          variants={fadeUp}
+          className="mt-8 flex max-w-2xl flex-wrap gap-2 text-xs text-white/58"
+        >
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            June 1 - Sept. 30
+          </span>
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            Nitrogen + phosphorus
+          </span>
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            Survey → stores → storm drains
+          </span>
+        </motion.div>
       </motion.div>
 
-      <div className="absolute inset-0 bg-gradient-to-r from-[#060807] via-[#060807]/82 to-[#060807]/30" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#060807] via-transparent to-transparent" />
-
-      <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl items-center px-6 py-12 sm:px-8 lg:px-10">
-        <div className="grid w-full items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] xl:gap-16">
-          <div className="max-w-3xl">
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate={loaded ? 'show' : 'hidden'}
-              custom={0}
-              className="inline-flex items-center gap-2 text-[10px] font-semibold tracking-[0.24em] text-[#b7b0a0] uppercase"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-[#a3b18a]" />
-              Blackout ordinance
-            </motion.div>
-
-            <motion.h1
-              variants={fadeUp}
-              initial="hidden"
-              animate={loaded ? 'show' : 'hidden'}
-              custom={0.08}
-              className="mt-6 max-w-2xl text-[clamp(3rem,6vw,6rem)] font-semibold leading-[0.92] tracking-[-0.075em] text-[#f4efe5]"
-            >
-              A law to protect
-              <br />
-              manatees already exists.
-            </motion.h1>
-
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              animate={loaded ? 'show' : 'hidden'}
-              custom={0.18}
-              className="mt-5 max-w-xl text-[clamp(1.08rem,2.2vw,1.55rem)] font-medium leading-[1.2] tracking-[-0.02em] text-white/30"
-            >
-              The ordinance exists. Awareness does not.
-            </motion.p>
-
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              animate={loaded ? 'show' : 'hidden'}
-              custom={0.28}
-              className="mt-6 max-w-xl text-[15px] leading-[1.85] text-[#b8afa1] sm:text-[16px]"
-            >
-              Brevard County already passed the Summer Fertilizer Blackout Ordinance.
-              BLACKOUT activates it through community awareness, retail partnerships,
-              and visible reminders that help residents comply.
-            </motion.p>
-
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate={loaded ? 'show' : 'hidden'}
-              custom={0.38}
-              className="mt-8 flex flex-wrap items-center gap-3"
-            >
-              <Link
-                href="#approach"
-                className="group inline-flex items-center gap-2 rounded-full bg-[#f3efe6] px-6 py-3 text-sm font-medium tracking-wide text-[#0a0f0d] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
-              >
-                See our approach
-                <svg
-                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </Link>
-
-              <Link
-                href="#mission"
-                className="text-sm text-[#a79e90] underline decoration-white/15 underline-offset-4 transition-colors hover:text-[#f3efe6] hover:decoration-white/45"
-              >
-                Why the lagoon is collapsing
-              </Link>
-            </motion.div>
-
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate={loaded ? 'show' : 'hidden'}
-              custom={0.48}
-              className="mt-10 flex flex-wrap items-end gap-x-10 gap-y-4"
-            >
-              {facts.map((fact, i) => (
-                <div key={fact.label} className="min-w-[150px]">
-                  <div className="text-3xl font-semibold tracking-[-0.05em] text-[#f4efe5] tabular-nums">
-                    {fact.value}
-                  </div>
-                  <div className="mt-1 max-w-[14rem] text-sm leading-6 text-[#d7d0c4]">
-                    {fact.label}
-                  </div>
-                  {i === 0 ? (
-                    <div className="mt-4 h-px w-16 bg-white/10 sm:hidden" />
-                  ) : null}
-                </div>
-              ))}
-            </motion.div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.99 }}
-            animate={loaded ? { opacity: 1, y: 0, scale: 1 } : {}}
-            transition={{ duration: 0.85, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            className="hidden lg:block"
+      <div className="absolute bottom-6 left-6 right-6 z-10 mx-auto flex max-w-6xl items-center justify-between text-xs text-white/42 sm:left-10 sm:right-10 lg:left-12 lg:right-12">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={activeImage.label}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.3 }}
           >
-            <div className="relative mx-auto w-full max-w-[560px]">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[2.25rem] bg-white/[0.03]">
-                <Image
-                  src="/manatee-underwater.png"
-                  alt="West Indian manatee underwater"
-                  fill
-                  priority
-                  sizes="(min-width: 1024px) 560px, 0px"
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050706] via-transparent to-transparent" />
-                <div className="absolute inset-0 ring-1 ring-inset ring-white/5" />
-              </div>
-            </div>
-          </motion.div>
+            {activeImage.label}
+          </motion.span>
+        </AnimatePresence>
+
+        <div className="flex gap-2">
+          {images.map((image, imageIndex) => (
+            <button
+              key={image.src}
+              type="button"
+              aria-label={`Show ${image.label}`}
+              onClick={() => setIndex(imageIndex)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${imageIndex === index
+                  ? 'w-8 bg-[#f5efe3]'
+                  : 'w-3 bg-white/25 hover:bg-white/45'
+                }`}
+            />
+          ))}
         </div>
       </div>
     </section>

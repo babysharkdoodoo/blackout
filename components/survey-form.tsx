@@ -7,47 +7,47 @@ type Answers = Record<string, string | string[]>;
 const questions = [
   {
     id: 'q1',
-    section: 'Section A: Awareness',
+    section: 'Section A  -  Awareness',
     label: 'Are you aware that Brevard County has an ordinance restricting fertilizer application during certain months of the year?',
     type: 'radio' as const,
     options: ['Yes, I am aware of it', 'I have heard of something like this but am not sure of the details', 'No, I was not aware of any such ordinance'],
   },
   {
     id: 'q2',
-    section: 'Section A: Awareness',
+    section: 'Section A  -  Awareness',
     label: 'Do you know during which months the Brevard County fertilizer blackout period is in effect?',
     type: 'radio' as const,
     options: ['Yes, I know the exact months', 'I have a general idea but am not certain', 'No, I do not know'],
   },
   {
     id: 'q3',
-    section: 'Section B: Behavior',
+    section: 'Section B  -  Behavior',
     label: 'Does your household apply fertilizer to a lawn, garden, or landscaped area?',
     type: 'radio' as const,
-    options: ['Yes, we apply it ourselves', 'Yes, we hire a lawn service that applies it', 'No, we do not apply fertilizer', 'Not applicable: no lawn or landscaped area'],
+    options: ['Yes, we apply it ourselves', 'Yes, we hire a lawn service that applies it', 'No, we do not apply fertilizer', 'Not applicable  -  no lawn or landscaped area'],
   },
   {
     id: 'q4',
-    section: 'Section B: Behavior',
+    section: 'Section B  -  Behavior',
     label: 'During which months does your household typically apply fertilizer? (Select all that apply)',
     type: 'checkbox' as const,
-    options: ['January - February', 'March - April', 'May', 'June - July', 'August - September', 'October - November', 'December', 'I am not sure / varies'],
+    options: ['January  -  February', 'March  -  April', 'May', 'June  -  July', 'August  -  September', 'October  -  November', 'December', 'I am not sure / varies'],
   },
   {
     id: 'q5',
-    section: 'Section B: Behavior',
+    section: 'Section B  -  Behavior',
     label: 'Now that you know the ordinance is in effect from June 1 through September 30, how likely are you to change your fertilizer application timing?',
     type: 'radio' as const,
     options: [
-      'Very likely: I will stop applying fertilizer during those months',
-      'Somewhat likely: I will try to adjust',
-      'Unlikely: my current timing will not change',
-      'Not applicable: I do not apply fertilizer during those months anyway',
+      'Very likely  -  I will stop applying fertilizer during those months',
+      'Somewhat likely  -  I will try to adjust',
+      'Unlikely  -  my current timing will not change',
+      'Not applicable  -  I do not apply fertilizer during those months anyway',
     ],
   },
   {
     id: 'q6',
-    section: 'Section C: Sources',
+    section: 'Section C  -  Sources',
     label: 'How did you learn about the Brevard County fertilizer blackout ordinance, if at all? (Select all that apply)',
     type: 'checkbox' as const,
     options: [
@@ -62,7 +62,7 @@ const questions = [
   },
   {
     id: 'q7',
-    section: 'Section C: Sources',
+    section: 'Section C  -  Sources',
     label: 'What is the primary source of information you rely on for lawn care decisions?',
     type: 'radio' as const,
     options: [

@@ -1,139 +1,73 @@
 'use client'
 
-import { motion, useInView, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
-import { useRef } from 'react'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { useRef, type ReactNode } from 'react'
 
 const stats = [
   {
     figure: '1,101',
-    label: 'manatee deaths in 2021',
+    label: 'Manatee deaths recorded in 2021',
   },
   {
     figure: '58%',
-    label: 'seagrass lost in the lagoon',
+    label: 'Lagoon seagrass loss',
   },
   {
     figure: '4,300+',
-    label: 'species supported by the estuary',
+    label: 'Species supported by the estuary',
   },
   {
     figure: '$2.2B',
-    label: 'annual economic value',
+    label: 'Estimated annual economic value',
   },
 ]
 
 const steps = [
   {
-    n: '1',
-    head: 'Fertilizer applied',
-    body: 'During the rainy season, fertilizer often goes down just before the heaviest runoff.',
+    title: 'Fertilizer goes down',
+    body: 'Summer lawn treatments add nitrogen and phosphorus during the wettest part of the year.',
   },
   {
-    n: '2',
-    head: 'Runoff reaches the lagoon',
-    body: 'Stormwater carries nitrogen into drains and straight into the water.',
+    title: 'Rain moves it',
+    body: 'Stormwater carries excess nutrients into drains, canals, and connected waterways.',
   },
   {
-    n: '3',
-    head: 'Blooms block sunlight',
-    body: 'Extra nutrients fuel algal growth, which shades out seagrass beds.',
+    title: 'Blooms take over',
+    body: 'Nutrient loading fuels algae, reducing the light seagrass needs to survive.',
   },
   {
-    n: '4',
-    head: 'Manatees starve',
-    body: 'Without healthy seagrass beds, manatees lose access to their primary food source.'
-  }
+    title: 'The food web breaks',
+    body: 'As seagrass disappears, manatees lose one of their primary food sources.',
+  },
 ]
 
 function Reveal({
   children,
   delay = 0,
+  className = '',
 }: {
-  children: React.ReactNode
+  children: ReactNode
   delay?: number
+  className?: string
 }) {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-100px' })
+  const inView = useInView(ref, { once: true, margin: '-80px' })
   const reduceMotion = useReducedMotion()
 
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
+      initial={reduceMotion ? false : { opacity: 0, y: 16 }}
       animate={inView ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{
+        duration: 0.55,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className={className}
     >
       {children}
-    </motion.div>
-  )
-}
-
-function StatItem({
-  figure,
-  label,
-  index,
-}: {
-  figure: string
-  label: string
-  index: number
-}) {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-80px' })
-  const reduceMotion = useReducedMotion()
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: 0.5, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
-      className="py-2"
-    >
-      <div className="text-3xl font-semibold tracking-[-0.05em] text-[#163127] tabular-nums sm:text-[2.4rem]">
-        {figure}
-      </div>
-      <div className="mt-1 max-w-[12rem] text-sm leading-6 text-[#5f675f]">{label}</div>
-    </motion.div>
-  )
-}
-
-function StepRow({
-  n,
-  head,
-  body,
-  index,
-}: {
-  n: string
-  head: string
-  body: string
-  index: number
-}) {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-80px' })
-  const reduceMotion = useReducedMotion()
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
-      className="flex gap-4 py-5"
-    >
-      <div className="flex shrink-0 flex-col items-center">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#edf2ea] text-sm font-medium text-[#6f8167]">
-          {n}
-        </div>
-        {n !== '4' ? <div className="mt-3 h-full w-px bg-[#e6e0d4]" /> : null}
-      </div>
-
-      <div className="pt-0.5">
-        <p className="font-sans text-[1.05rem] leading-tight tracking-[-0.02em] text-[#163127]">
-          {head}
-        </p>
-        <p className="mt-2 max-w-2xl text-sm leading-[1.8] text-[#5f675f]">{body}</p>
-      </div>
     </motion.div>
   )
 }
@@ -142,110 +76,100 @@ export function ProblemSection() {
   return (
     <section
       id="problem"
-      className="relative overflow-hidden bg-[#faf7f0] py-20 text-[#163127] font-sans sm:py-24 lg:py-28"
+      className="bg-[#f7f2e8] px-6 py-16 text-[#12291f] sm:px-10 sm:py-20 lg:px-12"
     >
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-[#e9efe4] to-transparent" />
-        <div className="absolute left-[-10%] top-[10%] h-72 w-72 rounded-full bg-[#7a8d73]/8 blur-3xl" />
-        <div className="absolute right-[-10%] top-[30%] h-80 w-80 rounded-full bg-[#163127]/5 blur-3xl" />
-      </div>
-
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10">
-        <Reveal delay={0.02}>
-          <div className="mb-8 flex items-center gap-3">
-            <span className="h-px w-10 bg-[#7a8d73]/35" />
-            <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#6f8167]">
-              01 / The crisis
-            </span>
-          </div>
-        </Reveal>
-
-        <Reveal delay={0.08}>
-          <h2 className="max-w-4xl font-sans text-[clamp(2.2rem,5vw,4rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-[#163127]">
-            North America&apos;s most biodiverse estuary is slipping away.
-            <span className="text-[#6f8167]"> The solution already exists.</span>
-          </h2>
-        </Reveal>
-
-        <Reveal delay={0.14}>
-          <p className="mt-6 max-w-2xl text-[1rem] leading-[1.9] text-[#5f675f]">
-            Brevard County prohibits nitrogen and phosphorus fertilizer application from June 1 through September 30. The ordinance was created to reduce nutrient pollution before it reaches the lagoon, but its impact depends on residents knowing it exists and following it.
-          </p>
-        </Reveal>
-
-        <Reveal delay={0.2}>
-          <div className="mt-8 flex flex-wrap gap-3">
-            {['Student-led', 'Ordinance activation', 'Community '].map((item) => (
-              <span
-                key={item}
-                className="rounded-full bg-white px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f8167] shadow-[0_8px_24px_rgba(0,0,0,0.04)]"
-              >
-                {item}
-              </span>
-            ))}
-          </div>
-        </Reveal>
-
-        <div className="mt-14 grid gap-10 lg:grid-cols-[0.92fr_1.08fr]">
-          <Reveal delay={0.18}>
-            <div className="space-y-10">
-              <div className="border-t border-[#e6e0d4] pt-8">
-                <div className="grid grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-4">
-                  {stats.map((stat, i) => (
-                    <StatItem key={stat.label} {...stat} index={i} />
-                  ))}
-                </div>
-              </div>
-
-              <div className="border-t border-[#e6e0d4] pt-8">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#6f8167]">
-                  Why this matters
-                </p>
-
-                <blockquote className="mt-4 max-w-xl font-sans text-[1.5rem] leading-[1.25] tracking-[-0.02em] text-[#163127]">
-                  The ordinance is the solution.
-                  The gap is activation.
-                </blockquote>
-
-                <p className="mt-4 text-sm leading-[1.85] text-[#5f675f]">
-                  The fertilizer blackout ordinance addresses one of the largest controllable
-                  sources of excess nitrogen entering the lagoon during the rainy season.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-
+      <div className="mx-auto max-w-6xl">
+        <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
           <div>
-            <Reveal delay={0.16}>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#6f8167]">
-                The causal chain
+            <Reveal>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#6f7f62]">
+                The problem
               </p>
             </Reveal>
 
-            <div className="mt-4 border-t border-[#e6e0d4]">
-              {steps.map((step, i) => (
-                <div key={step.n} className="border-b border-[#e6e0d4] last:border-b-0">
-                  <StepRow {...step} index={i} />
-                </div>
-              ))}
-            </div>
+            <Reveal delay={0.06}>
+              <h2 className="mt-4 max-w-3xl text-[clamp(2.25rem,5vw,4.4rem)] font-semibold leading-[0.98] tracking-[-0.06em]">
+                Runoff is a solvable part of the lagoon crisis.
+              </h2>
+            </Reveal>
 
-            <Reveal delay={0.22}>
-              <div className="mt-10 flex flex-wrap items-center gap-4 border-t border-[#e6e0d4] pt-8">
+            <Reveal delay={0.12}>
+              <p className="mt-6 max-w-2xl text-base leading-8 text-[#5d675d] sm:text-[1.05rem]">
+                Brevard County already restricts nitrogen and phosphorus fertilizer
+                from June 1 through September 30. BLACKOUT focuses on the missing
+                link: making the rule visible before fertilizer enters the runoff
+                pathway.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.18}>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="#approach"
-                  className="rounded-full bg-[#163127] px-6 py-3 text-sm font-medium text-[#faf7f0] transition-transform duration-300 hover:-translate-y-0.5 hover:bg-[#223a2e]"
+                  className="inline-flex items-center justify-center rounded-full bg-[#12291f] px-6 py-3 text-sm font-semibold text-[#f7f2e8] transition hover:bg-[#1e3a2d]"
                 >
-                  Learn how BLACKOUT works
+                  See the approach
                 </Link>
+
                 <Link
                   href="/ordinance"
-                  className="text-sm text-[#6f8167] underline decoration-[#6f8167]/25 underline-offset-4 transition-colors hover:text-[#163127] hover:decoration-[#163127]/35"
+                  className="inline-flex items-center justify-center rounded-full border border-[#d8d0c2] px-6 py-3 text-sm font-semibold text-[#475746] transition hover:border-[#12291f]/30 hover:text-[#12291f]"
                 >
-                  View the ordinance
+                  View ordinance
                 </Link>
               </div>
             </Reveal>
+          </div>
+
+          <Reveal delay={0.1}>
+            <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-[#ded6c8] bg-[#ded6c8]">
+              {stats.map((stat) => (
+                <div key={stat.label} className="bg-[#fbf8f1] p-5 sm:p-6">
+                  <div className="text-[2rem] font-semibold leading-none tracking-[-0.06em] tabular-nums sm:text-[2.45rem]">
+                    {stat.figure}
+                  </div>
+                  <p className="mt-3 max-w-[11rem] text-sm leading-6 text-[#657064]">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+
+        <div className="mt-14 grid gap-8 border-t border-[#ded6c8] pt-10 lg:grid-cols-[0.55fr_1fr] lg:gap-16">
+          <Reveal>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#6f7f62]">
+                Causal chain
+              </p>
+
+              <p className="mt-4 max-w-sm text-[1.55rem] font-semibold leading-tight tracking-[-0.04em]">
+                The issue is not awareness in general. It is awareness at the exact
+                point of decision.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="divide-y divide-[#ded6c8] border-y border-[#ded6c8]">
+            {steps.map((step, index) => (
+              <Reveal key={step.title} delay={index * 0.05}>
+                <div className="grid gap-4 py-6 sm:grid-cols-[3rem_1fr] sm:gap-6">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#e8eadf] text-sm font-semibold text-[#586b52]">
+                    {index + 1}
+                  </div>
+
+                  <div>
+                    <h3 className="text-[1.12rem] font-semibold tracking-[-0.025em]">
+                      {step.title}
+                    </h3>
+                    <p className="mt-2 max-w-2xl text-sm leading-7 text-[#657064]">
+                      {step.body}
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </div>

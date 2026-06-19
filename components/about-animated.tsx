@@ -130,7 +130,7 @@ export function AboutAnimatedContent() {
                                 </div>
                                 <div className="border-b border-black/5 pb-4">
                                     <p className="text-[10px] tracking-[0.2em] text-[#8a8f86] uppercase">Field season</p>
-                                    <p className="mt-1 text-[14px] text-[#151c19]">June 1 – September 30, 2026</p>
+                                    <p className="mt-1 text-[14px] text-[#151c19]">June 1  -  September 30, 2026</p>
                                 </div>
                                 <div>
                                     <p className="text-[10px] tracking-[0.2em] text-[#8a8f86] uppercase">Status</p>

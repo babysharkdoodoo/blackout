@@ -2,26 +2,26 @@
 
 import Link from 'next/link'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, type ReactNode } from 'react'
 
 const approaches = [
   {
-    n: '01',
-    title: 'Survey',
-    body: 'We measure what people actually know before any outreach starts, then measure it again after the campaign.',
-    detail: 'Two-wave door-to-door audit · original primary data · before/after knowledge change',
+    number: '01',
+    title: 'Measure awareness',
+    body: 'Survey residents before and after outreach to quantify what changed.',
+    detail: 'Baseline + follow-up survey',
   },
   {
-    n: '02',
-    title: 'Intercept',
-    body: 'We place ordinance information where the decision happens, next to fertilizer at the point of purchase.',
-    detail: 'Shelf tags at local stores · decision-moment intervention · measurable reach',
+    number: '02',
+    title: 'Reach the purchase moment',
+    body: 'Place ordinance reminders beside fertilizer, where the decision actually happens.',
+    detail: 'Retail shelf tags',
   },
   {
-    n: '03',
-    title: 'Mark',
-    body: 'We put the message at the drain, where lawn care becomes runoff and runoff becomes lagoon harm.',
-    detail: 'GPS-logged drain markers · permanent reminder · sustainability without the team present',
+    number: '03',
+    title: 'Mark the runoff pathway',
+    body: 'Label storm drains so residents connect lawn care with lagoon impact.',
+    detail: 'GPS-logged drain markers',
   },
 ]
 
@@ -29,51 +29,57 @@ function Reveal({
   children,
   delay = 0,
 }: {
-  children: React.ReactNode
+  children: ReactNode
   delay?: number
 }) {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-100px' })
+  const inView = useInView(ref, { once: true, margin: '-80px' })
   const reduceMotion = useReducedMotion()
 
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
+      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
       animate={inView ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{
+        duration: 0.55,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
     >
       {children}
     </motion.div>
   )
 }
 
-function Step({
-  n,
+function ApproachCard({
+  number,
   title,
   body,
   detail,
 }: {
-  n: string
+  number: string
   title: string
   body: string
   detail: string
 }) {
   return (
-    <div className="py-7">
-      <div className="flex items-start gap-5">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#edf2ea] text-[11px] font-semibold tracking-[0.18em] text-[#6f8167]">
-          {n}
+    <div className="group border-b border-[#ded6c8] py-6 last:border-b-0">
+      <div className="grid gap-4 sm:grid-cols-[3.5rem_1fr] sm:gap-6">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e7ebdf] text-[11px] font-semibold tracking-[0.16em] text-[#64775c] transition group-hover:bg-[#163127] group-hover:text-[#faf7f0]">
+          {number}
         </div>
 
-        <div className="min-w-0">
-          <p className="text-[1.15rem] font-semibold tracking-[-0.03em] text-[#163127]">
+        <div>
+          <h3 className="text-[1.15rem] font-semibold tracking-[-0.03em] text-[#163127]">
             {title}
-          </p>
-          <p className="mt-2 max-w-2xl text-sm leading-[1.85] text-[#5f675f]">
+          </h3>
+
+          <p className="mt-2 max-w-xl text-sm leading-7 text-[#5f675f]">
             {body}
           </p>
-          <p className="mt-4 max-w-2xl text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+
+          <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
             {detail}
           </p>
         </div>
@@ -86,90 +92,82 @@ export function ApproachSection() {
   return (
     <section
       id="approach"
-      className="relative overflow-hidden bg-[#faf7f0] py-20 text-[#163127] sm:py-24 lg:py-28"
+      className="bg-[#faf7f0] px-6 py-16 text-[#163127] sm:px-10 sm:py-20 lg:px-12"
     >
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-[#e9efe4] to-transparent" />
-        <div className="absolute left-[-10%] top-[12%] h-72 w-72 rounded-full bg-[#7a8d73]/8 blur-3xl" />
-        <div className="absolute right-[-8%] top-[30%] h-80 w-80 rounded-full bg-[#163127]/5 blur-3xl" />
-      </div>
-
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10">
-        <Reveal delay={0.02}>
-          <div className="mb-8 flex items-center gap-3">
-            <span className="h-px w-10 bg-[#7a8d73]/35" />
-            <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#6f8167]">
-              03 / Our approach
-            </span>
-          </div>
-        </Reveal>
-
-        <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+      <div className="mx-auto max-w-6xl">
+        <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16">
           <div>
-            <Reveal delay={0.08}>
-              <h2 className="max-w-4xl text-[clamp(2.2rem,5vw,4rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-[#163127]">
-                We do not invent solutions. <span className="text-[#6f8167]">We activate them.</span>
-              </h2>
-            </Reveal>
-
-            <Reveal delay={0.14}>
-              <p className="mt-6 max-w-2xl text-[1rem] leading-[1.9] text-[#5f675f]">
-                BLACKOUT activates the Summer Fertilizer Blackout Ordinance through three coordinated interventions: measuring awareness, reaching residents at the point of purchase, and placing reminders where runoff enters the lagoon.
+            <Reveal>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#6f8167]">
+                Our approach
               </p>
             </Reveal>
 
-            <Reveal delay={0.26}>
-              <div className="mt-12 border-t border-[#e6e0d4] pt-8">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#6f8167]">
-                  Why this works
+            <Reveal delay={0.06}>
+              <h2 className="mt-4 max-w-3xl text-[clamp(2.3rem,5vw,4.35rem)] font-semibold leading-[0.98] tracking-[-0.06em]">
+                Make the ordinance visible where it matters.
+              </h2>
+            </Reveal>
+
+            <Reveal delay={0.12}>
+              <p className="mt-6 max-w-2xl text-base leading-8 text-[#5f675f] sm:text-[1.05rem]">
+                BLACKOUT is a three-part field intervention: measure the awareness
+                gap, interrupt the purchase decision, and mark the runoff pathway.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.18}>
+              <div className="mt-8 rounded-3xl border border-[#ded6c8] bg-white/55 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                  Core idea
                 </p>
-                <p className="mt-4 max-w-2xl text-[1.4rem] leading-[1.3] tracking-[-0.03em] text-[#163127]">
-                  One contact changes awareness. Three contacts change behavior.
+
+                <p className="mt-3 text-[1.35rem] font-semibold leading-tight tracking-[-0.04em] text-[#163127]">
+                  The policy already exists. The missing layer is public contact:
+                  survey, store, storm drain.
                 </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.24}>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="#problem"
+                  className="inline-flex items-center justify-center rounded-full bg-[#163127] px-6 py-3 text-sm font-semibold text-[#faf7f0] transition hover:bg-[#223a2e]"
+                >
+                  Review the problem
+                </Link>
+
+                <Link
+                  href="#top"
+                  className="inline-flex items-center justify-center rounded-full border border-[#d8d0c2] px-6 py-3 text-sm font-semibold text-[#53634f] transition hover:border-[#163127]/30 hover:text-[#163127]"
+                >
+                  Back to top
+                </Link>
               </div>
             </Reveal>
           </div>
 
-          <Reveal delay={0.12}>
-            <div className="rounded-[1.75rem] border border-[#e6e0d4] bg-white shadow-[0_18px_50px_rgba(0,0,0,0.05)]">
-              <div className="px-6 pt-6 sm:px-8 sm:pt-8">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#6f8167]">
-                  The three prongs
+          <Reveal delay={0.1}>
+            <div className="rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 shadow-[0_18px_50px_rgba(22,49,39,0.05)] sm:p-8">
+              <div className="border-b border-[#ded6c8] pb-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#6f8167]">
+                  Field system
+                </p>
+
+                <p className="mt-3 max-w-md text-sm leading-7 text-[#5f675f]">
+                  Each step targets a different failure point in the awareness-to-action chain.
                 </p>
               </div>
 
-              <div className="mt-2 divide-y divide-[#e6e0d4] px-6 sm:px-8">
+              <div>
                 {approaches.map((item) => (
-                  <Step key={item.n} {...item} />
+                  <ApproachCard key={item.number} {...item} />
                 ))}
-              </div>
-
-              <div className="border-t border-[#e6e0d4] px-6 py-6 sm:px-8">
-                <p className="text-sm leading-[1.85] text-[#5f675f]">
-                  The survey proves the gap, the shelf tags meet people at the purchase moment, and
-                  the drain markers keep the ordinance present long after the team leaves.
-                </p>
               </div>
             </div>
           </Reveal>
         </div>
-
-        <Reveal delay={0.24}>
-          <div className="mt-12 flex flex-wrap items-center gap-4 border-t border-[#e6e0d4] pt-8">
-            <Link
-              href="/mission"
-              className="rounded-full bg-[#163127] px-6 py-3 text-sm font-medium text-[#faf7f0] transition-transform duration-300 hover:-translate-y-0.5 hover:bg-[#223a2e]"
-            >
-              Why the lagoon collapses
-            </Link>
-            <Link
-              href="/ordinance"
-              className="text-sm text-[#6f8167] underline decoration-[#6f8167]/25 underline-offset-4 transition-colors hover:text-[#163127] hover:decoration-[#163127]/35"
-            >
-              Read the ordinance details
-            </Link>
-          </div>
-        </Reveal>
       </div>
     </section>
   )

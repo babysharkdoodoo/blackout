@@ -3,6 +3,25 @@
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { useRef, type ReactNode } from 'react'
 
+const frame = [
+  {
+    label: 'Focus',
+    value: 'Activate the existing fertilizer ordinance, not create a new policy ask.',
+  },
+  {
+    label: 'Gap',
+    value: 'Residents often do not encounter the rule before buying or applying fertilizer.',
+  },
+  {
+    label: 'Method',
+    value: 'Use surveys, retail reminders, drain markers, and documentation.',
+  },
+  {
+    label: 'Finish line',
+    value: 'Leave Brevard County with a program it can operate without the student team.',
+  },
+]
+
 function Reveal({
   children,
   delay = 0,
@@ -11,15 +30,19 @@ function Reveal({
   delay?: number
 }) {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const inView = useInView(ref, { once: true, margin: '-80px' })
   const reduceMotion = useReducedMotion()
 
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
-      animate={isInView ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      transition={{
+        duration: 0.55,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
     >
       {children}
     </motion.div>
@@ -27,120 +50,82 @@ function Reveal({
 }
 
 export function VisionSection() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
-
   return (
-    <section className="relative overflow-hidden bg-[#f6f1e7] py-20 text-[#173027] font-[family-name:var(--font-archivo)] lg:py-28">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-[#7a8d73]/10 via-transparent to-transparent" />
-        <div className="absolute left-[-12%] top-[8%] h-72 w-72 rounded-full bg-[#7a8d73]/10 blur-3xl" />
-        <div className="absolute right-[-10%] top-[26%] h-80 w-80 rounded-full bg-[#173027]/5 blur-3xl" />
-        <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(23,48,39,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(23,48,39,0.06)_1px,transparent_1px)] [background-size:84px_84px]" />
-      </div>
+    <section
+      id="vision"
+      className="bg-[#f7f2e8] px-6 py-16 text-[#173027] sm:px-10 sm:py-20 lg:px-12"
+    >
+      <div className="mx-auto max-w-6xl">
+        <div className="grid gap-10 lg:grid-cols-[1fr_0.85fr] lg:items-start lg:gap-16">
+          <div>
+            <Reveal>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#6f8167]">
+                Vision
+              </p>
+            </Reveal>
 
-      <div ref={ref} className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10">
-        <Reveal delay={0.02}>
-          <div className="mb-8 flex items-center gap-3">
-            <span className="h-px w-12 bg-[#7a8d73]/35" />
-            <span className="text-xs font-semibold uppercase tracking-[0.24em] text-[#6f8167]">
-              05 / The Vision
-            </span>
-          </div>
-        </Reveal>
-
-        <div className="grid gap-12 lg:grid-cols-[1.06fr_0.94fr] lg:items-start">
-          <div className="space-y-6">
-            <Reveal delay={0.08}>
-              <h2 className="max-w-4xl text-[clamp(2.35rem,5vw,4.25rem)] font-semibold leading-[1.02] tracking-[-0.05em] text-[#173027]">
-                The project is not about asking for a new law.
-                <span className="text-[#6f8167]"> It is about making the existing one work.</span>
+            <Reveal delay={0.06}>
+              <h2 className="mt-4 max-w-4xl text-[clamp(2.35rem,5vw,4.45rem)] font-semibold leading-[0.98] tracking-[-0.06em]">
+                The law exists. The system around it does not.
               </h2>
             </Reveal>
 
-            <Reveal delay={0.16}>
-              <p className="max-w-2xl text-[1rem] leading-[1.9] text-[#5e665d]">
-                BLACKOUT starts with a simple shift in framing: the ordinance already exists, but
-                awareness, compliance, and handoff systems do not. The vision is to close that gap
-                with something measurable, durable, and easy for the County to inherit.
+            <Reveal delay={0.12}>
+              <p className="mt-6 max-w-2xl text-base leading-8 text-[#5e665d] sm:text-[1.05rem]">
+                BLACKOUT treats the fertilizer blackout as an implementation
+                problem. The ordinance is already written; the missing work is
+                public contact, behavior timing, evidence, and handoff.
               </p>
             </Reveal>
 
-            <Reveal delay={0.22}>
-              <div className="flex flex-wrap gap-3">
-                {['Existing law', 'Measurable outcome', 'County handoff'].map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-[#d9d1c1] bg-white/60 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f8167]"
+            <Reveal delay={0.18}>
+              <div className="mt-9 rounded-3xl bg-[#173027] p-6 text-[#f7f2e8] sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#a8b98c]">
+                  Core idea
+                </p>
+
+                <p className="mt-3 max-w-2xl text-[1.45rem] font-semibold leading-tight tracking-[-0.04em]">
+                  A policy does not change behavior until people encounter it at
+                  the moment their behavior matters.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.1}>
+            <div className="rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 shadow-[0_18px_50px_rgba(23,48,39,0.05)] sm:p-7">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#6f8167]">
+                Operating frame
+              </p>
+
+              <div className="mt-5 divide-y divide-[#ded6c8]">
+                {frame.map((item) => (
+                  <div
+                    key={item.label}
+                    className="grid gap-2 py-4 first:pt-0 last:pb-0 sm:grid-cols-[7rem_1fr] sm:gap-5"
                   >
-                    {item}
-                  </span>
+                    <p className="text-sm font-semibold text-[#173027]">
+                      {item.label}
+                    </p>
+
+                    <p className="text-sm leading-7 text-[#5e665d]">
+                      {item.value}
+                    </p>
+                  </div>
                 ))}
               </div>
-            </Reveal>
-
-            <Reveal delay={0.28}>
-              <div className="mt-10 max-w-2xl border-t border-[#e7e0d3] pt-8">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#6f8167]">
-                  Why the distinction matters
-                </p>
-                <p className="mt-4 text-[clamp(1.45rem,3vw,2.15rem)] font-medium leading-[1.22] tracking-[-0.03em] text-[#173027]">
-                  It turns a general environmental campaign into a concrete public system with a
-                  clear finish line.
-                </p>
-              </div>
-            </Reveal>
-          </div>
-
-          <div className="space-y-10">
-            <Reveal delay={0.12}>
-              <div className="border-t border-[#e7e0d3] pt-6">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#6f8167]">
-                  Core question
-                </p>
-                <p className="mt-4 max-w-xl text-[clamp(1.35rem,2.5vw,1.95rem)] font-medium leading-[1.35] tracking-[-0.03em] text-[#173027]">
-                  Why isn&apos;t what was already legislated actually working?
-                </p>
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.2}>
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#6f8167]">
-                  What this means
-                </p>
-                <div className="mt-5 divide-y divide-[#e7e0d3] border-t border-[#e7e0d3]">
-                  <div className="grid gap-2 py-4 sm:grid-cols-[140px_1fr] sm:gap-6">
-                    <p className="text-sm font-medium text-[#173027]">Focus</p>
-                    <p className="text-sm leading-[1.8] text-[#5e665d]">
-                      Existing ordinance, not a new policy ask.
-                    </p>
-                  </div>
-
-                  <div className="grid gap-2 py-4 sm:grid-cols-[140px_1fr] sm:gap-6">
-                    <p className="text-sm font-medium text-[#173027]">Outcome</p>
-                    <p className="text-sm leading-[1.8] text-[#5e665d]">
-                      A program the County can actually inherit.
-                    </p>
-                  </div>
-
-                  <div className="grid gap-2 py-4 sm:grid-cols-[140px_1fr] sm:gap-6">
-                    <p className="text-sm font-medium text-[#173027]">Method</p>
-                    <p className="text-sm leading-[1.8] text-[#5e665d]">
-                      Awareness, evidence, documentation, and handoff.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.28}>
-              <p className="text-[11px] uppercase tracking-[0.18em] text-[#8c9289]">
-                Existing ordinance · measurable outcome · real handoff
-              </p>
-            </Reveal>
-          </div>
+            </div>
+          </Reveal>
         </div>
+
+        <Reveal delay={0.16}>
+          <div className="mt-12 border-t border-[#ded6c8] pt-8">
+            <p className="max-w-3xl text-[clamp(1.35rem,3vw,2rem)] font-semibold leading-tight tracking-[-0.04em]">
+              The goal is not to keep students involved forever. The goal is to
+              build something clear enough for the County to inherit.
+            </p>
+          </div>
+        </Reveal>
       </div>
     </section>
   )

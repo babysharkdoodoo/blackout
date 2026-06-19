@@ -1,7 +1,27 @@
 'use client'
 
+import Link from 'next/link'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { useRef, type ReactNode } from 'react'
+
+const details = [
+  {
+    label: 'Code section',
+    value: '§ 62-3601 et seq.',
+  },
+  {
+    label: 'Blackout period',
+    value: 'June 1 - September 30',
+  },
+  {
+    label: 'Restricted nutrients',
+    value: 'Nitrogen and phosphorus fertilizer',
+  },
+  {
+    label: 'Compliance model',
+    value: 'Education-first, voluntary compliance',
+  },
+]
 
 function Reveal({
   children,
@@ -11,137 +31,119 @@ function Reveal({
   delay?: number
 }) {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const inView = useInView(ref, { once: true, margin: '-80px' })
   const reduceMotion = useReducedMotion()
 
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
-      animate={isInView ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      transition={{
+        duration: 0.55,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
     >
       {children}
     </motion.div>
   )
 }
 
-const details = [
-  { label: 'Section', value: '§ 62-3601 et seq.' },
-  { label: 'Blackout period', value: 'Jun 01 to Sep 30' },
-  {
-    label: 'Prohibited',
-    value: 'Nitrogen and phosphorus fertilizer on lawns, landscapes, and turf',
-  },
-  { label: 'Enforcement', value: 'Voluntary compliance' },
-]
-
 export function OrdinanceSection() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
-
   return (
-    <section className="relative overflow-hidden bg-[#060807] py-20 text-white font-sans lg:py-28">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#a3b18a]/10 to-transparent" />
-        <div className="absolute left-[-8%] top-[8%] h-72 w-72 rounded-full bg-[#a3b18a]/8 blur-3xl" />
-        <div className="absolute right-[-10%] bottom-[10%] h-80 w-80 rounded-full bg-white/5 blur-3xl" />
-      </div>
-
-      <div ref={ref} className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10">
-        <Reveal delay={0.02}>
-          <div className="mb-8 flex items-center gap-3">
-            <span className="h-px w-12 bg-[#a3b18a]/35" />
-            <span className="text-xs font-semibold uppercase tracking-[0.24em] text-[#a3b18a]">
-              02 / The Ordinance
-            </span>
-          </div>
-        </Reveal>
-
-        <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+    <section
+      id="ordinance"
+      className="bg-[#07100d] px-6 py-16 text-white sm:px-10 sm:py-20 lg:px-12"
+    >
+      <div className="mx-auto max-w-6xl">
+        <div className="grid gap-10 lg:grid-cols-[1fr_0.82fr] lg:items-start lg:gap-16">
           <div>
-            <Reveal delay={0.08}>
-              <h2 className="max-w-4xl text-[clamp(2.3rem,5vw,4.2rem)] font-semibold leading-[1.02] tracking-[-0.05em] text-[#f4efe5]">
-                The ordinance already exists.
-                <span className="text-[#a3b18a]"> The gap is activation.</span>
+            <Reveal>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#a8b98c]">
+                The ordinance
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.06}>
+              <h2 className="mt-4 max-w-4xl text-[clamp(2.35rem,5vw,4.45rem)] font-semibold leading-[0.98] tracking-[-0.06em] text-[#f5efe3]">
+                Brevard already has the rule. The work is getting it seen.
               </h2>
             </Reveal>
 
-            <Reveal delay={0.16}>
-              <p className="mt-6 max-w-2xl text-[1rem] leading-[1.9] text-[#b8afa1]">
-                Brevard County&apos;s Blackout Ordinance restricts nitrogen and phosphorus fertilizer from June 1 through September 30. BLACKOUT activates the ordinance through awareness, retail partnerships, and visible reminders that help residents comply.
-              </p>
-            </Reveal>
-
-            {/* <Reveal delay={0.22}>
-              <div className="mt-8 flex flex-wrap gap-3">
-                {['Existing ordinance', 'Rainy season window', 'Student-led awareness'].map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#a3b18a]"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </Reveal> */}
-
-            <Reveal delay={0.28}>
-              <div className="mt-12 max-w-2xl border-t border-white/10 pt-8">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#a3b18a]">
-                  Why it matters
-                </p>
-                <p className="mt-4 text-[clamp(1.45rem,3vw,2.1rem)] font-medium leading-[1.22] tracking-[-0.03em] text-[#f4efe5]">
-The ordinance is the solution.
-
-BLACKOUT helps people see it, understand it, and follow it.
-                </p>
-              </div>
-            </Reveal>
-          </div>
-
-          <div>
             <Reveal delay={0.12}>
-              <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6 shadow-[0_18px_50px_rgba(0,0,0,0.18)] backdrop-blur-md lg:p-8">
-                <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-full bg-white/[0.06]" />
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#a3b18a]">
-                    Ordinance reference
-                  </p>
-                </div>
-
-                <div className="mt-6 divide-y divide-white/10">
-                  {details.map((item) => (
-                    <div key={item.label} className="py-4 first:pt-0 last:pb-0">
-                      <p className="text-[10px] uppercase tracking-[0.18em] text-[#8d9488]">
-                        {item.label}
-                      </p>
-                      <p className="mt-1 text-sm leading-[1.75] text-[#f4efe5]">
-                        {item.value}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-6 border-t border-white/10 pt-5">
-                  <p className="text-[10px] uppercase tracking-[0.18em] text-[#8d9488]">
-                    Core issue
-                  </p>
-                  <p className="mt-2 text-sm leading-[1.8] text-[#b8afa1]">
-                   The ordinance exists.
-
-Most residents simply do not know about it.
-                  </p>
-                </div>
-              </div>
+              <p className="mt-6 max-w-2xl text-base leading-8 text-white/62 sm:text-[1.05rem]">
+                From June 1 through September 30, Brevard County restricts
+                nitrogen and phosphorus fertilizer use on lawns, landscapes, and
+                turf. BLACKOUT is not a new policy proposal. It is an awareness
+                system for an existing rule.
+              </p>
             </Reveal>
 
             <Reveal delay={0.18}>
-              <p className="mt-5 text-[11px] uppercase tracking-[0.18em] text-[#6f8167]">
-                Brevard County Code of Ordinances · Chapter 62 · Article IX
-              </p>
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="#approach"
+                  className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07100d] transition hover:bg-white"
+                >
+                  How BLACKOUT works
+                </Link>
+
+                <Link
+                  href="/ordinance"
+                  className="inline-flex items-center justify-center rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-white/78 transition hover:border-white/30 hover:text-white"
+                >
+                  View ordinance
+                </Link>
+              </div>
             </Reveal>
           </div>
+
+          <Reveal delay={0.1}>
+            <div className="rounded-3xl border border-white/10 bg-white/[0.035] p-6 shadow-[0_24px_70px_rgba(0,0,0,0.22)] backdrop-blur-sm sm:p-7">
+              <div className="flex items-center justify-between gap-6 border-b border-white/10 pb-5">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#a8b98c]">
+                    Reference
+                  </p>
+                  <p className="mt-2 text-sm text-white/50">
+                    Brevard County Code of Ordinances
+                  </p>
+                </div>
+
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#a8b98c]/12 text-sm font-semibold text-[#c7d6ad]">
+                  62
+                </div>
+              </div>
+
+              <div className="divide-y divide-white/10">
+                {details.map((item) => (
+                  <div
+                    key={item.label}
+                    className="grid gap-1 py-4 sm:grid-cols-[9rem_1fr] sm:gap-5"
+                  >
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/35">
+                      {item.label}
+                    </p>
+                    <p className="text-sm leading-6 text-[#f5efe3]">
+                      {item.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-5 rounded-2xl bg-[#f5efe3] p-5 text-[#07100d]">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#5f7257]">
+                  Core gap
+                </p>
+
+                <p className="mt-3 text-[1.35rem] font-semibold leading-tight tracking-[-0.04em]">
+                  The ordinance only works if residents know it exists before
+                  they buy or apply fertilizer.
+                </p>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>

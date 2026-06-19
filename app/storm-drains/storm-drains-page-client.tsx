@@ -17,7 +17,7 @@ const markerSpecs = [
   {
     label: 'Information displayed',
     value: 'Blackout dates + distance',
-    note: 'Jun 1 to Sep 30 window and nearest mortality km.',
+    note: 'Jun 1 - Sep 30 window and nearest mortality km.',
   },
   {
     label: 'Mortality data source',
@@ -36,7 +36,7 @@ const markerSpecs = [
   },
   {
     label: 'Target installations',
-    value: '30 to 40 drains',
+    value: '30 - 40 drains',
     note: 'Within the campaign zone.',
   },
 ]
@@ -176,15 +176,13 @@ function Row({
         dark ? 'border-white/10' : 'border-[#e2dbc9]'
       }`}
     >
-      <div>
-        <p
-          className={`text-[11px] uppercase tracking-[0.18em] ${
-            dark ? 'text-[#8f978a]' : 'text-[#7c8576]'
-          }`}
-        >
-          {left}
-        </p>
-      </div>
+      <p
+        className={`text-[11px] uppercase tracking-[0.18em] ${
+          dark ? 'text-[#8f978a]' : 'text-[#7c8576]'
+        }`}
+      >
+        {left}
+      </p>
       <div className={`text-[14px] leading-[1.9] ${dark ? 'text-[#b8afa1]' : 'text-[#5a625b]'}`}>
         {right}
       </div>
@@ -267,19 +265,19 @@ export function StormDrainsPageClient() {
                 <Fade delay={0.24}>
                   <div className="mt-8 flex flex-wrap gap-3">
                     <Link
-                      href="/about"
+                      href="#marker"
                       className="group inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg"
                     >
-                      About the campaign
+                      Marker details
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
                         →
                       </span>
                     </Link>
                     <Link
-                      href="/ordinance"
+                      href="#database"
                       className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
                     >
-                      Read the law
+                      Geodatabase
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
                         →
                       </span>
@@ -307,9 +305,9 @@ export function StormDrainsPageClient() {
                   <div className="absolute inset-0 ring-1 ring-inset ring-white/5" />
                 </div>
                 <div className="border-t border-white/10 px-6 py-5">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Quiet Observation</p>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Street-side drain</p>
                   <p className="mt-2 text-sm leading-7 text-[#f3efe5]">
-                    Quiet observation: Rainwater runoff flowing toward a street-side storm drain in Brevard County.
+                    A visible drain marker makes the connection between neighborhood runoff and lagoon harm feel immediate.
                   </p>
                 </div>
               </motion.div>
@@ -325,7 +323,7 @@ export function StormDrainsPageClient() {
               eyebrow="What the marker says"
               title={
                 <>
-                  Marker turns abstract drainage into <Accent>specific local comparison</Accent>.
+                  The marker turns an abstract drainage system into a <Accent>specific, local comparison</Accent>.
                 </>
               }
             />
@@ -359,7 +357,7 @@ export function StormDrainsPageClient() {
                     <p className="mt-2 font-sans text-3xl font-semibold tracking-[-0.04em]">
                       NO FERTILIZER
                     </p>
-                    <p className="mt-1 text-[1.05rem] font-medium text-[#a3b18a]">JUN 1 to SEP 30</p>
+                    <p className="mt-1 text-[1.05rem] font-medium text-[#a3b18a]">JUN 1  -  SEP 30</p>
                     <div className="my-5 h-px bg-white/10" />
                     <p className="text-[11px] uppercase tracking-[0.16em] text-white/40">
                       Nearest manatee mortality site
@@ -399,13 +397,13 @@ export function StormDrainsPageClient() {
               eyebrow="Every drain becomes a record"
               title={
                 <>
-                  Every marker is logged for <Accent>the county map</Accent>.
+                  Every marker is logged as a data point, and the final map belongs to <Accent>the county</Accent>.
                 </>
               }
               dark
             />
 
-            <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+            <div id="database" className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
               <div className="space-y-6 text-[15px] leading-[1.9] text-[#b8afa1]">
                 <Fade>
                   <p>
@@ -441,7 +439,7 @@ export function StormDrainsPageClient() {
             <DividerLabel label="03 / Installation process" />
             <SectionTitle
               eyebrow="Field workflow"
-              title={<>Sequence keeps every installation <Accent>consistent and auditable</Accent>.</>}
+              title={<>A small sequence keeps every install consistent and easy to audit.</>}
             />
 
             <div className="grid gap-0 border-t border-[#e2dbc9]">
@@ -473,7 +471,7 @@ export function StormDrainsPageClient() {
               eyebrow="Closing"
               title={
                 <>
-                  Drain marker page feels <Accent>specific, calm, and permanent</Accent>.
+                  The drain marker page should feel <Accent>specific, calm, and permanent</Accent>.
                 </>
               }
               dark
@@ -496,17 +494,17 @@ export function StormDrainsPageClient() {
                   </p>
                   <div className="mt-6 flex flex-wrap gap-3">
                     <Link
-                      href="/about"
+                      href="#marker"
                       className="inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
                     >
-                      About the campaign
+                      Back to marker logic
                       <span aria-hidden>→</span>
                     </Link>
                     <Link
-                      href="/ordinance"
+                      href="#top"
                       className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
                     >
-                      Read the law
+                      Back to top
                       <span aria-hidden>→</span>
                     </Link>
                   </div>
@@ -519,9 +517,3 @@ export function StormDrainsPageClient() {
     </SiteLayout>
   )
 }
-
-
-
-
-
-

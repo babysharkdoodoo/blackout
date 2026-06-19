@@ -1,7 +1,7 @@
 import { ImpactPageClient } from './impact-page-client'
 
 export const metadata = {
-  title: 'Impact & Results — BLACKOUT',
+  title: 'Impact & Results  -  BLACKOUT',
   description: 'Every field activity produces a document. Every document survives the project.',
 }
 

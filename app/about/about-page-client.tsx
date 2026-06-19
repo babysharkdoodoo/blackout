@@ -1,548 +1,841 @@
 'use client'
 
 import Link from 'next/link'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
-import { useRef, type ReactNode } from 'react'
+import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { SiteLayout } from '@/components/site-layout'
 
-const heroBg =
-  'https://images.openai.com/static-rsc-4/qo73Sje-HVuELxwCyJv_PZ6P2USF-UC_H0UA-Hh2UILq392KxnaQxY1XA0_irEKzHMks8lcpdfR6Ktfi1su60eDb2NZHWr1VoqQKAxA-e5ZKELH5OuphoDyHz2ss2Dve8YdzHhABJgEEz07Up-c5zYdzPTHrIun3xs4uj_YRDLU?purpose=inline'
-
-const stats = [
-  { k: 'Team', v: '5 members + 1 parent volunteer' },
-  { k: 'Launch', v: 'Summer 2026' },
-  { k: 'Primary', v: 'CmPS' },
-  { k: 'Secondary', v: 'HOSA Community Awareness' },
-]
-
-const projectNotes = [
-  'Built for one complete year of work, not a last-minute sprint.',
-  'Wave 1 closes before any drain markings, retail tags, or public outreach begin.',
-  'The same field work feeds every competition application, with the framing changed to fit the rubric.',
-]
-
-const principles = [
+const heroImages = [
   {
-    title: 'Existing law, new visibility',
-    body:
-      'BLACKOUT does not ask the county to create a new ordinance. It makes a real rule easier to see, understand, and follow.',
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Indian%20River%20Lagoon%20Area.jpg',
+    label: 'Indian River Lagoon',
   },
   {
-    title: 'Evidence first',
-    body:
-      'The project leans on original survey data, retail reach, and drain documentation instead of vague claims or broad generalities.',
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Floridian%20seagrass%20bed.jpg',
+    label: 'Seagrass beds',
   },
   {
-    title: 'Built to keep going',
-    body:
-      'The handoff package, renewal language, and documentation structure are designed so a county or future students can continue the work.',
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Manatee%20photo.jpg',
+    label: 'Manatee habitat',
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Storm%20Drain.JPG',
+    label: 'Storm drain pathway',
   },
 ]
 
-const process = [
+const snapshot = [
   {
-    n: '01',
-    title: 'Find the gap',
-    body:
-      'The ordinance already protects the lagoon, but almost nobody in Brevard County knows it exists. That awareness gap is the problem.',
+    value: '5',
+    label: 'student roles',
   },
   {
-    n: '02',
-    title: 'Make it visible',
-    body:
-      'The team uses surveys, shelf tags, and drain markers to place the ordinance in the places where people make decisions.',
+    value: '100 - 150',
+    label: 'households in the survey zone',
   },
   {
-    n: '03',
-    title: 'Leave something usable',
-    body:
-      'The final result is a repeatable program, a cleaner public message, and a handoff packet that can keep working without the students.',
+    value: '30 - 40',
+    label: 'storm drains marked and logged',
+  },
+  {
+    value: '4 - 6',
+    label: 'retail partners targeted',
+  },
+]
+
+const projectScope = [
+  {
+    label: 'Wave 1 survey',
+    value: 'Baseline awareness audit before any public outreach begins.',
+  },
+  {
+    label: 'Retail placement',
+    value: 'Shelf tags beside fertilizer during the blackout window.',
+  },
+  {
+    label: 'Drain marking',
+    value: 'GPS-logged storm drain markers in the same campaign zone.',
+  },
+  {
+    label: 'County handoff',
+    value: 'Survey tools, tag files, drain database, photos, and protocol documents.',
+  },
+]
+
+const sequence = [
+  'Wave 1 survey closes before any drain marking or store tags.',
+  'Drain markers and shelf tags go live only after the baseline is protected.',
+  'Outreach runs through the blackout window.',
+  'Wave 2 measures whether awareness changed in the same neighborhood zone.',
+  'The final handoff package gives the County a repeatable system.',
+]
+
+const problemStats = [
+  {
+    figure: '1,100+',
+    label: 'manatee deaths recorded during the 2021 crisis',
+  },
+  {
+    figure: '156 mi',
+    label: 'length of the Indian River Lagoon',
+  },
+  {
+    figure: '4,300+',
+    label: 'species supported by the estuary',
+  },
+  {
+    figure: 'June 1 - Sept. 30',
+    label: 'fertilizer blackout window',
+  },
+]
+
+const causalChain = [
+  {
+    title: 'Fertilizer is applied',
+    body: 'Nitrogen and phosphorus are placed on lawns during the rainy season.',
+  },
+  {
+    title: 'Rain moves it',
+    body: 'Stormwater carries nutrients from pavement and yards into drains and canals.',
+  },
+  {
+    title: 'Blooms expand',
+    body: 'Excess nutrients feed algal growth that blocks light from reaching seagrass.',
+  },
+  {
+    title: 'Seagrass disappears',
+    body: 'Without healthy seagrass beds, manatees lose a primary food source.',
+  },
+]
+
+const prongs = [
+  {
+    number: '01',
+    title: 'Survey',
+    body: 'Measure what residents know before outreach begins, then measure again after the campaign. The survey makes the awareness gap visible instead of assumed.',
+    detail: 'Two-wave neighborhood audit',
+  },
+  {
+    number: '02',
+    title: 'Intercept',
+    body: 'Place ordinance reminders beside fertilizer products, where residents are closest to making the decision the rule is meant to prevent.',
+    detail: 'Point-of-purchase shelf tags',
+  },
+  {
+    number: '03',
+    title: 'Mark',
+    body: 'Put the message at the storm drain, where lawn behavior becomes runoff. Each marker connects the ordinance to a real local pathway.',
+    detail: 'GPS-logged drain markers',
   },
 ]
 
 const roles = [
   {
-    role: 'Project Lead',
-    work: 'Owns the timeline, meeting minutes, applications, correspondence, and the Master Paragraph Library.',
+    title: 'Project Lead',
+    body: 'Owns the timeline, meeting structure, public correspondence, and final handoff coordination.',
   },
   {
-    role: 'Survey Lead',
-    work: 'Builds both survey waves, manages distribution, tracks responses, and produces the compliance gap analysis.',
+    title: 'Survey Lead',
+    body: 'Builds the survey instruments, manages door-to-door logistics, and analyzes the pre/post awareness data.',
   },
   {
-    role: 'Retail Partnership Lead',
-    work: 'Recruits stores, secures signed agreements, and manages the Manatee Safe shelf tag rollout.',
+    title: 'Retail Lead',
+    body: 'Contacts stores, secures partner agreements, places shelf tags, and tracks estimated customer reach.',
   },
   {
-    role: 'Field Operations Lead',
-    work: 'Maps drains, logs GPS data, calculates mortality distance, and runs the marking sessions.',
+    title: 'Field Lead',
+    body: 'Selects drains, records GPS coordinates, manages installation sessions, and maintains the drain database.',
   },
   {
-    role: 'Documentation Lead',
-    work: 'Keeps the drive organized, uploads photos, and adapts the same evidence into multiple applications.',
+    title: 'Documentation Lead',
+    body: 'Organizes photos, files, meeting notes, partner letters, website updates, and the final handoff archive.',
   },
 ]
 
-const closingPoints = [
-  'The law already exists.',
-  'The awareness gap is the problem.',
-  'The three-prong model is the solution.',
-  'The handoff package is the sustainability plan.',
+const documentation = [
+  {
+    title: 'Survey data',
+    body: 'Raw responses, response totals, street coverage, and the final awareness-change analysis.',
+  },
+  {
+    title: 'Retail records',
+    body: 'Store names, signed agreements, tag counts, shelf photos, and estimated weekly reach.',
+  },
+  {
+    title: 'Drain database',
+    body: 'Drain IDs, GPS coordinates, before/after photos, installation dates, and site notes.',
+  },
+  {
+    title: 'Photo archive',
+    body: 'Timestamped proof of field activity, organized by survey, retail, and drain marking sessions.',
+  },
+  {
+    title: 'Handoff package',
+    body: 'Everything needed for Brevard County or a future team to repeat the project without rebuilding it.',
+  },
 ]
 
-const competitionNotes = [
-  'CmPS uses the project as a problem-solving portfolio with a real implementation arc: identify the gap, test alternatives, execute, and document results.',
-  'HOSA uses the same field work as a public health intervention because it interrupts the nitrogen pathway that drives cyanotoxin-producing blooms.',
-  'Earth Prize, PEYA, GENIUS Olympiad, Roots & Shoots, Fairchild Challenge, and others all reuse the same evidence with different framing.',
-]
-
-function Fade({
+function Reveal({
   children,
   delay = 0,
-  y = 14,
-  className = '',
 }: {
   children: ReactNode
   delay?: number
-  y?: number
-  className?: string
 }) {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-120px' })
+  const inView = useInView(ref, { once: true, margin: '-80px' })
   const reduceMotion = useReducedMotion()
 
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y, filter: 'blur(8px)' }}
-      animate={isInView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
-      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
+      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      transition={{
+        duration: 0.55,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
     >
       {children}
     </motion.div>
   )
 }
 
-function Accent({ children }: { children: ReactNode }) {
-  return <span className="text-[#a3b18a]">{children}</span>
+function LightSection({ children, id }: { children: ReactNode; id?: string }) {
+  return (
+    <section
+      id={id}
+      className="bg-[#f7f2e8] px-6 py-16 text-[#173027] sm:px-10 sm:py-20 lg:px-12"
+    >
+      <div className="mx-auto max-w-6xl">{children}</div>
+    </section>
+  )
 }
 
-function SectionTitle({
+function DarkSection({ children, id }: { children: ReactNode; id?: string }) {
+  return (
+    <section
+      id={id}
+      className="bg-[#07100d] px-6 py-16 text-white sm:px-10 sm:py-20 lg:px-12"
+    >
+      <div className="mx-auto max-w-6xl">{children}</div>
+    </section>
+  )
+}
+
+function Eyebrow({
+  children,
+  dark = false,
+}: {
+  children: ReactNode
+  dark?: boolean
+}) {
+  return (
+    <p
+      className={`text-xs font-semibold uppercase tracking-[0.22em] ${dark ? 'text-[#a8b98c]' : 'text-[#6f8167]'
+        }`}
+    >
+      {children}
+    </p>
+  )
+}
+
+function SectionHeading({
   eyebrow,
   title,
+  body,
   dark = false,
 }: {
   eyebrow: string
   title: ReactNode
+  body?: ReactNode
   dark?: boolean
 }) {
   return (
-    <div className="mb-10">
-      <p
-        className={`text-[10px] uppercase tracking-[0.3em] ${
-          dark ? 'text-[#8f978a]' : 'text-[#6f8167]'
-        }`}
-      >
-        {eyebrow}
-      </p>
-      <h2
-        className={`mt-3 max-w-4xl font-sans text-[clamp(2rem,4vw,3.6rem)] font-semibold leading-[1.02] tracking-[-0.045em] ${
-          dark ? 'text-[#f3efe5]' : 'text-[#173027]'
-        }`}
-      >
-        {title}
-      </h2>
+    <div>
+      <Reveal>
+        <Eyebrow dark={dark}>{eyebrow}</Eyebrow>
+      </Reveal>
+
+      <Reveal delay={0.06}>
+        <h2
+          className={`mt-4 max-w-4xl text-[clamp(2.35rem,5vw,4.45rem)] font-semibold leading-[0.98] tracking-[-0.06em] ${dark ? 'text-[#f5efe3]' : 'text-[#173027]'
+            }`}
+        >
+          {title}
+        </h2>
+      </Reveal>
+
+      {body ? (
+        <Reveal delay={0.12}>
+          <p
+            className={`mt-6 max-w-2xl text-base leading-8 sm:text-[1.05rem] ${dark ? 'text-white/62' : 'text-[#5e665d]'
+              }`}
+          >
+            {body}
+          </p>
+        </Reveal>
+      ) : null}
     </div>
   )
 }
 
-function DividerLabel({ label }: { label: string }) {
+function Pill({ children, dark = false }: { children: ReactNode; dark?: boolean }) {
   return (
-    <div className="mb-8 flex items-center gap-3">
-      <span className="h-px w-10 bg-[#7a8d73]/35" />
-      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#6f8167]">{label}</span>
-    </div>
+    <span
+      className={`rounded-full border px-3 py-1.5 text-xs ${dark
+          ? 'border-white/12 bg-white/[0.04] text-white/58'
+          : 'border-[#ded6c8] bg-[#fbf8f1] text-[#5e665d]'
+        }`}
+    >
+      {children}
+    </span>
   )
 }
 
-function LightBand({ children }: { children: ReactNode }) {
-  return <section className="bg-[#faf7f0] py-16 sm:py-20 lg:py-24">{children}</section>
-}
+function Hero() {
+  const reduceMotion = useReducedMotion()
+  const [index, setIndex] = useState(0)
 
-function DarkBand({ children }: { children: ReactNode }) {
-  return <section className="bg-[#060807] py-16 text-[#f3efe5] sm:py-20 lg:py-24">{children}</section>
+  useEffect(() => {
+    if (reduceMotion) return
+
+    const timer = window.setInterval(() => {
+      setIndex((current) => (current + 1) % heroImages.length)
+    }, 5000)
+
+    return () => window.clearInterval(timer)
+  }, [reduceMotion])
+
+  const activeImage = heroImages[index]
+
+  return (
+    <section
+      id="top"
+      className="relative isolate h-[100svh] overflow-hidden bg-[#07100d] text-white"
+    >
+      <div aria-hidden="true" className="absolute inset-0">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={activeImage.src}
+            src={activeImage.src}
+            alt=""
+            draggable={false}
+            referrerPolicy="no-referrer"
+            className="absolute inset-0 h-full w-full object-cover"
+            initial={{ opacity: 0, scale: 1.03 }}
+            animate={{
+              opacity: 0.34,
+              scale: reduceMotion ? 1 : 1.07,
+            }}
+            exit={{ opacity: 0 }}
+            transition={{
+              opacity: { duration: 1 },
+              scale: { duration: 5.2, ease: 'easeOut' },
+            }}
+          />
+        </AnimatePresence>
+
+        <div className="absolute inset-0 bg-gradient-to-r from-[#07100d] via-[#07100d]/80 to-[#07100d]/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07100d] via-transparent to-[#07100d]/20" />
+      </div>
+
+      <motion.div
+        initial="hidden"
+        animate="show"
+        transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
+        className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-12"
+      >
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#b9c89c]"
+        >
+          About BLACKOUT
+        </motion.p>
+
+        <motion.h1
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-5xl text-[clamp(2.8rem,8vw,5.85rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-[#f5efe3]"
+        >
+          A law on paper.
+          <br />
+          A system in public.
+        </motion.h1>
+
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-6 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] leading-[1.5] text-white/70"
+        >
+          BLACKOUT activates Brevard County’s Summer Fertilizer Blackout Ordinance
+          through surveys, retail reminders, storm drain markers, and a handoff
+          package the County can keep using.
+        </motion.p>
+
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 flex flex-col gap-3 sm:flex-row"
+        >
+          <Link
+            href="#foundation"
+            className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07100d] transition hover:bg-white"
+          >
+            Read the foundation
+          </Link>
+
+          <Link
+            href="#model"
+            className="inline-flex items-center justify-center rounded-full border border-white/18 px-6 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
+          >
+            See the field model
+          </Link>
+        </motion.div>
+
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 flex max-w-2xl flex-wrap gap-2"
+        >
+          <Pill dark>June 1 - Sept. 30</Pill>
+          <Pill dark>Survey → stores → storm drains</Pill>
+          <Pill dark>Built for handoff</Pill>
+        </motion.div>
+      </motion.div>
+
+      <div className="absolute bottom-6 left-6 right-6 z-10 mx-auto flex max-w-6xl items-center justify-between text-xs text-white/42 sm:left-10 sm:right-10 lg:left-12 lg:right-12">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={activeImage.label}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.3 }}
+          >
+            {activeImage.label}
+          </motion.span>
+        </AnimatePresence>
+
+        <div className="flex gap-2">
+          {heroImages.map((image, imageIndex) => (
+            <button
+              key={image.src}
+              type="button"
+              aria-label={`Show ${image.label}`}
+              onClick={() => setIndex(imageIndex)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${imageIndex === index
+                  ? 'w-8 bg-[#f5efe3]'
+                  : 'w-3 bg-white/25 hover:bg-white/45'
+                }`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
 }
 
 export function AboutPageClient() {
   return (
     <SiteLayout>
-      <main className="overflow-hidden bg-[#f6f1e7] text-[#111814] selection:bg-[#d9cfb6] selection:text-[#111814] font-sans">
-        {/* Hero */}
-        <section id="top" className="relative isolate overflow-hidden bg-[#060807] text-white">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-20"
-            style={{ backgroundImage: `url(${heroBg})` }}
-            aria-hidden="true"
-          />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(163,177,138,0.16),transparent_30%),radial-gradient(circle_at_top_right,rgba(255,255,255,0.06),transparent_22%),linear-gradient(180deg,#0a0f0d_0%,#050706_100%)]" />
-          <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:radial-gradient(circle_at_center,black,transparent_82%)]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#060807] via-[#060807]/82 to-[#060807]/35" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#060807] via-transparent to-transparent" />
+      <main className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
+        <Hero />
 
-          <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-            <Fade y={10}>
-              <p className="text-[10px] uppercase tracking-[0.32em] text-[#8f978a]">About BLACKOUT</p>
-            </Fade>
+        <LightSection id="snapshot">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+            <SectionHeading
+              eyebrow="Snapshot"
+              title="The project in one view."
+              body="BLACKOUT is a field implementation project. It does not try to solve the entire lagoon crisis at once. It targets one controllable behavior, one existing ordinance, and one local pathway where awareness can change action."
+            />
 
-            <div className="mt-8 grid gap-10 lg:grid-cols-[1.12fr_0.88fr] lg:items-start">
-              <div className="max-w-3xl">
-                <Fade delay={0.05}>
-                  <h1 className="max-w-3xl font-sans text-[clamp(3rem,6vw,6rem)] font-semibold leading-[0.94] tracking-[-0.06em] text-[#f4efe5]">
-                    A quiet ordinance,
-                    <br />
-                    made <Accent>visible</Accent>.
-                  </h1>
-                </Fade>
-
-                <Fade delay={0.12}>
-                  <p className="mt-6 max-w-xl text-[1.05rem] leading-8 text-[#c1c8ba]">
-                    A law that protects manatees already exists. Almost nobody in Brevard County knows it is there.
-                  </p>
-                </Fade>
-
-                <Fade delay={0.18}>
-                  <p className="mt-4 max-w-xl text-base leading-7 text-[#9fa79a]">
-                    BLACKOUT activates this law through community awareness, retail partnerships, and storm drain marking.
-                  </p>
-                </Fade>
-
-                <Fade delay={0.24}>
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <Link
-                      href="/mission"
-                      className="group inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg"
-                    >
-                      Read our mission
-                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
-                    </Link>
-                    <Link
-                      href="/ordinance"
-                      className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
-                    >
-                      Read the ordinance
-                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
-                    </Link>
-                  </div>
-                </Fade>
-              </div>
-
-              <Fade delay={0.1}>
-                <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-[0_18px_60px_rgba(0,0,0,0.18)] backdrop-blur-xl">
-                  <div className="relative aspect-[4/5]">
-                    <div
-                      className="absolute inset-0 bg-cover bg-center"
-                      style={{ backgroundImage: `url(${heroBg})` }}
-                      aria-hidden="true"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#050706] via-transparent to-transparent" />
-                    <div className="absolute inset-0 ring-1 ring-inset ring-white/5" />
-                  </div>
-                  <div className="border-t border-white/10 px-6 py-5">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Indian River Lagoon</p>
-                    <p className="mt-2 text-sm leading-7 text-[#f3efe5]">
-                      The Indian River Lagoon supports a rich ecosystem of over 4,300 species but faces collapse from nutrient runoff.
+            <Reveal delay={0.1}>
+              <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-[#ded6c8] bg-[#ded6c8]">
+                {snapshot.map((item) => (
+                  <div key={item.label} className="bg-[#fbf8f1] p-5 sm:p-6">
+                    <p className="text-[2rem] font-semibold leading-none tracking-[-0.06em] tabular-nums sm:text-[2.45rem]">
+                      {item.value}
+                    </p>
+                    <p className="mt-3 max-w-[11rem] text-sm leading-6 text-[#657064]">
+                      {item.label}
                     </p>
                   </div>
-                </div>
-              </Fade>
-            </div>
-          </div>
-        </section>
-
-        {/* Snapshot */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="01 / Snapshot" />
-            <SectionTitle eyebrow="Snapshot" title={<>The project in <Accent>one glance</Accent>.</>} />
-            <div className="grid gap-0 border-t border-[#e2dbc9] md:grid-cols-4">
-              {stats.map((item, index) => (
-                <Fade key={item.k} delay={0.04 * index}>
-                  <div className="border-b border-[#e2dbc9] py-6 md:border-r md:px-6 md:last:border-r-0">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-[#7c8576]">{item.k}</p>
-                    <p className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-[#111814] tabular-nums">
-                      {item.v}
-                    </p>
-                  </div>
-                </Fade>
-              ))}
-            </div>
-          </div>
-        </LightBand>
-
-        {/* Foundation */}
-        <DarkBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="02 / Foundation" />
-            <SectionTitle
-              eyebrow="Project foundation"
-              title={
-                <>
-                  A law protects manatees. <Accent>Nobody knows it is there.</Accent>
-                </>
-              }
-              dark
-            />
-
-            <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
-              <div className="space-y-6 text-[15px] leading-[1.9] text-[#b8afa1]">
-                <Fade>
-                  <p>
-                    A law that protects manatees already exists. Almost nobody in Brevard County knows it is there.
-                    BLACKOUT is designed as a complete year-long project, not a single event. The guide is built for
-                    five students and one parent volunteer, with a clear sequence that keeps the work credible from the
-                    first survey to the final handoff.
-                  </p>
-                </Fade>
-                <Fade delay={0.06}>
-                  <p>
-                    The most important rule is timing. Wave 1 must close before any drain marking or retail shelf tags
-                    go up. That makes the survey the baseline. If it gets contaminated, the whole comparison weakens.
-                  </p>
-                </Fade>
-                <Fade delay={0.12}>
-                  <p className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] px-5 py-4 text-[#f3efe5]">
-                    Wave 1 closes first. Then the other prongs begin. The sequence is part of the evidence.
-                  </p>
-                </Fade>
+                ))}
               </div>
-
-              <Fade delay={0.1}>
-                <div className="border-t border-white/10 pt-8">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Key rules from the guide</p>
-                  <div className="mt-5 space-y-4">
-                    {projectNotes.map((note) => (
-                      <div key={note} className="flex gap-3">
-                        <span className="mt-2 h-2 w-2 rounded-full bg-[#a3b18a]" />
-                        <p className="text-[14px] leading-[1.8] text-[#b8afa1]">{note}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </Fade>
-            </div>
+            </Reveal>
           </div>
-        </DarkBand>
 
-        {/* Principles */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="03 / Why it works" />
-            <SectionTitle
-              eyebrow="Three ideas"
-              title={
-                <>
-                  BLACKOUT is built around <Accent>visibility, evidence, and continuity</Accent>.
-                </>
-              }
-            />
-
-            <div className="grid gap-0 border-t border-[#e2dbc9]">
-              {principles.map((item) => (
-                <div key={item.title} className="grid gap-4 border-b border-[#e2dbc9] py-6 lg:grid-cols-[240px_1fr]">
-                  <h3 className="font-sans text-xl font-semibold tracking-[-0.03em] text-[#173027]">{item.title}</h3>
-                  <p className="text-[14px] leading-[1.9] text-[#5a625b]">{item.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </LightBand>         {/* Process */}
-        <DarkBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="04 / How it unfolds" />
-            <SectionTitle
-              eyebrow="A simple sequence"
-              title={
-                <>
-                  The strict field timeline <Accent>cannot be reversed.</Accent>
-                </>
-              }
-              dark
-            />
-
-            <div className="mb-10 rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Project Flowchart</p>
-              <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs font-mono font-medium text-white/90">
-                <span className="rounded bg-white/5 px-2.5 py-1.5 border border-white/10 text-[#a3b18a]">Wave 1 Survey Closes</span>
-                <span className="text-[#8f978a]">&rarr;</span>
-                <span className="rounded bg-white/5 px-2.5 py-1.5 border border-white/10">Drain Marking Begins</span>
-                <span className="text-[#8f978a]">&rarr;</span>
-                <span className="rounded bg-white/5 px-2.5 py-1.5 border border-white/10">Store Tags Go Up</span>
-                <span className="text-[#8f978a]">&rarr;</span>
-                <span className="rounded bg-white/5 px-2.5 py-1.5 border border-white/10">Outreach Runs</span>
-                <span className="text-[#8f978a]">&rarr;</span>
-                <span className="rounded bg-white/5 px-2.5 py-1.5 border border-white/10">Wave 2 Survey Closes</span>
-                <span className="text-[#8f978a]">&rarr;</span>
-                <span className="rounded bg-white/5 px-2.5 py-1.5 border border-white/10 text-emerald-400">Applications Written</span>
-              </div>
-              <p className="mt-4 text-center text-xs font-semibold text-red-400">
-                Warning: This sequence cannot be reversed at any step.
+          <Reveal delay={0.16}>
+            <div className="mt-12 border-t border-[#ded6c8] pt-8">
+              <p className="max-w-3xl text-[clamp(1.3rem,3vw,1.95rem)] font-semibold leading-tight tracking-[-0.04em]">
+                The project is built around a simple distinction: the ordinance
+                already exists, but the public system around it is weak.
               </p>
             </div>
+          </Reveal>
+        </LightSection>
 
-            <div className="grid gap-0 border-t border-white/10">
-              {process.map((step) => (
-                <div key={step.n} className="grid gap-4 border-b border-white/10 py-6 lg:grid-cols-[160px_1fr]">
-                  <div>
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Step {step.n}</p>
-                    <h3 className="mt-2 font-sans text-2xl font-semibold tracking-[-0.03em] text-[#f3efe5]">
-                      {step.title}
-                    </h3>
-                  </div>
-                  <p className="max-w-3xl text-[15px] leading-[1.9] text-[#a6ad9f]">{step.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </DarkBand>
-
-        {/* Roles */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="05 / Team structure" />
-            <SectionTitle
-              eyebrow="Roles and accountability"
-              title={
-                <>
-                  Defined team roles <Accent>ensure project repeatability.</Accent>
-                </>
-              }
-            />
-
-            <div className="grid gap-0 border-t border-[#e2dbc9]">
-              {roles.map((item) => (
-                <div key={item.role} className="grid gap-4 border-b border-[#e2dbc9] py-6 lg:grid-cols-[240px_1fr]">
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-[#7c8576]">{item.role}</p>
-                  <p className="text-[14px] leading-[1.9] text-[#5a625b]">{item.work}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </LightBand>
-
-        {/* Context strip */}
-        <DarkBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="06 / Context" />
-            <SectionTitle
-              eyebrow="Why the work matters"
-              title={
-                <>
-                  Lagoon seagrass loss <Accent>impacts manatee survival.</Accent>
-                </>
-              }
+        <DarkSection id="foundation">
+          <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-start lg:gap-16">
+            <SectionHeading
               dark
+              eyebrow="Foundation"
+              title="The solution is already written. BLACKOUT makes it operational."
+              body="Brevard County restricts nitrogen and phosphorus fertilizer use during the rainy season. BLACKOUT turns that legal rule into a visible public system: first by measuring awareness, then by intervening where fertilizer decisions happen, then by marking the runoff pathway."
             />
 
-            <div className="max-w-3xl text-[15px] leading-[1.9] text-[#b8afa1]">
-              <p>
-                In 2021, more than 1,100 manatees died in the Indian River Lagoon. The lagoon spans 156 miles and
-                supports thousands of species, which makes the loss feel bigger than a single statistic. BLACKOUT
-                exists because the ordinance already on the books should matter in everyday behavior, not just in a
-                county code.
-              </p>
-            </div>
-          </div>
-        </DarkBand>
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl bg-[#f5efe3] p-6 text-[#07100d] sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#607357]">
+                  Mission
+                </p>
 
-        {/* Competition framing */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="07 / Competition framing" />
-            <SectionTitle
-              eyebrow="Why the same work can win in multiple places"
-              title={
-                <>
-                  One set of facts <Accent>framed for multiple rubrics.</Accent>
-                </>
-              }
-            />
-
-            <div className="grid gap-0 border-t border-[#e2dbc9]">
-              {competitionNotes.map((note) => (
-                <div key={note} className="border-b border-[#e2dbc9] py-5">
-                  <p className="text-[15px] leading-[1.9] text-[#5a625b]">{note}</p>
-                </div>
-              ))}
-            </div>
-
-            <Fade delay={0.12}>
-              <div className="mt-10 border-t border-[#e2dbc9] pt-8">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-[#7c8576]">Writing system</p>
-                <p className="mt-3 max-w-3xl text-[15px] leading-[1.9] text-[#5a625b]">
-                  The guide recommends writing a reusable paragraph library once, then adapting the same material for
-                  each application instead of rebuilding every submission from scratch. That keeps the work cleaner and
-                  avoids the generic, overworked feel that comes from forcing the same information into a new shape
-                  every time.
+                <p className="mt-3 text-[1.4rem] font-semibold leading-tight tracking-[-0.04em]">
+                  Protect manatees and seagrass by activating the fertilizer
+                  ordinance through original auditing, retail reminders, drain
+                  marking, and a clean county handoff.
                 </p>
               </div>
-            </Fade>
+            </Reveal>
           </div>
-        </LightBand>
 
-        {/* Closing */}
-        <DarkBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="08 / Closing" />
-            <SectionTitle
-              eyebrow="Closing"
-              title={
-                <>
-                  A civic project <Accent>built with operational discipline.</Accent>
-                </>
-              }
-              dark
-            />
+          <div className="mt-12 grid gap-8 border-t border-white/10 pt-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+            <Reveal>
+              <div>
+                <Eyebrow dark>Non-negotiable sequence</Eyebrow>
+                <p className="mt-4 max-w-sm text-[1.5rem] font-semibold leading-tight tracking-[-0.04em] text-[#f5efe3]">
+                  The baseline comes first. Everything else follows.
+                </p>
+              </div>
+            </Reveal>
 
-            <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
-              <Fade>
-                <div className="space-y-3 text-[14px] leading-[1.85] text-[#a6ad9f]">
-                  {closingPoints.map((item) => (
-                    <p key={item}>{item}</p>
-                  ))}
-                </div>
-              </Fade>
-
-              <Fade delay={0.08}>
-                <div>
-                  <h3 className="font-sans text-2xl font-semibold tracking-[-0.03em] text-white">
-                    BLACKOUT is a communication project with a civic purpose.
-                  </h3>
-                  <p className="mt-4 text-[14px] leading-[1.9] text-[#a6ad9f]">
-                    The page now carries a different rhythm from the problem page: less stacked structure, more
-                    narrative flow, and more room for the image to do work.
-                  </p>
-                  <div className="mt-6 flex flex-wrap gap-3">
-                    <Link
-                      href="/mission"
-                      className="inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
-                    >
-                      Read our mission
-                      <span aria-hidden>→</span>
-                    </Link>
-                    <Link
-                      href="/ordinance"
-                      className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
-                    >
-                      Read the ordinance
-                      <span aria-hidden>→</span>
-                    </Link>
+            <div className="divide-y divide-white/10 border-y border-white/10">
+              {sequence.map((item, index) => (
+                <Reveal key={item} delay={index * 0.04}>
+                  <div className="grid gap-3 py-5 sm:grid-cols-[3rem_1fr] sm:gap-5">
+                    <p className="font-mono text-xs text-[#a8b98c]">
+                      {String(index + 1).padStart(2, '0')}
+                    </p>
+                    <p className="text-sm leading-7 text-white/62">{item}</p>
                   </div>
-                </div>
-              </Fade>
+                </Reveal>
+              ))}
             </div>
           </div>
-        </DarkBand>
+        </DarkSection>
+
+        <LightSection id="scope">
+          <SectionHeading
+            eyebrow="Project scope"
+            title="A focused field system, not a generic campaign."
+            body="The project works because each activity has a specific measurement. Survey responses show what residents know. Store tags show retail reach. Drain markers create a physical infrastructure record. The handoff package keeps the work from disappearing when the field season ends."
+          />
+
+          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+            {projectScope.map((item, index) => (
+              <Reveal key={item.label} delay={index * 0.05}>
+                <div className="h-full rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                    {item.label}
+                  </p>
+                  <p className="mt-4 text-sm leading-7 text-[#5e665d]">
+                    {item.value}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </LightSection>
+
+        <DarkSection id="problem">
+          <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16">
+            <SectionHeading
+              dark
+              eyebrow="Why it matters"
+              title="The lagoon crisis is ecological, but the first intervention is behavioral."
+              body="Excess nitrogen and phosphorus do not begin in the lagoon. They begin on land, often as ordinary lawn decisions made without awareness of the blackout window. BLACKOUT targets that first decision point before nutrients enter the stormwater system."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-white/10 bg-white/10">
+                {problemStats.map((item) => (
+                  <div key={item.label} className="bg-white/[0.035] p-5 sm:p-6">
+                    <p className="text-[1.8rem] font-semibold leading-none tracking-[-0.06em] text-[#f5efe3] tabular-nums sm:text-[2.2rem]">
+                      {item.figure}
+                    </p>
+                    <p className="mt-3 text-sm leading-6 text-white/56">
+                      {item.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+
+          <div className="mt-12 grid gap-8 border-t border-white/10 pt-10 lg:grid-cols-[0.55fr_1fr] lg:gap-16">
+            <Reveal>
+              <div>
+                <Eyebrow dark>Causal chain</Eyebrow>
+                <p className="mt-4 max-w-sm text-[1.5rem] font-semibold leading-tight tracking-[-0.04em] text-[#f5efe3]">
+                  BLACKOUT attacks the chain before the nutrient leaves the lawn.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="divide-y divide-white/10 border-y border-white/10">
+              {causalChain.map((item, index) => (
+                <Reveal key={item.title} delay={index * 0.05}>
+                  <div className="grid gap-4 py-6 sm:grid-cols-[3rem_1fr] sm:gap-6">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#a8b98c]/12 text-sm font-semibold text-[#a8b98c]">
+                      {index + 1}
+                    </div>
+
+                    <div>
+                      <h3 className="text-[1.12rem] font-semibold tracking-[-0.025em] text-[#f5efe3]">
+                        {item.title}
+                      </h3>
+                      <p className="mt-2 max-w-2xl text-sm leading-7 text-white/58">
+                        {item.body}
+                      </p>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </DarkSection>
+
+        <LightSection id="model">
+          <SectionHeading
+            eyebrow="Field model"
+            title="Three contacts. One ordinance. One neighborhood system."
+            body="The three prongs target different failure points in the same behavior chain. The survey identifies the knowledge gap. The shelf tag appears at the purchase decision. The drain marker makes runoff visible at the physical pathway."
+          />
+
+          <div className="mt-10 grid gap-4 lg:grid-cols-3">
+            {prongs.map((item, index) => (
+              <Reveal key={item.number} delay={index * 0.06}>
+                <div className="h-full rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 transition hover:-translate-y-0.5 hover:border-[#b7c5aa] hover:bg-white">
+                  <p className="font-mono text-xs text-[#6f8167]">
+                    {item.number}
+                  </p>
+
+                  <h3 className="mt-5 text-[1.25rem] font-semibold tracking-[-0.035em] text-[#173027]">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-7 text-[#5e665d]">
+                    {item.body}
+                  </p>
+
+                  <p className="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-[#6f8167]">
+                    {item.detail}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </LightSection>
+
+        <DarkSection id="team">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+            <SectionHeading
+              dark
+              eyebrow="Team structure"
+              title="A small team with clear ownership."
+              body="The project is divided by deliverable, not by vague titles. Each role owns a part of the system and produces records that can be checked later: surveys, partnerships, drain logs, photos, files, and handoff materials."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl border border-white/10 bg-white/[0.035] p-6 shadow-[0_24px_70px_rgba(0,0,0,0.22)] backdrop-blur-sm sm:p-7">
+                <div className="border-b border-white/10 pb-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#a8b98c]">
+                    Role map
+                  </p>
+                  <p className="mt-3 max-w-xl text-sm leading-7 text-white/56">
+                    Five roles, each tied to a concrete field or documentation output.
+                  </p>
+                </div>
+
+                <div>
+                  {roles.map((role, index) => (
+                    <div
+                      key={role.title}
+                      className="grid gap-3 border-b border-white/10 py-5 last:border-b-0 sm:grid-cols-[3rem_10rem_1fr] sm:gap-5"
+                    >
+                      <p className="font-mono text-xs text-[#a8b98c]">
+                        {String(index + 1).padStart(2, '0')}
+                      </p>
+
+                      <p className="text-sm font-semibold text-[#f5efe3]">
+                        {role.title}
+                      </p>
+
+                      <p className="max-w-2xl text-sm leading-7 text-white/58">
+                        {role.body}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.18}>
+            <div className="mt-12 border-t border-white/10 pt-8">
+              <p className="max-w-3xl text-[clamp(1.35rem,3vw,2rem)] font-semibold leading-tight tracking-[-0.04em] text-[#f5efe3]">
+                The structure is intentionally simple: assign ownership, document
+                the work, and make every output useful beyond the student team.
+              </p>
+            </div>
+          </Reveal>
+        </DarkSection>
+
+        <LightSection id="documentation">
+          <SectionHeading
+            eyebrow="Documentation"
+            title="The work only matters if it survives the season."
+            body="BLACKOUT is built to leave behind a record. Every field activity creates evidence: raw data, photos, coordinates, agreements, notes, and final files that someone else can actually use."
+          />
+
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {documentation.map((item, index) => (
+              <Reveal key={item.title} delay={index * 0.04}>
+                <div className="h-full rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                    {item.title}
+                  </p>
+
+                  <p className="mt-4 text-sm leading-7 text-[#5e665d]">
+                    {item.body}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal delay={0.16}>
+            <div className="mt-12 rounded-3xl bg-[#173027] p-6 text-[#f7f2e8] sm:p-7">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#a8b98c]">
+                Documentation rule
+              </p>
+
+              <p className="mt-3 max-w-3xl text-[1.45rem] font-semibold leading-tight tracking-[-0.04em]">
+                Log the field record at the site, before leaving. Memory is not a
+                documentation system.
+              </p>
+            </div>
+          </Reveal>
+        </LightSection>
+
+        <DarkSection id="handoff">
+          <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-start lg:gap-16">
+            <SectionHeading
+              dark
+              eyebrow="Handoff"
+              title="The finish line is not attention. It is transfer."
+              body="The final product is a program Brevard County or a future student team can run again: same survey structure, same tag template, same drain logging protocol, same field sequence, and the same ordinance-centered message."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl bg-[#f5efe3] p-6 text-[#07100d] sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#607357]">
+                  End state
+                </p>
+
+                <p className="mt-3 text-[1.45rem] font-semibold leading-tight tracking-[-0.04em]">
+                  A documented, repeatable ordinance-awareness system that can
+                  continue without the original team.
+                </p>
+
+                <div className="mt-6 flex flex-wrap gap-2">
+                  <Pill>Survey instrument</Pill>
+                  <Pill>Drain database</Pill>
+                  <Pill>Retail tag files</Pill>
+                  <Pill>Photo archive</Pill>
+                  <Pill>Field protocol</Pill>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.18}>
+            <div className="mt-12 border-t border-white/10 pt-8">
+              <p className="max-w-3xl text-[clamp(1.35rem,3vw,2rem)] font-semibold leading-tight tracking-[-0.04em] text-[#f5efe3]">
+                BLACKOUT is not asking for a new law. It is asking whether an
+                existing law can become visible enough to change behavior.
+              </p>
+            </div>
+          </Reveal>
+        </DarkSection>
+
+        <LightSection id="contact">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+            <SectionHeading
+              eyebrow="Next step"
+              title="From ordinance to everyday behavior."
+              body="The project succeeds when residents encounter the blackout window before they buy, apply, or wash fertilizer into the stormwater system. That is the practical gap BLACKOUT is built to close."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Link
+                  href="#foundation"
+                  className="group block rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 transition hover:-translate-y-0.5 hover:border-[#b7c5aa] hover:bg-white"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                    Start here
+                  </p>
+                  <p className="mt-5 text-[1.25rem] font-semibold tracking-[-0.035em] text-[#173027]">
+                    Read the foundation
+                  </p>
+                  <p className="mt-3 text-sm leading-7 text-[#5e665d]">
+                    Understand the ordinance, sequence, and logic behind the project.
+                  </p>
+                  <p className="mt-6 text-sm text-[#6f8167] transition group-hover:translate-x-0.5">
+                    Go to foundation →
+                  </p>
+                </Link>
+
+                <Link
+                  href="#model"
+                  className="group block rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 transition hover:-translate-y-0.5 hover:border-[#b7c5aa] hover:bg-white"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                    Field system
+                  </p>
+                  <p className="mt-5 text-[1.25rem] font-semibold tracking-[-0.035em] text-[#173027]">
+                    See the three prongs
+                  </p>
+                  <p className="mt-3 text-sm leading-7 text-[#5e665d]">
+                    Follow the survey, retail, and storm drain intervention model.
+                  </p>
+                  <p className="mt-6 text-sm text-[#6f8167] transition group-hover:translate-x-0.5">
+                    Go to model →
+                  </p>
+                </Link>
+              </div>
+            </Reveal>
+          </div>
+        </LightSection>
       </main>
     </SiteLayout>
   )
