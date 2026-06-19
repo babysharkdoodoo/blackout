@@ -1,540 +1,682 @@
 'use client'
 
 import Link from 'next/link'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  useReducedMotion,
+} from 'framer-motion'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { SiteLayout } from '@/components/site-layout'
 
-const heroBg =
-  'https://commons.wikimedia.org/wiki/Special:FilePath/Runoff%20of%20soil%20%26%20fertilizer.jpg'
-
-const seasonStatus = [
-  { k: 'Season', v: '2026', note: 'First field season', status: 'active' },
-  { k: 'Wave 1 survey', v: 'Open', note: 'Pre-intervention baseline', status: 'active' },
-  { k: 'Wave 2 survey', v: 'Pending', note: 'Post-intervention follow-up', status: 'pending' },
-  { k: 'County handoff', v: 'Planned', note: 'Oct - Nov 2026', status: 'pending' },
-]
-
-const evidenceStreams = [
+const heroImages = [
   {
-    n: '01',
-    label: 'Survey dataset',
-    desc: 'Pre/post compliance rates with sample size, methodology notes, and wave gap calculation.',
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Indian%20River%20Lagoon%20Area.jpg',
+    label: 'Indian River Lagoon',
   },
   {
-    n: '02',
-    label: 'Retail partner agreements',
-    desc: 'Signed letters documenting store names, shelf tag placement, and weekly customer reach.',
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Florida%20Manatee%20FWS%2018.jpg',
+    label: 'Manatee habitat',
   },
   {
-    n: '03',
-    label: 'Storm drain geodatabase',
-    desc: 'GPS coordinates, mortality distances, installation dates, and photos for all marked drains.',
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Storm%20Drain.JPG',
+    label: 'Storm drain pathway',
   },
   {
-    n: '04',
-    label: 'Photo documentation archive',
-    desc: 'Timestamped field photos covering survey sessions, drain installation, and retail visits.',
-  },
-  {
-    n: '05',
-    label: 'County handoff package',
-    desc: 'Complete program documentation enabling Brevard County to operate the system independently.',
-  },
-  {
-    n: '06',
-    label: 'Formal handoff meeting',
-    desc: 'Recorded meeting with county representatives confirming transfer of program ownership.',
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Floridian%20seagrass%20bed.jpg',
+    label: 'Seagrass beds',
   },
 ]
 
-const changePoints = [
-  'Residents learn the ordinance exists before June 1.',
-  'Retail stores display the blackout window at the point of purchase.',
-  'Storm drains connect lawn behavior to specific, documented mortality events.',
-  'A GPS database makes the problem geographically legible to anyone with a map.',
+const primarySources = [
+  {
+    name: 'Marine Mammal Mortality Reports (2019 - 2023)',
+    org: 'FWC',
+    use: 'Mortality event locations',
+    href: 'https://myfwc.com/research/manatee/rescue-mortality-response/statistics/mortality/',
+  },
+  {
+    name: 'Indian River Lagoon Seagrass Surveys',
+    org: 'SJRWMD',
+    use: 'Seagrass loss data',
+    href: 'https://www.sjrwmd.com/programs/environmental-information/irl/',
+  },
+  {
+    name: 'Brevard County Code of Ordinances',
+    org: 'Brevard County',
+    use: 'Ordinance text § 62-3601',
+    href: 'https://library.municode.com/fl/brevard_county',
+  },
+  {
+    name: 'National Estuary Program Reports',
+    org: 'EPA',
+    use: 'Species diversity data',
+    href: 'https://www.epa.gov/nep',
+  },
+  {
+    name: 'Indian River Lagoon Economic Value Study',
+    org: 'Brevard County',
+    use: 'Economic impact context',
+    href: 'https://www.brevardcounty.us',
+  },
+  {
+    name: 'FDEP Fertilizer Application Guidance',
+    org: 'FDEP',
+    use: 'Fertilizer management guidance',
+    href: 'https://floridadep.gov',
+  },
+  {
+    name: 'West Indian Manatee ESA Status',
+    org: 'USFWS',
+    use: 'Threatened species classification',
+    href: 'https://www.fws.gov/species/west-indian-manatee-trichechus-manatus',
+  },
 ]
 
-const countyPoints = [
-  'First documented baseline of ordinance awareness in the county.',
-  'Retail partnerships that can continue in future seasons.',
-  'Physical storm drain infrastructure already installed and GPS-catalogued.',
-  'A replication model tested and documented for other Florida jurisdictions.',
+const fieldMaterials = [
+  {
+    title: 'Wave 1 Survey Instrument',
+    desc: 'The door-to-door questionnaire used to establish the pre-intervention baseline.',
+    status: 'Available',
+    href: '/survey',
+  },
+  {
+    title: 'Manatee Safe Shelf Tag Design',
+    desc: 'Print-ready retail tag layout for fertilizer aisles and point-of-purchase placement.',
+    status: 'In development',
+    href: null,
+  },
+  {
+    title: 'Storm Drain Marker Spec Sheet',
+    desc: 'Hardware specifications, installation steps, and distance-calculation notes for each drain marker.',
+    status: 'In development',
+    href: null,
+  },
+  {
+    title: 'Retail Partner Agreement Template',
+    desc: 'Standard placement, season timing, and weekly reach logging terms for store partners.',
+    status: 'In development',
+    href: null,
+  },
+  {
+    title: 'County Handoff Package Template',
+    desc: 'Documentation structure for transferring the program to Brevard County after the season ends.',
+    status: 'Post-season',
+    href: null,
+  },
+  {
+    title: 'Wave 2 Survey Instrument',
+    desc: 'Matched follow-up instrument used to measure post-intervention awareness changes.',
+    status: 'Pending close',
+    href: null,
+  },
 ]
 
-const sustainabilityPoints = [
-  'BLACKOUT is designed to make itself unnecessary.',
-  'The deliverable is not a project that needs students to maintain it forever.',
-  'It is a documented program with a trained institutional handoff.',
-  'Brevard County can run it independently in every subsequent summer.',
+const furtherReading = [
+  {
+    title: 'The Indian River Lagoon: A National Treasure in Crisis',
+    org: 'Indian River Lagoon National Estuary Program',
+    type: 'Overview report',
+  },
+  {
+    title: 'Unusual Mortality Event  -  Florida Manatee (2021)',
+    org: 'FWC Wildlife Research Institute',
+    type: 'Mortality investigation',
+  },
+  {
+    title: 'Best Management Practices for Florida-Friendly Fertilization',
+    org: 'University of Florida IFAS Extension',
+    type: 'Applied guidance',
+  },
+  {
+    title: 'Voluntary Environmental Compliance: What Works',
+    org: 'EPA Office of Enforcement',
+    type: 'Policy research',
+  },
+  {
+    title: 'Seagrass Loss and Turbidity in the IRL: 2011 - 2023',
+    org: 'SJRWMD Research Division',
+    type: 'Longitudinal study',
+  },
+  {
+    title: 'Florida Model Ordinance for Fertilizer Management',
+    org: 'FDEP',
+    type: 'Policy model',
+  },
 ]
 
-function Fade({
+const resourceSnapshot = [
+  {
+    label: 'Source base',
+    value: '7',
+    note: 'Primary data and policy references.',
+  },
+  {
+    label: 'Field files',
+    value: '6',
+    note: 'Working materials for survey, retail, drains, and handoff.',
+  },
+  {
+    label: 'Reading set',
+    value: '6',
+    note: 'Background reports and applied guidance.',
+  },
+  {
+    label: 'Purpose',
+    value: 'Traceable',
+    note: 'Every claim should connect to a source or project record.',
+  },
+]
+
+const archiveLogic = [
+  'Primary sources support the public claims made across the project.',
+  'Field materials keep the campaign consistent from one activity to the next.',
+  'Background reading keeps the work grounded in lagoon science and compliance practice.',
+  'The final archive makes the project easier to check, repeat, and hand off.',
+]
+
+function Reveal({
   children,
   delay = 0,
-  y = 14,
-  className = '',
 }: {
   children: ReactNode
   delay?: number
-  y?: number
-  className?: string
 }) {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-120px' })
+  const inView = useInView(ref, { once: true, margin: '-80px' })
   const reduceMotion = useReducedMotion()
 
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y, filter: 'blur(8px)' }}
-      animate={isInView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
-      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
+      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      transition={{
+        duration: 0.55,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
     >
       {children}
     </motion.div>
   )
 }
 
-function Accent({ children }: { children: ReactNode }) {
-  return <span className="text-[#a3b18a]">{children}</span>
+function LightSection({
+  id,
+  children,
+}: {
+  id?: string
+  children: ReactNode
+}) {
+  return (
+    <section
+      id={id}
+      className="bg-[#f7f2e8] px-6 py-16 text-[#173027] sm:px-10 sm:py-20 lg:px-12"
+    >
+      <div className="mx-auto max-w-6xl">{children}</div>
+    </section>
+  )
 }
 
-function SectionTitle({
+function DarkSection({
+  id,
+  children,
+}: {
+  id?: string
+  children: ReactNode
+}) {
+  return (
+    <section
+      id={id}
+      className="bg-[#07100d] px-6 py-16 text-white sm:px-10 sm:py-20 lg:px-12"
+    >
+      <div className="mx-auto max-w-6xl">{children}</div>
+    </section>
+  )
+}
+
+function SectionHeader({
   eyebrow,
   title,
+  body,
   dark = false,
 }: {
   eyebrow: string
   title: ReactNode
+  body?: ReactNode
   dark?: boolean
 }) {
   return (
-    <div className="mb-10">
-      <p
-        className={`text-[10px] uppercase tracking-[0.3em] ${
-          dark ? 'text-[#8f978a]' : 'text-[#6f8167]'
-        }`}
-      >
-        {eyebrow}
-      </p>
-      <h2
-        className={`mt-3 max-w-4xl font-sans text-[clamp(2rem,4vw,3.6rem)] font-semibold leading-[1.02] tracking-[-0.045em] ${
-          dark ? 'text-[#f3efe5]' : 'text-[#173027]'
-        }`}
-      >
-        {title}
-      </h2>
+    <div>
+      <Reveal>
+        <p
+          className={`text-xs font-semibold uppercase tracking-[0.22em] ${dark ? 'text-[#a8b98c]' : 'text-[#6f8167]'
+            }`}
+        >
+          {eyebrow}
+        </p>
+      </Reveal>
+
+      <Reveal delay={0.06}>
+        <h2
+          className={`mt-4 max-w-4xl text-[clamp(2.35rem,5vw,4.45rem)] font-semibold leading-[0.98] tracking-[-0.06em] ${dark ? 'text-[#f5efe3]' : 'text-[#173027]'
+            }`}
+        >
+          {title}
+        </h2>
+      </Reveal>
+
+      {body ? (
+        <Reveal delay={0.12}>
+          <p
+            className={`mt-6 max-w-2xl text-base leading-8 sm:text-[1.05rem] ${dark ? 'text-white/62' : 'text-[#5e665d]'
+              }`}
+          >
+            {body}
+          </p>
+        </Reveal>
+      ) : null}
     </div>
   )
 }
 
-function DividerLabel({ label }: { label: string }) {
+function Hero() {
+  const reduceMotion = useReducedMotion()
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    if (reduceMotion) return
+
+    const timer = window.setInterval(() => {
+      setIndex((current) => (current + 1) % heroImages.length)
+    }, 5000)
+
+    return () => window.clearInterval(timer)
+  }, [reduceMotion])
+
+  const activeImage = heroImages[index]
+
   return (
-    <div className="mb-8 flex items-center gap-3">
-      <span className="h-px w-10 bg-[#7a8d73]/35" />
-      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#6f8167]">
-        {label}
-      </span>
-    </div>
-  )
-}
-
-function LightBand({ children }: { children: ReactNode }) {
-  return <section className="bg-[#faf7f0] py-16 sm:py-20 lg:py-24">{children}</section>
-}
-
-function DarkBand({ children }: { children: ReactNode }) {
-  return <section className="bg-[#060807] py-16 text-[#f3efe5] sm:py-20 lg:py-24">{children}</section>
-}
-
-function Row({
-  left,
-  right,
-  dark = false,
-}: {
-  left: string
-  right: ReactNode
-  dark?: boolean
-}) {
-  return (
-    <div
-      className={`grid gap-3 border-b py-6 last:border-b-0 lg:grid-cols-[260px_1fr] ${
-        dark ? 'border-white/10' : 'border-[#e2dbc9]'
-      }`}
+    <section
+      id="top"
+      className="relative isolate h-[100svh] overflow-hidden bg-[#07100d] text-white"
     >
-      <p
-        className={`text-[11px] uppercase tracking-[0.18em] ${
-          dark ? 'text-[#8f978a]' : 'text-[#7c8576]'
-        }`}
-      >
-        {left}
-      </p>
-      <div className={`text-[14px] leading-[1.9] ${dark ? 'text-[#b8afa1]' : 'text-[#5a625b]'}`}>
-        {right}
-      </div>
-    </div>
-  )
-}
+      <div aria-hidden="true" className="absolute inset-0">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={activeImage.src}
+            src={activeImage.src}
+            alt=""
+            draggable={false}
+            referrerPolicy="no-referrer"
+            className="absolute inset-0 h-full w-full object-cover"
+            initial={{ opacity: 0, scale: 1.03 }}
+            animate={{
+              opacity: 0.34,
+              scale: reduceMotion ? 1 : 1.07,
+            }}
+            exit={{ opacity: 0 }}
+            transition={{
+              opacity: { duration: 1 },
+              scale: { duration: 5.2, ease: 'easeOut' },
+            }}
+          />
+        </AnimatePresence>
 
-function StreamRow({
-  n,
-  label,
-  desc,
-}: {
-  n: string
-  label: string
-  desc: string
-}) {
-  return (
-    <div className="grid gap-4 border-b border-white/10 py-6 lg:grid-cols-[72px_1fr]">
-      <div>
-        <p className="text-[10px] uppercase tracking-[0.18em] text-[#8f978a]">{n}</p>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#07100d] via-[#07100d]/82 to-[#07100d]/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07100d] via-transparent to-[#07100d]/20" />
       </div>
-      <div>
-        <h3 className="font-sans text-xl font-semibold tracking-[-0.03em] text-[#f3efe5]">
-          {label}
-        </h3>
-        <p className="mt-2 text-[14px] leading-[1.85] text-[#a6ad9f]">{desc}</p>
+
+      <motion.div
+        initial="hidden"
+        animate="show"
+        transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
+        className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-12"
+      >
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#b9c89c]"
+        >
+          Resources
+        </motion.p>
+
+        <motion.h1
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-5xl text-[clamp(2.8rem,8vw,5.85rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-[#f5efe3]"
+        >
+          Sources, files,
+          <br />
+          and field materials.
+        </motion.h1>
+
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-6 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] leading-[1.5] text-white/70"
+        >
+          BLACKOUT keeps ordinance references, research sources, survey
+          materials, retail files, drain records, and handoff templates in one
+          traceable system.
+        </motion.p>
+
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 flex flex-col gap-3 sm:flex-row"
+        >
+          <Link
+            href="#sources"
+            className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07100d] transition hover:bg-white"
+          >
+            Primary sources
+          </Link>
+
+          <Link
+            href="#materials"
+            className="inline-flex items-center justify-center rounded-full border border-white/18 px-6 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
+          >
+            Field materials
+          </Link>
+        </motion.div>
+
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 flex max-w-2xl flex-wrap gap-2 text-xs text-white/58"
+        >
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            Public data
+          </span>
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            Field files
+          </span>
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            Handoff-ready archive
+          </span>
+        </motion.div>
+      </motion.div>
+
+      <div className="absolute bottom-6 left-6 right-6 z-10 mx-auto flex max-w-6xl items-center justify-between text-xs text-white/42 sm:left-10 sm:right-10 lg:left-12 lg:right-12">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={activeImage.label}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.3 }}
+          >
+            {activeImage.label}
+          </motion.span>
+        </AnimatePresence>
+
+        <div className="flex gap-2">
+          {heroImages.map((image, imageIndex) => (
+            <button
+              key={image.src}
+              type="button"
+              aria-label={`Show ${image.label}`}
+              onClick={() => setIndex(imageIndex)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${imageIndex === index
+                ? 'w-8 bg-[#f5efe3]'
+                : 'w-3 bg-white/25 hover:bg-white/45'
+                }`}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   )
 }
 
 export function ImpactPageClient() {
-  const [loaded, setLoaded] = useState(false)
-  const reduceMotion = useReducedMotion()
-
-  useEffect(() => {
-    setLoaded(true)
-  }, [])
-
   return (
     <SiteLayout>
-      <main className="overflow-hidden bg-[#f6f1e7] text-[#111814] selection:bg-[#d9cfb6] selection:text-[#111814] font-sans">
-        {/* Hero */}
-        <section id="top" className="relative isolate overflow-hidden bg-[#060807] text-white">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-18"
-            style={{ backgroundImage: `url(${heroBg})` }}
-            aria-hidden="true"
-          />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(163,177,138,0.16),transparent_30%),radial-gradient(circle_at_top_right,rgba(255,255,255,0.06),transparent_22%),linear-gradient(180deg,#0a0f0d_0%,#050706_100%)]" />
-          <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:radial-gradient(circle_at_center,black,transparent_82%)]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#060807] via-[#060807]/82 to-[#060807]/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#060807] via-transparent to-transparent" />
+      <main className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
+        <Hero />
 
-          <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-            <Fade y={10}>
-              <p className="text-[10px] uppercase tracking-[0.32em] text-[#8f978a]">
-                05 / Impact &amp; Results
-              </p>
-            </Fade>
+        <LightSection id="overview">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              eyebrow="Resource archive"
+              title="The project stays stronger when every claim is traceable."
+              body="This page collects the public data, ordinance references, working field files, and background reading used to keep BLACKOUT transparent and reusable."
+            />
 
-            <div className="mt-8 grid gap-10 lg:grid-cols-[1.12fr_0.88fr] lg:items-start">
-              <div className="max-w-3xl">
-                <Fade delay={0.05}>
-                  <h1 className="max-w-5xl font-sans text-[clamp(3.25rem,6vw,6.25rem)] font-semibold leading-[0.92] tracking-[-0.06em] text-[#f4efe5]">
-                    Every field activity
-                    <br />
-                    produces a document.
-                    <br />
-                    <Accent>Every document survives.</Accent>
-                  </h1>
-                </Fade>
+            <Reveal delay={0.1}>
+              <div className="grid gap-px overflow-hidden rounded-3xl border border-[#ded6c8] bg-[#ded6c8] sm:grid-cols-2">
+                {resourceSnapshot.map((item) => (
+                  <div key={item.label} className="bg-[#fbf8f1] p-5 sm:p-6">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                      {item.label}
+                    </p>
 
-                <Fade delay={0.12}>
-                  <p className="mt-6 max-w-xl text-[1.05rem] leading-8 text-[#c1c8ba]">
-                    The goal is not a project report. It is a complete, transferable program that Brevard County can operate independently after the student team has graduated.
-                  </p>
-                </Fade>
+                    <p className="mt-3 text-[1.45rem] font-semibold leading-tight tracking-[-0.04em] text-[#173027]">
+                      {item.value}
+                    </p>
 
-                <Fade delay={0.18}>
-                  <p className="mt-4 max-w-xl text-base leading-7 text-[#9fa79a]">
-                    This page keeps the structure calm and readable: a season snapshot, evidence streams, what changes, and the sustainability argument.
-                  </p>
-                </Fade>
-
-                <Fade delay={0.24}>
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <Link
-                      href="#streams"
-                      className="group inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg"
-                    >
-                      Evidence streams
-                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
-                        →
-                      </span>
-                    </Link>
-                    <Link
-                      href="#sustainability"
-                      className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
-                    >
-                      Sustainability
-                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
-                        →
-                      </span>
-                    </Link>
+                    <p className="mt-3 text-sm leading-6 text-[#657064]">
+                      {item.note}
+                    </p>
                   </div>
-                </Fade>
-              </div>
-
-              <motion.div
-                initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 16, scale: 0.99 }}
-                animate={loaded ? { opacity: 1, y: 0, scale: 1 } : undefined}
-                transition={{ duration: 0.9, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-                className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-[0_18px_60px_rgba(0,0,0,0.18)] backdrop-blur-xl"
-              >
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  <motion.div
-                    aria-hidden="true"
-                    initial={reduceMotion ? { scale: 1 } : { scale: 1.05, opacity: 0.85 }}
-                    animate={loaded ? { scale: 1, opacity: 1 } : undefined}
-                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${heroBg})` }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050706] via-transparent to-transparent" />
-                  <div className="absolute inset-0 ring-1 ring-inset ring-white/5" />
-                </div>
-                <div className="border-t border-white/10 px-6 py-5">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Runoff pathway</p>
-                  <p className="mt-2 text-sm leading-7 text-[#f3efe5]">
-                    Impact becomes visible when fertilizer runoff is no longer abstract and the chain is documented.
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Season status */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="01 / Season status" />
-            <SectionTitle
-              eyebrow="Live overview"
-              title={
-                <>
-                  A short season snapshot keeps the work easy to read without turning the page into a dashboard.
-                </>
-              }
-            />
-
-            <div className="mt-8 border-t border-[#e2dbc9]">
-              {seasonStatus.map((item, index) => (
-                <Fade key={item.k} delay={0.04 * index}>
-                  <Row
-                    left={item.k}
-                    right={
-                      <>
-                        <span className="block text-[16px] font-medium text-[#173027]">{item.v}</span>
-                        <span className="mt-1 block text-[13px] text-[#5a625b]">{item.note}</span>
-                        <span
-                          className={`mt-3 inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium ${
-                            item.status === 'active'
-                              ? 'border border-emerald-500/10 bg-emerald-500/5 text-emerald-800'
-                              : 'border border-[#e2dbc9] bg-white/70 text-[#7c8576]'
-                          }`}
-                        >
-                          <span
-                            className={`h-1.5 w-1.5 rounded-full ${
-                              item.status === 'active' ? 'bg-emerald-500' : 'bg-[#c7c0b0]'
-                            }`}
-                          />
-                          {item.status === 'active' ? 'In progress' : 'Not yet started'}
-                        </span>
-                      </>
-                    }
-                  />
-                </Fade>
-              ))}
-            </div>
-          </div>
-        </LightBand>
-
-        {/* Evidence streams */}
-        <DarkBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="02 / Evidence streams" />
-            <SectionTitle
-              eyebrow="What survives"
-              title={
-                <>
-                  Six document types. Each one independently verifiable and useful beyond the student team.
-                </>
-              }
-              dark
-            />
-
-            <div id="streams" className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-              <div className="space-y-6 text-[15px] leading-[1.9] text-[#b8afa1]">
-                <Fade>
-                  <p>
-                    Competition submissions, grant applications, and county handoff packages all require the same thing: documented, repeatable evidence of community impact.
-                  </p>
-                </Fade>
-                <Fade delay={0.06}>
-                  <p>
-                    BLACKOUT is structured to produce that evidence as it goes, instead of trying to reconstruct it at the end.
-                  </p>
-                </Fade>
-              </div>
-
-              <Fade delay={0.1}>
-                <div className="rounded-[2rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md">
-                  <div className="border-t border-white/10">
-                    {evidenceStreams.map((item) => (
-                      <StreamRow key={item.n} {...item} />
-                    ))}
-                  </div>
-                </div>
-              </Fade>
-            </div>
-          </div>
-        </DarkBand>
-
-        {/* What changes */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="03 / What changes" />
-            <SectionTitle
-              eyebrow="Community and county"
-              title={
-                <>
-                  The work changes behavior in the community and leaves Brevard County with a system it can actually keep using.
-                </>
-              }
-            />
-
-            <div className="grid gap-8 lg:grid-cols-2">
-              <div className="rounded-[2rem] border border-[#e2dbc9] bg-white/70 p-6 lg:p-8">
-                <p className="text-[10px] uppercase tracking-[0.18em] text-[#6f8167]">In the community</p>
-                <ul className="mt-6 space-y-5">
-                  {changePoints.map((item) => (
-                    <li key={item} className="flex items-start gap-4 text-[14px] leading-[1.8] text-[#5a625b]">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#a3b18a]" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="rounded-[2rem] border border-[#e2dbc9] bg-white/70 p-6 lg:p-8">
-                <p className="text-[10px] uppercase tracking-[0.18em] text-[#6f8167]">For Brevard County</p>
-                <ul className="mt-6 space-y-5">
-                  {countyPoints.map((item) => (
-                    <li key={item} className="flex items-start gap-4 text-[14px] leading-[1.8] text-[#5a625b]">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#a3b18a]" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </LightBand>
-
-        {/* Sustainability */}
-        <DarkBand>
-          <div id="sustainability" className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="04 / Sustainability" />
-            <SectionTitle
-              eyebrow="The handoff goal"
-              title={
-                <>
-                  Not permanent student involvement. <Accent>A complete transfer.</Accent>
-                </>
-              }
-              dark
-            />
-
-            <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
-              <div className="space-y-3 text-[14px] leading-[1.85] text-[#a6ad9f]">
-                {sustainabilityPoints.map((point) => (
-                  <p key={point}>{point}</p>
                 ))}
               </div>
-
-              <Fade delay={0.08}>
-                <div>
-                  <h3 className="font-sans text-2xl font-semibold tracking-[-0.03em] text-white">
-                    The county receives the program, not the project.
-                  </h3>
-                  <p className="mt-4 text-[14px] leading-[1.9] text-[#a6ad9f]">
-                    That is what makes the work meaningful after the season ends: the markers stay, the partners stay, the data stays, and the county knows how to repeat it.
-                  </p>
-                  <div className="mt-6 flex flex-wrap gap-3">
-                    <Link
-                      href="#streams"
-                      className="inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
-                    >
-                      Evidence streams
-                      <span aria-hidden>→</span>
-                    </Link>
-                    <Link
-                      href="#top"
-                      className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
-                    >
-                      Back to top
-                      <span aria-hidden>→</span>
-                    </Link>
-                  </div>
-                </div>
-              </Fade>
-            </div>
+            </Reveal>
           </div>
-        </DarkBand>
 
-        {/* Closing */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="05 / Closing" />
-            <SectionTitle
-              eyebrow="Closing"
-              title={
-                <>
-                  Every field activity produces a document. <Accent>Every document survives.</Accent>
-                </>
-              }
+          <Reveal delay={0.16}>
+            <div className="mt-12 border-t border-[#ded6c8] pt-8">
+              <p className="max-w-3xl text-[clamp(1.3rem,3vw,1.95rem)] font-semibold leading-tight tracking-[-0.04em]">
+                Sources explain the problem. Field materials keep the work
+                consistent. Documentation makes the handoff possible.
+              </p>
+            </div>
+          </Reveal>
+        </LightSection>
+
+        <DarkSection id="sources">
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              dark
+              eyebrow="Primary sources"
+              title="Public data, ordinance text, and regional research that can be checked."
+              body="These sources support the project’s core claims about manatee mortality, seagrass loss, ordinance language, species diversity, fertilizer guidance, and lagoon value."
             />
 
-            <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
-              <div className="space-y-3 text-[14px] leading-[1.85] text-[#5a625b]">
-                <p>Wave 1 establishes the baseline.</p>
-                <p>Wave 2 tests whether the work changed the numbers.</p>
-                <p>The archive makes the result transferable.</p>
-              </div>
+            <Reveal delay={0.1}>
+              <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.035]">
+                <div className="hidden border-b border-white/10 px-6 py-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#a8b98c] md:grid md:grid-cols-[1.2fr_0.45fr_0.85fr]">
+                  <p>Source</p>
+                  <p>Agency</p>
+                  <p>Used for</p>
+                </div>
 
-              <div>
-                <h3 className="font-sans text-2xl font-semibold tracking-[-0.03em] text-[#173027]">
-                  Impact means the work remains useful after the student team leaves.
-                </h3>
-                <p className="mt-4 text-[14px] leading-[1.9] text-[#5a625b]">
-                  This version stays aligned with the other pages: rounded corners, an image-led hero, calm motion, and fewer heavy blocks.
-                </p>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <Link
-                    href="#sustainability"
-                    className="inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
-                  >
-                    Sustainability
-                    <span aria-hidden>→</span>
-                  </Link>
-                  <Link
-                    href="#top"
-                    className="inline-flex items-center gap-2 rounded-full border border-[#e2dbc9] bg-white/60 px-5 py-3 text-sm font-medium text-[#173027] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
-                  >
-                    Back to top
-                    <span aria-hidden>→</span>
-                  </Link>
+                {primarySources.map((item, index) => (
+                  <Reveal key={item.name} delay={index * 0.035}>
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="grid gap-3 border-b border-white/10 px-5 py-5 transition last:border-b-0 hover:bg-white/[0.035] md:grid-cols-[1.2fr_0.45fr_0.85fr] md:items-center md:px-6"
+                    >
+                      <p className="text-sm font-semibold leading-6 text-[#f5efe3]">
+                        {item.name}{' '}
+                        <span className="text-[#a8b98c]">↗</span>
+                      </p>
+
+                      <p className="text-sm text-white/54">{item.org}</p>
+
+                      <p className="text-sm leading-6 text-white/54">
+                        {item.use}
+                      </p>
+                    </a>
+                  </Reveal>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </DarkSection>
+
+        <LightSection id="materials">
+          <SectionHeader
+            eyebrow="Field materials"
+            title="Working documents that keep the campaign organized."
+            body="The field materials are the documents the team uses to run the actual campaign: survey instruments, shelf tags, drain marker specs, partner agreements, and handoff templates."
+          />
+
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {fieldMaterials.map((item, index) => (
+              <Reveal key={item.title} delay={index * 0.04}>
+                <div className="flex h-full flex-col rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6">
+                  <div className="flex-1">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                      {item.status}
+                    </p>
+
+                    <h3 className="mt-4 text-[1.15rem] font-semibold tracking-[-0.035em] text-[#173027]">
+                      {item.title}
+                    </h3>
+
+                    <p className="mt-3 text-sm leading-7 text-[#5e665d]">
+                      {item.desc}
+                    </p>
+                  </div>
+
+                  <div className="mt-6">
+                    {item.href ? (
+                      <Link
+                        href={item.href}
+                        className="inline-flex items-center rounded-full bg-[#173027] px-4 py-2 text-xs font-semibold text-[#f7f2e8] transition hover:bg-[#223a2e]"
+                      >
+                        Access →
+                      </Link>
+                    ) : (
+                      <span className="inline-flex items-center rounded-full border border-[#d8d0c2] bg-white/60 px-4 py-2 text-xs font-semibold text-[#7c8576]">
+                        {item.status}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </LightSection>
+
+        <DarkSection id="reading">
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              dark
+              eyebrow="Further reading"
+              title="Background reading keeps the project grounded in science and practice."
+              body="These readings support the broader context behind BLACKOUT: lagoon ecology, manatee mortality, fertilizer practice, voluntary compliance, seagrass decline, and model fertilizer policy."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl border border-white/10 bg-white/[0.035] p-6 sm:p-7">
+                <div className="divide-y divide-white/10">
+                  {furtherReading.map((item, index) => (
+                    <div
+                      key={item.title}
+                      className="grid gap-3 py-5 first:pt-0 last:pb-0 sm:grid-cols-[3rem_1fr]"
+                    >
+                      <p className="font-mono text-xs text-[#a8b98c]">
+                        {String(index + 1).padStart(2, '0')}
+                      </p>
+
+                      <div>
+                        <h3 className="text-[1.15rem] font-semibold tracking-[-0.035em] text-[#f5efe3]">
+                          {item.title}
+                        </h3>
+
+                        <p className="mt-2 text-sm leading-7 text-white/56">
+                          {item.org}
+                        </p>
+
+                        <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#a8b98c]">
+                          {item.type}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
-        </LightBand>
+        </DarkSection>
+
+        <LightSection id="organization">
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              eyebrow="Organization"
+              title="A useful archive has to be easy to check."
+              body="The resource system is not just a collection of links. It is the structure that lets the project defend its claims, run its field work, and transfer the program after the season."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                  Archive logic
+                </p>
+
+                <div className="mt-5 divide-y divide-[#ded6c8]">
+                  {organizationPoints.map((point, index) => (
+                    <div
+                      key={point}
+                      className="grid gap-3 py-4 first:pt-0 last:pb-0 sm:grid-cols-[3rem_1fr]"
+                    >
+                      <p className="font-mono text-xs text-[#6f8167]">
+                        {String(index + 1).padStart(2, '0')}
+                      </p>
+
+                      <p className="text-sm leading-7 text-[#5e665d]">
+                        {point}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.16}>
+            <div className="mt-12 flex flex-col gap-3 border-t border-[#ded6c8] pt-8 sm:flex-row">
+              <Link
+                href="/about"
+                className="inline-flex items-center justify-center rounded-full bg-[#173027] px-6 py-3 text-sm font-semibold text-[#f7f2e8] transition hover:bg-[#223a2e]"
+              >
+                About BLACKOUT
+              </Link>
+
+              <Link
+                href="#top"
+                className="inline-flex items-center justify-center rounded-full border border-[#d8d0c2] px-6 py-3 text-sm font-semibold text-[#53634f] transition hover:border-[#173027]/30 hover:text-[#173027]"
+              >
+                Back to top
+              </Link>
+            </div>
+          </Reveal>
+        </LightSection>
       </main>
     </SiteLayout>
   )
 }
+
+export default ImpactPageClient
