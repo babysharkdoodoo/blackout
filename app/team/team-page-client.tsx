@@ -1,42 +1,108 @@
-// app/team/team-page-client.tsx
 'use client'
 
 import Link from 'next/link'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  useReducedMotion,
+} from 'framer-motion'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { SiteLayout } from '@/components/site-layout'
 
-const heroBg =
-  'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1600&q=80'
+const heroImages = [
+  {
+    src: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1800&q=80',
+    label: 'Student planning session',
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Indian%20River%20Lagoon%20Area.jpg',
+    label: 'Indian River Lagoon',
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Storm%20Drain.JPG',
+    label: 'Storm drain pathway',
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Florida%20Manatee%20FWS%2018.jpg',
+    label: 'Manatee habitat',
+  },
+]
 
-const stats = [
-  { k: 'Team', v: '5 students + 1 parent volunteer' },
-  { k: 'Launch', v: 'Summer 2026' },
-  { k: 'Primary', v: 'CmPS' },
-  { k: 'Secondary', v: 'HOSA Community Awareness' },
+const snapshot = [
+  {
+    label: 'Team',
+    value: '5 students',
+    note: 'Small enough for clear ownership.',
+  },
+  {
+    label: 'Support',
+    value: '1 parent volunteer',
+    note: 'Transportation and field safety support.',
+  },
+  {
+    label: 'Launch',
+    value: 'Summer 2026',
+    note: 'Aligned with the fertilizer blackout window.',
+  },
+  {
+    label: 'School',
+    value: 'West Shore',
+    note: 'Melbourne, Brevard County, Florida.',
+  },
 ]
 
 const projectNotes = [
   'Built for one complete year of work, not a last-minute sprint.',
   'Wave 1 closes before any drain markings, retail tags, or public outreach begin.',
-  'The same field work feeds every competition application, with the framing changed to fit the rubric.',
+  'Every role owns a specific part of the field system and the records attached to it.',
+]
+
+const roles = [
+  {
+    role: 'Project Lead',
+    work: 'Owns the timeline, county correspondence, team coordination, and public-facing project structure.',
+    deliverables:
+      'Master schedule, meeting notes, county communication record, and final handoff coordination.',
+  },
+  {
+    role: 'Survey Lead',
+    work: 'Builds both survey waves, manages distribution, tracks responses, and produces the compliance gap analysis.',
+    deliverables:
+      'Wave 1 dataset, Wave 2 dataset, response logs, and pre/post awareness report.',
+  },
+  {
+    role: 'Retail Partnership Lead',
+    work: 'Recruits stores, secures signed agreements, and manages the Manatee Safe shelf tag rollout.',
+    deliverables:
+      'Partner agreements, tag placement photos, weekly reach logs, and partner summary.',
+  },
+  {
+    role: 'Field Operations Lead',
+    work: 'Maps drains, logs GPS data, calculates mortality distance, and runs the marking sessions.',
+    deliverables:
+      'Drain database, before/after photo archive, installation notes, and county-ready map layer.',
+  },
+  {
+    role: 'Documentation Lead',
+    work: 'Keeps files organized, uploads field photos, maintains records, and prepares the final archive.',
+    deliverables:
+      'Shared drive structure, photo naming system, website updates, and replication guide.',
+  },
 ]
 
 const principles = [
   {
     title: 'Existing law, new visibility',
-    body:
-      'BLACKOUT does not ask the county to create a new ordinance. It makes a real rule easier to see, understand, and follow.',
+    body: 'BLACKOUT does not ask the county to create a new ordinance. It makes a real rule easier to see, understand, and follow.',
   },
   {
     title: 'Evidence first',
-    body:
-      'The project leans on original survey data, retail reach, and drain documentation instead of vague claims or broad generalities.',
+    body: 'The project relies on survey data, retail reach, drain documentation, and partner records instead of broad claims.',
   },
   {
     title: 'Built to keep going',
-    body:
-      'The handoff package, renewal language, and documentation structure are designed so a county or future students can continue the work.',
+    body: 'The handoff package, field protocols, and documentation structure are designed so the work can continue after the team steps away.',
   },
 ]
 
@@ -44,549 +110,581 @@ const process = [
   {
     n: '01',
     title: 'Find the gap',
-    body:
-      'The ordinance already protects the lagoon, but almost nobody in Brevard County knows it exists. That awareness gap is the problem.',
+    body: 'The ordinance already protects the lagoon, but public awareness is weak. The first job is to measure that gap clearly.',
   },
   {
     n: '02',
     title: 'Make it visible',
-    body:
-      'The team uses surveys, shelf tags, and drain markers to place the ordinance in the places where people make decisions.',
+    body: 'The team uses surveys, shelf tags, and drain markers to place the ordinance where people make decisions.',
   },
   {
     n: '03',
+    title: 'Document everything',
+    body: 'Every field activity creates records: forms, photos, partner notes, GPS coordinates, and session logs.',
+  },
+  {
+    n: '04',
     title: 'Leave something usable',
-    body:
-      'The final result is a repeatable program, a cleaner public message, and a handoff packet that can keep working without the students.',
+    body: 'The final result is a repeatable program and a handoff package that can keep working without the original team.',
   },
 ]
 
-const roles = [
+const contextRows = [
   {
-    role: 'Project Lead',
-    work: 'Owns the timeline, county correspondence, team coordination, and CmPS proposal management.',
-    deliverables: 'Master schedule, county liaison contact, competition submission package.',
+    label: 'Institution',
+    value: 'West Shore Jr./Sr. High School',
   },
   {
-    role: 'Survey Lead',
-    work: 'Builds both survey waves, manages distribution, tracks responses, and produces the compliance gap analysis.',
-    deliverables: 'Wave 1 dataset, Wave 2 dataset, pre/post compliance gap report.',
+    label: 'Location',
+    value: 'Melbourne, Brevard County, Florida',
   },
   {
-    role: 'Retail Partnership Lead',
-    work: 'Recruits stores, secures signed agreements, and manages the Manatee Safe shelf tag rollout.',
-    deliverables: '4 - 6 signed agreements, weekly reach logs, end-of-season partner summary.',
+    label: 'Watershed',
+    value: 'Indian River Lagoon',
   },
   {
-    role: 'Field Operations Lead',
-    work: 'Maps drains, logs GPS data, calculates mortality distance, and runs the marking sessions.',
-    deliverables: 'Geodatabase with 30 - 40 entries, photo archive, county data package.',
-  },
-  {
-    role: 'Documentation Lead',
-    work: 'Keeps the drive organized, uploads photos, and adapts the same evidence into multiple applications.',
-    deliverables: 'Complete documentation set, handoff meeting recording, replication guide.',
+    label: 'Field season',
+    value: 'June 1 - September 30, 2026',
   },
 ]
 
-const competitions = [
-  { name: 'CmPS', note: 'Primary submission portfolio' },
-  { name: 'HOSA', note: 'Health & environmental track' },
-  { name: 'Earth Prize', note: 'Global sustainability' },
-  { name: 'EPA PEYA', note: 'Presidential award' },
-  { name: 'GENIUS Olympiad', note: 'International ecology' },
-  { name: 'Roots & Shoots', note: 'Jane Goodall Institute' },
+const closingPoints = [
+  'Every deliverable has a named owner.',
+  'Every field activity has a protocol.',
+  'Every dataset has a methodology note.',
+  'Every partner interaction is logged.',
 ]
 
-function Fade({
+function Reveal({
   children,
   delay = 0,
-  y = 14,
-  className = '',
 }: {
   children: ReactNode
   delay?: number
-  y?: number
-  className?: string
 }) {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-120px' })
+  const inView = useInView(ref, { once: true, margin: '-80px' })
   const reduceMotion = useReducedMotion()
 
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y, filter: 'blur(8px)' }}
-      animate={isInView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
-      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
+      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      transition={{
+        duration: 0.55,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
     >
       {children}
     </motion.div>
   )
 }
 
-function Accent({ children }: { children: ReactNode }) {
-  return <span className="text-[#a3b18a]">{children}</span>
+function LightSection({
+  id,
+  children,
+}: {
+  id?: string
+  children: ReactNode
+}) {
+  return (
+    <section
+      id={id}
+      className="bg-[#f7f2e8] px-6 py-16 text-[#173027] sm:px-10 sm:py-20 lg:px-12"
+    >
+      <div className="mx-auto max-w-6xl">{children}</div>
+    </section>
+  )
 }
 
-function SectionTitle({
+function DarkSection({
+  id,
+  children,
+}: {
+  id?: string
+  children: ReactNode
+}) {
+  return (
+    <section
+      id={id}
+      className="bg-[#07100d] px-6 py-16 text-white sm:px-10 sm:py-20 lg:px-12"
+    >
+      <div className="mx-auto max-w-6xl">{children}</div>
+    </section>
+  )
+}
+
+function SectionHeader({
   eyebrow,
   title,
+  body,
   dark = false,
 }: {
   eyebrow: string
   title: ReactNode
+  body?: ReactNode
   dark?: boolean
 }) {
   return (
-    <div className="mb-10">
-      <p
-        className={`text-[10px] uppercase tracking-[0.3em] ${
-          dark ? 'text-[#8f978a]' : 'text-[#6f8167]'
-        }`}
-      >
-        {eyebrow}
-      </p>
-      <h2
-        className={`mt-3 max-w-4xl font-sans text-[clamp(2rem,4vw,3.6rem)] font-semibold leading-[1.02] tracking-[-0.045em] ${
-          dark ? 'text-[#f3efe5]' : 'text-[#173027]'
-        }`}
-      >
-        {title}
-      </h2>
+    <div>
+      <Reveal>
+        <p
+          className={`text-xs font-semibold uppercase tracking-[0.22em] ${dark ? 'text-[#a8b98c]' : 'text-[#6f8167]'
+            }`}
+        >
+          {eyebrow}
+        </p>
+      </Reveal>
+
+      <Reveal delay={0.06}>
+        <h2
+          className={`mt-4 max-w-4xl text-[clamp(2.35rem,5vw,4.45rem)] font-semibold leading-[0.98] tracking-[-0.06em] ${dark ? 'text-[#f5efe3]' : 'text-[#173027]'
+            }`}
+        >
+          {title}
+        </h2>
+      </Reveal>
+
+      {body ? (
+        <Reveal delay={0.12}>
+          <p
+            className={`mt-6 max-w-2xl text-base leading-8 sm:text-[1.05rem] ${dark ? 'text-white/62' : 'text-[#5e665d]'
+              }`}
+          >
+            {body}
+          </p>
+        </Reveal>
+      ) : null}
     </div>
   )
 }
 
-function DividerLabel({ label }: { label: string }) {
+function Hero() {
+  const reduceMotion = useReducedMotion()
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    if (reduceMotion) return
+
+    const timer = window.setInterval(() => {
+      setIndex((current) => (current + 1) % heroImages.length)
+    }, 5000)
+
+    return () => window.clearInterval(timer)
+  }, [reduceMotion])
+
+  const activeImage = heroImages[index]
+
   return (
-    <div className="mb-8 flex items-center gap-3">
-      <span className="h-px w-10 bg-[#7a8d73]/35" />
-      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#6f8167]">
-        {label}
-      </span>
-    </div>
-  )
-}
-
-function LightBand({ children }: { children: ReactNode }) {
-  return <section className="bg-[#faf7f0] py-16 sm:py-20 lg:py-24">{children}</section>
-}
-
-function DarkBand({ children }: { children: ReactNode }) {
-  return <section className="bg-[#060807] py-16 text-[#f3efe5] sm:py-20 lg:py-24">{children}</section>
-}
-
-function Row({
-  left,
-  right,
-  dark = false,
-}: {
-  left: string
-  right: ReactNode
-  dark?: boolean
-}) {
-  return (
-    <div
-      className={`grid gap-3 border-b py-6 last:border-b-0 lg:grid-cols-[260px_1fr] ${
-        dark ? 'border-white/10' : 'border-[#e2dbc9]'
-      }`}
+    <section
+      id="top"
+      className="relative isolate h-[100svh] overflow-hidden bg-[#07100d] text-white"
     >
-      <p
-        className={`text-[11px] uppercase tracking-[0.18em] ${
-          dark ? 'text-[#8f978a]' : 'text-[#7c8576]'
-        }`}
-      >
-        {left}
-      </p>
-      <div className={`text-[14px] leading-[1.9] ${dark ? 'text-[#b8afa1]' : 'text-[#5a625b]'}`}>
-        {right}
+      <div aria-hidden="true" className="absolute inset-0">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={activeImage.src}
+            src={activeImage.src}
+            alt=""
+            draggable={false}
+            referrerPolicy="no-referrer"
+            className="absolute inset-0 h-full w-full object-cover"
+            initial={{ opacity: 0, scale: 1.03 }}
+            animate={{
+              opacity: 0.34,
+              scale: reduceMotion ? 1 : 1.07,
+            }}
+            exit={{ opacity: 0 }}
+            transition={{
+              opacity: { duration: 1 },
+              scale: { duration: 5.2, ease: 'easeOut' },
+            }}
+          />
+        </AnimatePresence>
+
+        <div className="absolute inset-0 bg-gradient-to-r from-[#07100d] via-[#07100d]/82 to-[#07100d]/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07100d] via-transparent to-[#07100d]/20" />
       </div>
-    </div>
+
+      <motion.div
+        initial="hidden"
+        animate="show"
+        transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
+        className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-12"
+      >
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#b9c89c]"
+        >
+          Team
+        </motion.p>
+
+        <motion.h1
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-5xl text-[clamp(2.8rem,8vw,5.85rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-[#f5efe3]"
+        >
+          Five students.
+          <br />
+          Defined roles.
+        </motion.h1>
+
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-6 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] leading-[1.5] text-white/70"
+        >
+          BLACKOUT runs on a clear accountability structure. Every team member
+          owns specific deliverables, and every deliverable is tied to the field
+          sequence.
+        </motion.p>
+
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 flex flex-col gap-3 sm:flex-row"
+        >
+          <Link
+            href="#roles"
+            className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07100d] transition hover:bg-white"
+          >
+            Team roles
+          </Link>
+
+          <Link
+            href="#context"
+            className="inline-flex items-center justify-center rounded-full border border-white/18 px-6 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
+          >
+            Project context
+          </Link>
+        </motion.div>
+
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 flex max-w-2xl flex-wrap gap-2 text-xs text-white/58"
+        >
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            Student-led
+          </span>
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            County-facing
+          </span>
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            Built for handoff
+          </span>
+        </motion.div>
+      </motion.div>
+
+      <div className="absolute bottom-6 left-6 right-6 z-10 mx-auto flex max-w-6xl items-center justify-between text-xs text-white/42 sm:left-10 sm:right-10 lg:left-12 lg:right-12">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={activeImage.label}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.3 }}
+          >
+            {activeImage.label}
+          </motion.span>
+        </AnimatePresence>
+
+        <div className="flex gap-2">
+          {heroImages.map((image, imageIndex) => (
+            <button
+              key={image.src}
+              type="button"
+              aria-label={`Show ${image.label}`}
+              onClick={() => setIndex(imageIndex)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${imageIndex === index
+                  ? 'w-8 bg-[#f5efe3]'
+                  : 'w-3 bg-white/25 hover:bg-white/45'
+                }`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
   )
 }
 
 export function TeamPageClient() {
-  const [loaded, setLoaded] = useState(false)
-  const reduceMotion = useReducedMotion()
-
-  useEffect(() => {
-    setLoaded(true)
-  }, [])
-
   return (
     <SiteLayout>
-      <main className="overflow-hidden bg-[#f6f1e7] text-[#111814] selection:bg-[#d9cfb6] selection:text-[#111814] font-sans">
-        {/* Hero */}
-        <section id="top" className="relative isolate overflow-hidden bg-[#060807] text-white">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-18"
-            style={{ backgroundImage: `url(${heroBg})` }}
-            aria-hidden="true"
-          />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(163,177,138,0.16),transparent_30%),radial-gradient(circle_at_top_right,rgba(255,255,255,0.06),transparent_22%),linear-gradient(180deg,#0a0f0d_0%,#050706_100%)]" />
-          <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:radial-gradient(circle_at_center,black,transparent_82%)]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#060807] via-[#060807]/82 to-[#060807]/35" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#060807] via-transparent to-transparent" />
+      <main className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
+        <Hero />
 
-          <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-            <Fade y={10}>
-              <p className="text-[10px] uppercase tracking-[0.32em] text-[#8f978a]">
-                07 / Team
+        <LightSection id="snapshot">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              eyebrow="Snapshot"
+              title="A small team with a clear operating structure."
+              body="The project is designed around ownership. Each student has a defined role, each role has field responsibilities, and each responsibility creates documentation for the final handoff."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="grid gap-px overflow-hidden rounded-3xl border border-[#ded6c8] bg-[#ded6c8] sm:grid-cols-2">
+                {snapshot.map((item) => (
+                  <div key={item.label} className="bg-[#fbf8f1] p-5 sm:p-6">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                      {item.label}
+                    </p>
+
+                    <p className="mt-3 text-[1.35rem] font-semibold leading-tight tracking-[-0.04em] text-[#173027]">
+                      {item.value}
+                    </p>
+
+                    <p className="mt-3 text-sm leading-6 text-[#657064]">
+                      {item.note}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.16}>
+            <div className="mt-12 border-t border-[#ded6c8] pt-8">
+              <p className="max-w-3xl text-[clamp(1.3rem,3vw,1.95rem)] font-semibold leading-tight tracking-[-0.04em]">
+                The team is small on purpose: fewer people, clearer ownership,
+                cleaner records, and a stronger handoff.
               </p>
-            </Fade>
-
-            <div className="mt-8 grid gap-10 lg:grid-cols-[1.12fr_0.88fr] lg:items-start">
-              <div className="max-w-3xl">
-                <Fade delay={0.05}>
-                  <h1 className="max-w-5xl font-sans text-[clamp(3.25rem,6vw,6.25rem)] font-semibold leading-[0.92] tracking-[-0.06em] text-[#f4efe5]">
-                    Five students.
-                    <br />
-                    Defined roles.
-                    <br />
-                    <Accent>No ambiguity.</Accent>
-                  </h1>
-                </Fade>
-
-                <Fade delay={0.12}>
-                  <p className="mt-6 max-w-xl text-[1.05rem] leading-8 text-[#c1c8ba]">
-                    BLACKOUT runs on a strict accountability structure. Every team member owns specific deliverables, and every deliverable is tied to the operational sequence.
-                  </p>
-                </Fade>
-
-                <Fade delay={0.18}>
-                  <p className="mt-4 max-w-xl text-base leading-7 text-[#9fa79a]">
-                    The page is designed to feel calm and organized, with the same rounded, image-led system used across the rest of the site.
-                  </p>
-                </Fade>
-
-                <Fade delay={0.24}>
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <Link
-                      href="#roles"
-                      className="group inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg"
-                    >
-                      Team roles
-                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
-                        →
-                      </span>
-                    </Link>
-                    <Link
-                      href="#context"
-                      className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
-                    >
-                      Institutional context
-                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
-                        →
-                      </span>
-                    </Link>
-                  </div>
-                </Fade>
-              </div>
-
-              <motion.div
-                initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 16, scale: 0.99 }}
-                animate={loaded ? { opacity: 1, y: 0, scale: 1 } : undefined}
-                transition={{ duration: 0.9, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-                className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-[0_18px_60px_rgba(0,0,0,0.18)] backdrop-blur-xl"
-              >
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  <motion.div
-                    aria-hidden="true"
-                    initial={reduceMotion ? { scale: 1 } : { scale: 1.05, opacity: 0.85 }}
-                    animate={loaded ? { scale: 1, opacity: 1 } : undefined}
-                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${heroBg})` }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050706] via-transparent to-transparent" />
-                  <div className="absolute inset-0 ring-1 ring-inset ring-white/5" />
-                </div>
-                <div className="border-t border-white/10 px-6 py-5">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">
-                    Student-led, county-facing
-                  </p>
-                  <p className="mt-2 text-sm leading-7 text-[#f3efe5]">
-                    The team is small on purpose so ownership stays clear and the handoff stays clean.
-                  </p>
-                </div>
-              </motion.div>
             </div>
-          </div>
-        </section>
+          </Reveal>
+        </LightSection>
 
-        {/* Snapshot */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="01 / Snapshot" />
-            <SectionTitle
-              eyebrow="Core structure"
-              title={
-                <>
-                  A few simple facts keep the team page easy to read.
-                </>
-              }
-            />
-
-            <div className="mt-8 border-t border-[#e2dbc9]">
-              {stats.map((item, index) => (
-                <Fade key={item.k} delay={0.04 * index}>
-                  <Row
-                    left={item.k}
-                    right={
-                      <span className="text-[16px] font-medium text-[#173027]">
-                        {item.v}
-                      </span>
-                    }
-                  />
-                </Fade>
-              ))}
-            </div>
-          </div>
-        </LightBand>
-
-        {/* Roles */}
-        <DarkBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="02 / Roles" />
-            <SectionTitle
-              eyebrow="Accountability structure"
-              title={
-                <>
-                  Every role has ownership, and every ownership line leads to a deliverable.
-                </>
-              }
+        <DarkSection id="roles">
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
+            <SectionHeader
               dark
+              eyebrow="Role map"
+              title="Every role has ownership, and every ownership line leads to a deliverable."
+              body="The team structure prevents responsibilities from drifting. Each role owns part of the project and produces records that can be checked later."
             />
 
-            <div id="roles" className="grid gap-0 border-t border-white/10">
-              {roles.map((member, index) => (
-                <Fade key={member.role} delay={index * 0.04}>
-                  <div className="grid gap-4 border-b border-white/10 py-6 lg:grid-cols-[220px_1fr_1fr] lg:gap-8">
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.18em] text-[#8f978a]">
-                        {member.role}
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl border border-white/10 bg-white/[0.035] p-6 sm:p-7">
+                <div className="divide-y divide-white/10">
+                  {roles.map((member, index) => (
+                    <div
+                      key={member.role}
+                      className="grid gap-4 py-5 first:pt-0 last:pb-0 sm:grid-cols-[3rem_1fr]"
+                    >
+                      <p className="font-mono text-xs text-[#a8b98c]">
+                        {String(index + 1).padStart(2, '0')}
                       </p>
-                    </div>
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.18em] text-[#8f978a]">Owns</p>
-                      <p className="mt-2 text-[14px] leading-[1.9] text-[#b8afa1]">
-                        {member.owns}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.18em] text-[#8f978a]">Deliverables</p>
-                      <p className="mt-2 text-[14px] leading-[1.9] text-[#b8afa1]">
-                        {member.deliverables}
-                      </p>
-                    </div>
-                  </div>
-                </Fade>
-              ))}
-            </div>
-          </div>
-        </DarkBand>
 
-        {/* Context */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="03 / Institutional context" />
-            <SectionTitle
-              eyebrow="Why it matters"
-              title={
-                <>
-                  This is a student project, and it is also a serious one.
-                </>
-              }
-            />
+                      <div>
+                        <h3 className="text-[1.15rem] font-semibold tracking-[-0.035em] text-[#f5efe3]">
+                          {member.role}
+                        </h3>
 
-            <div
-              id="context"
-              className="grid gap-10 lg:grid-cols-[1fr_1.25fr] lg:items-start"
-            >
-              <div className="space-y-6 text-[15px] leading-[1.9] text-[#5a625b]">
-                <Fade>
-                  <div>
-                    <p className="text-[#173027] text-[18px] font-semibold tracking-[-0.02em]">
-                      West Shore Jr./Sr. High School
-                    </p>
-                    <p className="mt-1 text-[13px] font-medium tracking-wide text-[#6f8167]">
-                      Melbourne, Brevard County, FL
-                    </p>
-                  </div>
-                </Fade>
-                <Fade delay={0.06}>
-                  <p>
-                    West Shore is a magnet school with a long record of student success in competitive academic programs, including science research, HOSA, and environmental project competitions.
-                  </p>
-                </Fade>
-                <Fade delay={0.12}>
-                  <p>
-                    BLACKOUT is the school’s first civic-science field initiative engineered to operate explicitly at the county government level.
-                  </p>
-                </Fade>
-              </div>
+                        <p className="mt-2 text-sm leading-7 text-white/58">
+                          {member.work}
+                        </p>
 
-              <Fade delay={0.1}>
-                <div className="rounded-[2rem] border border-[#e2dbc9] bg-white/70 p-6 lg:p-8">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#6f8167]">
-                    Operational facts
-                  </p>
-                  <div className="mt-5 border-t border-[#e2dbc9]">
-                    <Row left="Field season" right="June 1  -  Sept 30, 2026" />
-                    <Row left="Jurisdiction" right="Brevard County" />
-                    <Row left="Watershed" right="Indian River Lagoon" />
-                  </div>
+                        <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#a8b98c]">
+                          Deliverables
+                        </p>
+
+                        <p className="mt-2 text-sm leading-7 text-white/52">
+                          {member.deliverables}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </Fade>
-            </div>
+              </div>
+            </Reveal>
           </div>
-        </LightBand>
+        </DarkSection>
 
-        {/* Principles */}
-        <DarkBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="04 / Operating principles" />
-            <SectionTitle
-              eyebrow="Method and tone"
-              title={
-                <>
-                  The work is student-led, but the standards are professional.
-                </>
-              }
-              dark
+        <LightSection id="context">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              eyebrow="Institutional context"
+              title="A student project built for public-facing work."
+              body="BLACKOUT is based at West Shore Jr./Sr. High School in Melbourne, Florida, and operates around Brevard County’s fertilizer blackout window."
             />
 
-            <div className="grid gap-0 border-t border-white/10">
-              {principles.map((item) => (
-                <div
-                  key={item.title}
-                  className="grid gap-4 border-b border-white/10 py-6 lg:grid-cols-[240px_1fr] lg:gap-8"
-                >
-                  <h3 className="font-sans text-xl font-semibold tracking-[-0.03em] text-[#f3efe5]">
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                  Operational facts
+                </p>
+
+                <div className="mt-5 divide-y divide-[#ded6c8]">
+                  {contextRows.map((item, index) => (
+                    <div
+                      key={item.label}
+                      className="grid gap-3 py-4 first:pt-0 last:pb-0 sm:grid-cols-[3rem_1fr]"
+                    >
+                      <p className="font-mono text-xs text-[#6f8167]">
+                        {String(index + 1).padStart(2, '0')}
+                      </p>
+
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#7c8576]">
+                          {item.label}
+                        </p>
+
+                        <p className="mt-1 text-sm font-semibold leading-7 text-[#173027]">
+                          {item.value}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          </div>
+
+          <div className="mt-12 grid gap-4 lg:grid-cols-3">
+            {projectNotes.map((note, index) => (
+              <Reveal key={note} delay={index * 0.05}>
+                <div className="h-full rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6">
+                  <p className="font-mono text-xs text-[#6f8167]">
+                    {String(index + 1).padStart(2, '0')}
+                  </p>
+
+                  <p className="mt-5 text-sm leading-7 text-[#5e665d]">
+                    {note}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </LightSection>
+
+        <DarkSection id="principles">
+          <SectionHeader
+            dark
+            eyebrow="Operating principles"
+            title="The work is student-led, but the standards are professional."
+            body="The project uses a simple operating frame: make the existing rule visible, measure the work clearly, and leave behind materials that can keep working."
+          />
+
+          <div className="mt-10 grid gap-4 lg:grid-cols-3">
+            {principles.map((item, index) => (
+              <Reveal key={item.title} delay={index * 0.05}>
+                <div className="h-full rounded-3xl border border-white/10 bg-white/[0.035] p-6">
+                  <h3 className="text-[1.15rem] font-semibold tracking-[-0.035em] text-[#f5efe3]">
                     {item.title}
                   </h3>
-                  <p className="text-[14px] leading-[1.9] text-[#b8afa1]">{item.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </DarkBand>
 
-        {/* Process */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="05 / Sequence" />
-            <SectionTitle
-              eyebrow="How the work unfolds"
-              title={
-                <>
-                  The project follows a simple order: identify the gap, make it visible, leave something usable.
-                </>
-              }
+                  <p className="mt-3 text-sm leading-7 text-white/58">
+                    {item.body}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </DarkSection>
+
+        <LightSection id="sequence">
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              eyebrow="Sequence"
+              title="The work follows a simple order."
+              body="The sequence matters because it protects the baseline and keeps the final result credible. The team does not start with outreach. It starts with measurement."
             />
 
-            <div className="grid gap-0 border-t border-[#e2dbc9]">
-              {process.map((step) => (
-                <div
-                  key={step.n}
-                  className="grid gap-4 border-b border-[#e2dbc9] py-6 lg:grid-cols-[160px_1fr] lg:gap-8"
-                >
-                  <div>
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-[#7c8576]">
-                      Step {step.n}
+            <div className="divide-y divide-[#ded6c8] border-y border-[#ded6c8]">
+              {process.map((step, index) => (
+                <Reveal key={step.n} delay={index * 0.05}>
+                  <div className="grid gap-4 py-6 sm:grid-cols-[3rem_11rem_1fr] sm:gap-6">
+                    <p className="font-mono text-xs text-[#6f8167]">
+                      {step.n}
                     </p>
-                    <h3 className="mt-2 font-sans text-2xl font-semibold tracking-[-0.03em] text-[#173027]">
+
+                    <h3 className="text-sm font-semibold text-[#173027]">
                       {step.title}
                     </h3>
+
+                    <p className="max-w-3xl text-sm leading-7 text-[#5e665d]">
+                      {step.body}
+                    </p>
                   </div>
-                  <p className="max-w-3xl text-[15px] leading-[1.9] text-[#5a625b]">{step.body}</p>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
-        </LightBand>
+        </LightSection>
 
-        {/* Competition */}
-        <DarkBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="06 / Competition portfolio" />
-            <SectionTitle
-              eyebrow="Where the same work fits"
-              title={
-                <>
-                  The same evidence can support multiple competitions because the facts stay the same.
-                </>
-              }
+        <DarkSection id="closing">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+            <SectionHeader
               dark
-            />
-
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {competitions.map((comp) => (
-                <div
-                  key={comp.name}
-                  className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5"
-                >
-                  <p className="text-[14px] font-semibold tracking-tight text-[#f3efe5]">
-                    {comp.name}
-                  </p>
-                  <p className="mt-2 text-[12px] leading-[1.8] text-[#a6ad9f]">{comp.note}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </DarkBand>
-
-        {/* Closing */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="07 / Closing" />
-            <SectionTitle
               eyebrow="Closing"
-              title={
-                <>
-                  The team page should feel calm, specific, and capable.
-                </>
-              }
+              title="The goal is a complete program, not a school assignment."
+              body="The team page should show that BLACKOUT has real structure behind it: named owners, field protocols, datasets, partner records, and a handoff plan."
             />
 
-            <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
-              <div className="space-y-3 text-[14px] leading-[1.85] text-[#5a625b]">
-                <p>Every deliverable has a named owner.</p>
-                <p>Every field activity has a protocol.</p>
-                <p>Every dataset has a methodology note.</p>
-                <p>Every partner interaction is logged.</p>
-              </div>
-
-              <div>
-                <h3 className="font-sans text-2xl font-semibold tracking-[-0.03em] text-[#173027]">
-                  The goal is to make the county see a complete program, not a school assignment.
-                </h3>
-                <p className="mt-4 text-[14px] leading-[1.9] text-[#5a625b]">
-                  This version stays consistent with the rest of the site: image-led hero, rounded corners, softer motion, and less card-heavy structure.
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl bg-[#f5efe3] p-6 text-[#07100d] sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#607357]">
+                  What this structure protects
                 </p>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <Link
-                    href="#roles"
-                    className="inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
-                  >
-                    Team roles
-                    <span aria-hidden>→</span>
-                  </Link>
-                  <Link
-                    href="#top"
-                    className="inline-flex items-center gap-2 rounded-full border border-[#e2dbc9] bg-white/60 px-5 py-3 text-sm font-medium text-[#173027] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
-                  >
-                    Back to top
-                    <span aria-hidden>→</span>
-                  </Link>
+
+                <div className="mt-5 divide-y divide-[#d8d0c2]">
+                  {closingPoints.map((point, index) => (
+                    <div
+                      key={point}
+                      className="grid gap-3 py-4 first:pt-0 last:pb-0 sm:grid-cols-[3rem_1fr]"
+                    >
+                      <p className="font-mono text-xs text-[#607357]">
+                        {String(index + 1).padStart(2, '0')}
+                      </p>
+
+                      <p className="text-sm leading-7 text-[#526052]">
+                        {point}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
-        </LightBand>
+
+          <Reveal delay={0.16}>
+            <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-8 sm:flex-row">
+              <Link
+                href="#roles"
+                className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07100d] transition hover:bg-white"
+              >
+                Team roles
+              </Link>
+
+              <Link
+                href="#top"
+                className="inline-flex items-center justify-center rounded-full border border-white/14 px-6 py-3 text-sm font-semibold text-white/72 transition hover:border-white/30 hover:text-white"
+              >
+                Back to top
+              </Link>
+            </div>
+          </Reveal>
+        </DarkSection>
       </main>
     </SiteLayout>
   )
 }
+
+export default TeamPageClient

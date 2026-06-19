@@ -1,175 +1,608 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  useReducedMotion,
+} from 'framer-motion'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { SiteLayout } from '@/components/site-layout'
 import { ContactForm } from '@/components/contact-form'
 
-/* ── DATA ── */
+const heroImages = [
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Indian%20River%20Lagoon%20Area.jpg',
+    label: 'Indian River Lagoon',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1800&q=80',
+    label: 'Project coordination',
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Storm%20Drain.JPG',
+    label: 'Storm drain pathway',
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Florida%20Manatee%20FWS%2018.jpg',
+    label: 'Manatee habitat',
+  },
+]
 
 const directory = [
-  { type: 'General & Media', desc: 'Press inquiries, project documentation requests, and general questions.', contact: 'blackout.irl@westshore.edu', note: null },
-  { type: 'Retail Partnerships', desc: 'Hardware stores, garden centers, and nurseries interested in shelf tag participation.', contact: 'blackout.irl@westshore.edu', note: 'Partnership Inquiry' },
-  { type: 'County Coordination', desc: 'Brevard County Natural Resources, stormwater management, or official correspondence.', contact: 'blackout.irl@westshore.edu', note: 'County' },
-  { type: 'Academic / Replication', desc: 'Schools or organizations interested in replicating the BLACKOUT model.', contact: 'blackout.irl@westshore.edu', note: 'Replication' },
+  {
+    type: 'General & Media',
+    desc: 'Press inquiries, project documentation requests, and general questions.',
+    contact: 'blackout.irl@westshore.edu',
+    note: 'Direct inbox',
+  },
+  {
+    type: 'Retail Partnerships',
+    desc: 'Hardware stores, garden centers, and nurseries interested in shelf tag participation.',
+    contact: 'blackout.irl@westshore.edu',
+    note: 'Partnership Inquiry',
+  },
+  {
+    type: 'County Coordination',
+    desc: 'Brevard County Natural Resources, stormwater management, or official correspondence.',
+    contact: 'blackout.irl@westshore.edu',
+    note: 'County',
+  },
+  {
+    type: 'Academic / Replication',
+    desc: 'Schools or organizations interested in replicating the BLACKOUT model.',
+    contact: 'blackout.irl@westshore.edu',
+    note: 'Replication',
+  },
 ]
 
 const quickLinks = [
-  { head: 'Take the survey', body: 'Brevard County residents can participate in the community compliance audit.', href: '/survey', cta: 'Open survey' },
-  { head: 'Retail partnership', body: 'Hardware and garden retailers can host a shelf tag in the fertilizer section.', href: '/retail-partners', cta: 'Learn more' },
-  { head: 'Follow the project', body: 'The website is updated as field activities progress through the 2026 season.', href: '/impact', cta: 'View impact' },
+  {
+    head: 'Take the survey',
+    body: 'Brevard County residents can participate in the community compliance audit.',
+    href: '/survey',
+    cta: 'Open survey',
+  },
+  {
+    head: 'Retail partnership',
+    body: 'Hardware and garden retailers can host a shelf tag in the fertilizer section.',
+    href: '/retail-partners',
+    cta: 'Learn more',
+  },
+  {
+    head: 'Follow the project',
+    body: 'The website is updated as field activities progress through the 2026 season.',
+    href: '/impact',
+    cta: 'View impact',
+  },
 ]
 
-/* ── UTILITIES ── */
+const contactSnapshot = [
+  {
+    label: 'Primary inbox',
+    value: 'One channel',
+    note: 'All inquiries route through the same project address.',
+  },
+  {
+    label: 'Project base',
+    value: 'West Shore',
+    note: 'West Shore Jr./Sr. High School in Melbourne, Florida.',
+  },
+  {
+    label: 'Field season',
+    value: 'Summer 2026',
+    note: 'Aligned with the June 1 - September 30 blackout window.',
+  },
+  {
+    label: 'Routing',
+    value: 'Project Lead',
+    note: 'Partnership and county inquiries are forwarded directly.',
+  },
+]
 
-function Fade({ children, delay = 0, y = 14, className = '' }: { children: ReactNode; delay?: number; y?: number; className?: string }) {
+const contactNotes = [
+  'Media questions and documentation requests go through the general inbox.',
+  'Retail partners can request a shelf tag packet and placement details.',
+  'County or stormwater-related messages are routed to the Project Lead.',
+  'Schools and organizations can ask for replication materials after field documentation is assembled.',
+]
+
+function Reveal({
+  children,
+  delay = 0,
+}: {
+  children: ReactNode
+  delay?: number
+}) {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const inView = useInView(ref, { once: true, margin: '-80px' })
   const reduceMotion = useReducedMotion()
-  return (<motion.div ref={ref} initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y, filter: 'blur(6px)' }} animate={isInView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined} transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>{children}</motion.div>)
-}
-
-function Accent({ children }: { children: ReactNode }) {
-  return <span className="text-[#a3b18a]">{children}</span>
-}
-
-/* ── PAGE ── */
-
-export function ContactPageClient() {
-  const [loaded, setLoaded] = useState(false)
-  const reduceMotion = useReducedMotion()
-  useEffect(() => { setLoaded(true) }, [])
 
   return (
+    <motion.div
+      ref={ref}
+      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      transition={{
+        duration: 0.55,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+function LightSection({
+  id,
+  children,
+}: {
+  id?: string
+  children: ReactNode
+}) {
+  return (
+    <section
+      id={id}
+      className="bg-[#f7f2e8] px-6 py-16 text-[#173027] sm:px-10 sm:py-20 lg:px-12"
+    >
+      <div className="mx-auto max-w-6xl">{children}</div>
+    </section>
+  )
+}
+
+function DarkSection({
+  id,
+  children,
+}: {
+  id?: string
+  children: ReactNode
+}) {
+  return (
+    <section
+      id={id}
+      className="bg-[#07100d] px-6 py-16 text-white sm:px-10 sm:py-20 lg:px-12"
+    >
+      <div className="mx-auto max-w-6xl">{children}</div>
+    </section>
+  )
+}
+
+function SectionHeader({
+  eyebrow,
+  title,
+  body,
+  dark = false,
+}: {
+  eyebrow: string
+  title: ReactNode
+  body?: ReactNode
+  dark?: boolean
+}) {
+  return (
+    <div>
+      <Reveal>
+        <p
+          className={`text-xs font-semibold uppercase tracking-[0.22em] ${dark ? 'text-[#a8b98c]' : 'text-[#6f8167]'
+            }`}
+        >
+          {eyebrow}
+        </p>
+      </Reveal>
+
+      <Reveal delay={0.06}>
+        <h2
+          className={`mt-4 max-w-4xl text-[clamp(2.35rem,5vw,4.45rem)] font-semibold leading-[0.98] tracking-[-0.06em] ${dark ? 'text-[#f5efe3]' : 'text-[#173027]'
+            }`}
+        >
+          {title}
+        </h2>
+      </Reveal>
+
+      {body ? (
+        <Reveal delay={0.12}>
+          <p
+            className={`mt-6 max-w-2xl text-base leading-8 sm:text-[1.05rem] ${dark ? 'text-white/62' : 'text-[#5e665d]'
+              }`}
+          >
+            {body}
+          </p>
+        </Reveal>
+      ) : null}
+    </div>
+  )
+}
+
+function Hero() {
+  const reduceMotion = useReducedMotion()
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    if (reduceMotion) return
+
+    const timer = window.setInterval(() => {
+      setIndex((current) => (current + 1) % heroImages.length)
+    }, 5000)
+
+    return () => window.clearInterval(timer)
+  }, [reduceMotion])
+
+  const activeImage = heroImages[index]
+
+  return (
+    <section
+      id="top"
+      className="relative isolate h-[100svh] overflow-hidden bg-[#07100d] text-white"
+    >
+      <div aria-hidden="true" className="absolute inset-0">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={activeImage.src}
+            src={activeImage.src}
+            alt=""
+            draggable={false}
+            referrerPolicy="no-referrer"
+            className="absolute inset-0 h-full w-full object-cover"
+            initial={{ opacity: 0, scale: 1.03 }}
+            animate={{
+              opacity: 0.34,
+              scale: reduceMotion ? 1 : 1.07,
+            }}
+            exit={{ opacity: 0 }}
+            transition={{
+              opacity: { duration: 1 },
+              scale: { duration: 5.2, ease: 'easeOut' },
+            }}
+          />
+        </AnimatePresence>
+
+        <div className="absolute inset-0 bg-gradient-to-r from-[#07100d] via-[#07100d]/82 to-[#07100d]/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07100d] via-transparent to-[#07100d]/20" />
+      </div>
+
+      <motion.div
+        initial="hidden"
+        animate="show"
+        transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
+        className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-12"
+      >
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#b9c89c]"
+        >
+          Contact
+        </motion.p>
+
+        <motion.h1
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-5xl text-[clamp(2.8rem,8vw,5.85rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-[#f5efe3]"
+        >
+          One inbox.
+          <br />
+          Clear routing.
+        </motion.h1>
+
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-6 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] leading-[1.5] text-white/70"
+        >
+          Media inquiries, retail partnerships, county coordination,
+          replication questions, and general project messages all route through
+          the same contact path.
+        </motion.p>
+
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 flex flex-col gap-3 sm:flex-row"
+        >
+          <Link
+            href="#directory"
+            className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07100d] transition hover:bg-white"
+          >
+            Contact directory
+          </Link>
+
+          <Link
+            href="#form"
+            className="inline-flex items-center justify-center rounded-full border border-white/18 px-6 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
+          >
+            Send a message
+          </Link>
+        </motion.div>
+
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 flex max-w-2xl flex-wrap gap-2 text-xs text-white/58"
+        >
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            Media
+          </span>
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            Retail partners
+          </span>
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            County coordination
+          </span>
+        </motion.div>
+      </motion.div>
+
+      <div className="absolute bottom-6 left-6 right-6 z-10 mx-auto flex max-w-6xl items-center justify-between text-xs text-white/42 sm:left-10 sm:right-10 lg:left-12 lg:right-12">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={activeImage.label}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.3 }}
+          >
+            {activeImage.label}
+          </motion.span>
+        </AnimatePresence>
+
+        <div className="flex gap-2">
+          {heroImages.map((image, imageIndex) => (
+            <button
+              key={image.src}
+              type="button"
+              aria-label={`Show ${image.label}`}
+              onClick={() => setIndex(imageIndex)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${imageIndex === index
+                  ? 'w-8 bg-[#f5efe3]'
+                  : 'w-3 bg-white/25 hover:bg-white/45'
+                }`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function mailto(contact: string, subject?: string) {
+  return `mailto:${contact}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`
+}
+
+export function ContactPageClient() {
+  return (
     <SiteLayout>
-      <main className="overflow-hidden font-sans">
+      <main className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
+        <Hero />
 
-        {/* HERO */}
-        <section id="top" className="relative isolate min-h-[100svh] overflow-hidden bg-[#060807] text-white flex flex-col">
-          <motion.div aria-hidden="true" initial={{ opacity: 0, scale: 1.04 }} animate={loaded ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }} className="absolute inset-0">
-            <Image src="/lagoon-hero.png" alt="" fill priority sizes="100vw" className="object-cover object-center opacity-22" />
-          </motion.div>
+        <LightSection id="overview">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              eyebrow="Contact overview"
+              title="A direct contact path keeps the project organized."
+              body="BLACKOUT uses one inbox so messages do not split across different people or platforms. The Project Lead routes inquiries based on topic."
+            />
 
-          {/* Unique character orb for Contact (White/Amber) */}
-          <motion.div aria-hidden="true" className="absolute inset-0" initial={false}>
-            <div className="absolute left-1/3 top-1/4 h-[24rem] w-[24rem] rounded-full bg-white/5 blur-[100px] sm:h-[30rem] sm:w-[30rem]" />
-            <div className="absolute right-1/4 bottom-1/4 h-[22rem] w-[22rem] rounded-full bg-amber-500/10 blur-[110px] sm:h-[28rem] sm:w-[28rem]" />
-          </motion.div>
+            <Reveal delay={0.1}>
+              <div className="grid gap-px overflow-hidden rounded-3xl border border-[#ded6c8] bg-[#ded6c8] sm:grid-cols-2">
+                {contactSnapshot.map((item) => (
+                  <div key={item.label} className="bg-[#fbf8f1] p-5 sm:p-6">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                      {item.label}
+                    </p>
 
-          <div className="absolute inset-0 bg-gradient-to-t from-[#060807] via-[#060807]/50 to-[#060807]/30" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#060807]/40 via-transparent to-[#060807]/40" />
-          <div className="absolute inset-0 opacity-[0.04] [background-image:linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:80px_80px] [mask-image:radial-gradient(circle_at_center,black,transparent_75%)]" />
+                    <p className="mt-3 text-[1.35rem] font-semibold leading-tight tracking-[-0.04em] text-[#173027]">
+                      {item.value}
+                    </p>
 
-          <div className="relative z-10 mx-auto flex flex-1 w-full max-w-6xl flex-col justify-center px-6 pt-32 pb-16 sm:px-10 sm:justify-end sm:pb-20 lg:px-12 lg:pb-24">
-            <motion.h1 initial={reduceMotion ? {} : { opacity: 0, y: 20, filter: 'blur(8px)' }} animate={loaded ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}} transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }} className="max-w-4xl text-[clamp(2.6rem,7vw,5.2rem)] font-semibold leading-[0.92] tracking-[-0.055em] text-[#f4efe5]">
-              Reach the team.{' '}<br className="hidden sm:block" /><Accent>One inbox.</Accent>{' '}<br className="hidden sm:block" />One response path.
-            </motion.h1>
-            <motion.p initial={reduceMotion ? {} : { opacity: 0, y: 16 }} animate={loaded ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8, delay: 0.24 }} className="mt-5 max-w-xl text-[clamp(1rem,2vw,1.3rem)] font-medium leading-[1.3] tracking-[-0.01em] text-white/30 sm:mt-6">
-              Media inquiries, partnership questions, county coordination, or general interest all go to the same place.
-            </motion.p>
-            <motion.div initial={reduceMotion ? {} : { opacity: 0, y: 12 }} animate={loaded ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, delay: 0.5 }} className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center">
-              <Link href="#directory" className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#f3efe6] px-7 py-3.5 text-sm font-medium tracking-wide text-[#0a0f0d] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white sm:w-auto">Contact directory <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span></Link>
-              <Link href="#form" className="inline-flex w-full items-center justify-center rounded-full border border-white/10 bg-white/[0.03] px-7 py-3.5 text-sm font-medium text-[#e6decf] transition-colors hover:bg-white/[0.07] hover:text-white sm:w-auto">Send a message</Link>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* DIRECTORY */}
-        <section id="directory" className="bg-[#faf7f0] py-20 sm:py-24 lg:py-28">
-          <div className="mx-auto max-w-6xl px-6 sm:px-10 lg:px-12">
-            <Fade><h2 className="max-w-4xl text-[clamp(2rem,4vw,3.2rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-[#173027]">Every inquiry type <Accent>has a clear path</Accent>.</h2></Fade>
-            <div className="mt-14 border-t border-[#e2dbc9]">
-              {directory.map((item, i) => (
-                <Fade key={item.type} delay={i * 0.04}>
-                  <div className="grid gap-4 border-b border-[#e2dbc9] py-6 lg:grid-cols-[1.15fr_1fr_auto] lg:items-center">
-                    <div>
-                      <h3 className="text-xl font-semibold tracking-[-0.03em] text-[#173027]">{item.type}</h3>
-                      <p className="mt-2 text-[14px] leading-[1.85] text-[#5a625b]">{item.desc}</p>
-                    </div>
-                    <a href={`mailto:${item.contact}${item.note ? `?subject=${encodeURIComponent(item.note)}` : ''}`} className="inline-flex items-center gap-1 text-[14px] font-medium text-[#173027] transition-colors hover:text-[#2d6a2d]">{item.contact} <span className="text-[#6f8167]">↗</span></a>
-                    <div className="lg:text-right">
-                      {item.note ? (
-                        <span className="inline-flex rounded-full border border-[#e2dbc9] bg-white/70 px-3 py-1 text-[11px] font-medium text-[#7c8576]">{item.note}</span>
-                      ) : (
-                        <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#8f978a]">Direct inbox</span>
-                      )}
-                    </div>
+                    <p className="mt-3 text-sm leading-6 text-[#657064]">
+                      {item.note}
+                    </p>
                   </div>
-                </Fade>
-              ))}
-            </div>
-            <Fade delay={0.2}>
-              <div className="mt-8 border-t border-[#e2dbc9] pt-6">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#6f8167]">Status notice</p>
-                <p className="mt-3 max-w-4xl text-[14px] leading-[1.9] text-[#5a625b]">BLACKOUT is a student initiative at West Shore Jr./Sr. High School, Melbourne, Florida. Response times may vary with the academic calendar. All partnership and county inquiries are forwarded directly to the Project Lead.</p>
+                ))}
               </div>
-            </Fade>
+            </Reveal>
           </div>
-        </section>
 
-        {/* FORM */}
-        <section id="form" className="bg-[#060807] py-20 text-[#f3efe5] sm:py-24 lg:py-28">
-          <div className="mx-auto max-w-6xl px-6 sm:px-10 lg:px-12">
-            <Fade><h2 className="max-w-4xl text-[clamp(2rem,4vw,3.2rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-[#f3efe5]">Questions, partnerships, or feedback <Accent>all belong here</Accent>.</h2></Fade>
-            <div className="mt-12 grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-              <div className="space-y-6 text-[15px] leading-[1.9] text-[#b8afa1]">
-                <Fade><p>The form is the simplest way to reach the team. It keeps the contact page clear while still giving visitors a direct path to the right inbox.</p></Fade>
-                <Fade delay={0.06}><p>Messages are routed through a single channel so the team can respond clearly and consistently.</p></Fade>
+          <Reveal delay={0.16}>
+            <div className="mt-12 border-t border-[#ded6c8] pt-8">
+              <p className="max-w-3xl text-[clamp(1.3rem,3vw,1.95rem)] font-semibold leading-tight tracking-[-0.04em]">
+                The point is simple: every message reaches the same team, and
+                the right person responds from there.
+              </p>
+            </div>
+          </Reveal>
+        </LightSection>
+
+        <DarkSection id="directory">
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              dark
+              eyebrow="Directory"
+              title="Every inquiry type has a clear path."
+              body="Use the same inbox for all messages. Include the relevant topic in the subject line so the team can route it quickly."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.035]">
+                <div className="hidden border-b border-white/10 px-6 py-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#a8b98c] md:grid md:grid-cols-[1fr_0.8fr_0.45fr]">
+                  <p>Inquiry</p>
+                  <p>Contact</p>
+                  <p>Subject</p>
+                </div>
+
+                {directory.map((item, index) => (
+                  <Reveal key={item.type} delay={index * 0.04}>
+                    <div className="grid gap-4 border-b border-white/10 px-5 py-5 last:border-b-0 md:grid-cols-[1fr_0.8fr_0.45fr] md:items-center md:px-6">
+                      <div>
+                        <h3 className="text-[1.12rem] font-semibold tracking-[-0.035em] text-[#f5efe3]">
+                          {item.type}
+                        </h3>
+
+                        <p className="mt-2 max-w-xl text-sm leading-7 text-white/56">
+                          {item.desc}
+                        </p>
+                      </div>
+
+                      <a
+                        href={mailto(
+                          item.contact,
+                          item.note === 'Direct inbox' ? undefined : item.note,
+                        )}
+                        className="text-sm font-semibold text-[#f5efe3] transition hover:text-[#a8b98c]"
+                      >
+                        {item.contact} <span className="text-[#a8b98c]">↗</span>
+                      </a>
+
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#a8b98c] md:text-right">
+                        {item.note}
+                      </p>
+                    </div>
+                  </Reveal>
+                ))}
               </div>
-              <Fade delay={0.1}>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 lg:p-5">
-                  <ContactForm />
-                </div>
-              </Fade>
-            </div>
+            </Reveal>
           </div>
-        </section>
 
-        {/* GET INVOLVED */}
-        <section className="bg-[#faf7f0] py-20 sm:py-24 lg:py-28">
-          <div className="mx-auto max-w-6xl px-6 sm:px-10 lg:px-12">
-            <Fade><h2 className="max-w-4xl text-[clamp(2rem,4vw,3.2rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-[#173027]">Common ways people <Accent>engage with the project</Accent>.</h2></Fade>
-            <div className="mt-14 border-t border-[#e2dbc9]">
-              {quickLinks.map((item, i) => (
-                <Fade key={item.head} delay={i * 0.06}>
-                  <div className="grid gap-4 border-b border-[#e2dbc9] py-7 lg:grid-cols-[1.2fr_1fr] lg:items-center">
-                    <div>
-                      <h3 className="text-xl font-semibold tracking-[-0.03em] text-[#173027]">{item.head}</h3>
-                      <p className="mt-2 text-[14px] leading-[1.85] text-[#5a625b]">{item.body}</p>
-                    </div>
-                    <div className="lg:text-right">
-                      <Link href={item.href} className="group inline-flex items-center gap-2 rounded-full bg-[#173027] px-5 py-3 text-sm font-medium text-[#f3efe5] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#1d3d31]">{item.cta} <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span></Link>
-                    </div>
+          <Reveal delay={0.16}>
+            <div className="mt-12 rounded-3xl bg-[#f5efe3] p-6 text-[#07100d] sm:p-7">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#607357]">
+                Status notice
+              </p>
+
+              <p className="mt-3 max-w-3xl text-sm leading-7 text-[#526052]">
+                BLACKOUT is a student initiative at West Shore Jr./Sr. High
+                School in Melbourne, Florida. Response times may vary with the
+                academic calendar. Partnership and county inquiries are routed to
+                the Project Lead.
+              </p>
+            </div>
+          </Reveal>
+        </DarkSection>
+
+        <LightSection id="form">
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              eyebrow="Send a message"
+              title="Questions, partnerships, or feedback all belong here."
+              body="The form keeps the contact process simple while still giving visitors a direct path to the project inbox."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-4 shadow-[0_24px_70px_rgba(40,30,15,0.08)] sm:p-5">
+                <ContactForm />
+              </div>
+            </Reveal>
+          </div>
+        </LightSection>
+
+        <DarkSection id="engage">
+          <SectionHeader
+            dark
+            eyebrow="Get involved"
+            title="Common ways people engage with the project."
+            body="Most visitors are here for one of three reasons: to take the survey, to explore retail partnership, or to follow the season’s field progress."
+          />
+
+          <div className="mt-10 grid gap-4 lg:grid-cols-3">
+            {quickLinks.map((item, index) => (
+              <Reveal key={item.head} delay={index * 0.05}>
+                <Link
+                  href={item.href}
+                  className="group flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.035] p-6 transition hover:-translate-y-0.5 hover:bg-white/[0.055]"
+                >
+                  <div className="flex-1">
+                    <p className="font-mono text-xs text-[#a8b98c]">
+                      {String(index + 1).padStart(2, '0')}
+                    </p>
+
+                    <h3 className="mt-5 text-[1.2rem] font-semibold tracking-[-0.035em] text-[#f5efe3]">
+                      {item.head}
+                    </h3>
+
+                    <p className="mt-3 text-sm leading-7 text-white/58">
+                      {item.body}
+                    </p>
                   </div>
-                </Fade>
-              ))}
-            </div>
-          </div>
-        </section>
 
-        {/* CLOSING */}
-        <section className="bg-[#060807] py-20 text-[#f3efe5] sm:py-24 lg:py-28">
-          <div className="mx-auto max-w-6xl px-6 sm:px-10 lg:px-12">
-            <Fade><h2 className="max-w-4xl text-[clamp(2rem,4vw,3.2rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-[#f3efe5]">One inbox. One response path. <Accent>No confusion.</Accent></h2></Fade>
-            <div className="mt-12 grid gap-12 lg:grid-cols-[1fr_1.3fr] lg:items-start">
-              <Fade><div className="space-y-4 text-[15px] leading-[1.85] text-[#b8afa1]"><p>Media inquiries.</p><p>Retail partnerships.</p><p>County coordination.</p><p>General questions.</p></div></Fade>
-              <Fade delay={0.08}>
-                <div>
-                  <h3 className="text-2xl font-semibold tracking-[-0.03em] text-[#f3efe5]">The contact page is direct, calm, and easy to trust.</h3>
-                  <p className="mt-5 text-[15px] leading-[1.9] text-[#b8afa1]">Every message reaches the same team. The Project Lead routes it from there.</p>
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <Link href="#directory" className="group inline-flex items-center gap-2 rounded-full bg-[#f3efe6] px-6 py-3 text-sm font-medium text-[#0a0f0d] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white">Contact directory <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span></Link>
-                    <Link href="#top" className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-6 py-3 text-sm font-medium text-[#e6decf] transition-colors hover:bg-white/[0.07] hover:text-white">Back to top <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">↑</span></Link>
-                  </div>
+                  <p className="mt-6 text-sm font-semibold text-[#a8b98c] transition group-hover:translate-x-0.5">
+                    {item.cta} →
+                  </p>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </DarkSection>
+
+        <LightSection id="routing">
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              eyebrow="Routing"
+              title="The team keeps communication calm and traceable."
+              body="A single response path prevents messages from being lost across separate inboxes, text threads, or informal side conversations."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                  Routing logic
+                </p>
+
+                <div className="mt-5 divide-y divide-[#ded6c8]">
+                  {contactNotes.map((note, index) => (
+                    <div
+                      key={note}
+                      className="grid gap-3 py-4 first:pt-0 last:pb-0 sm:grid-cols-[3rem_1fr]"
+                    >
+                      <p className="font-mono text-xs text-[#6f8167]">
+                        {String(index + 1).padStart(2, '0')}
+                      </p>
+
+                      <p className="text-sm leading-7 text-[#5e665d]">
+                        {note}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-              </Fade>
-            </div>
+              </div>
+            </Reveal>
           </div>
-        </section>
 
+          <Reveal delay={0.16}>
+            <div className="mt-12 flex flex-col gap-3 border-t border-[#ded6c8] pt-8 sm:flex-row">
+              <Link
+                href="#directory"
+                className="inline-flex items-center justify-center rounded-full bg-[#173027] px-6 py-3 text-sm font-semibold text-[#f7f2e8] transition hover:bg-[#223a2e]"
+              >
+                Contact directory
+              </Link>
+
+              <Link
+                href="#top"
+                className="inline-flex items-center justify-center rounded-full border border-[#d8d0c2] px-6 py-3 text-sm font-semibold text-[#53634f] transition hover:border-[#173027]/30 hover:text-[#173027]"
+              >
+                Back to top
+              </Link>
+            </div>
+          </Reveal>
+        </LightSection>
       </main>
     </SiteLayout>
   )
 }
+
+export default ContactPageClient

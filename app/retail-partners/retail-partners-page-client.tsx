@@ -1,19 +1,60 @@
 'use client'
 
 import Link from 'next/link'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  useReducedMotion,
+} from 'framer-motion'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { SiteLayout } from '@/components/site-layout'
 
-const heroImage =
-  'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1600&q=80'
+const heroImages = [
+  {
+    src: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1800&q=80',
+    label: 'Garden center display',
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Indian%20River%20Lagoon%20Area.jpg',
+    label: 'Indian River Lagoon',
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Storm%20Drain.JPG',
+    label: 'Storm drain pathway',
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Florida%20Manatee%20FWS%2018.jpg',
+    label: 'Manatee habitat',
+  },
+]
 
 const programTargets = [
-  { label: 'Partner stores', value: '4 - 6', note: 'Signed agreements per season' },
-  { label: 'Tag placement', value: 'At display', note: 'Directly on fertilizer shelving' },
-  { label: 'Season duration', value: 'Jun 1 - Sep 30', note: 'Tags remain in place throughout' },
-  { label: 'Reach tracking', value: 'Weekly', note: 'Customer traffic logged by partner' },
-  { label: 'Tag design', value: 'Manatee Safe', note: 'Branded with ordinance dates' },
+  {
+    label: 'Partner stores',
+    value: '4 - 6',
+    note: 'Signed agreements per season',
+  },
+  {
+    label: 'Tag placement',
+    value: 'At display',
+    note: 'Directly on fertilizer shelving',
+  },
+  {
+    label: 'Season duration',
+    value: 'Jun 1 - Sep 30',
+    note: 'Tags remain in place throughout',
+  },
+  {
+    label: 'Reach tracking',
+    value: 'Weekly',
+    note: 'Customer traffic logged by partner',
+  },
+  {
+    label: 'Tag design',
+    value: 'Manatee Safe',
+    note: 'Branded with ordinance dates',
+  },
 ]
 
 const partnerSteps = [
@@ -25,7 +66,7 @@ const partnerSteps = [
   {
     step: '02',
     label: 'Agreement signed',
-    desc: 'A written partner agreement confirming placement location, season dates, and weekly reach logging.',
+    desc: 'A written partner agreement confirms placement location, season dates, and weekly reach logging.',
   },
   {
     step: '03',
@@ -35,7 +76,7 @@ const partnerSteps = [
   {
     step: '04',
     label: 'Weekly data log',
-    desc: 'Partners note estimated customer traffic passing the display. Takes roughly two minutes per week.',
+    desc: 'Partners note estimated customer traffic passing the display. It takes roughly two minutes per week.',
   },
   {
     step: '05',
@@ -45,483 +86,596 @@ const partnerSteps = [
 ]
 
 const retailPartners = [
-  { name: 'Partner A  -  Brevard County', type: 'Hardware', status: 'Outreach pending', active: false },
-  { name: 'Partner B  -  Brevard County', type: 'Garden center', status: 'Outreach pending', active: false },
-  { name: 'Partner C  -  Brevard County', type: 'Hardware', status: 'Outreach pending', active: false },
-  { name: 'Partner D  -  Brevard County', type: 'Nursery', status: 'Outreach pending', active: false },
-  { name: 'Partner E  -  Brevard County', type: 'Garden center', status: 'Outreach pending', active: false },
-  { name: 'Partner F  -  Brevard County', type: 'Hardware', status: 'Outreach pending', active: false },
+  {
+    name: 'Partner A  -  Brevard County',
+    type: 'Hardware',
+    status: 'Outreach pending',
+    active: false,
+  },
+  {
+    name: 'Partner B  -  Brevard County',
+    type: 'Garden center',
+    status: 'Outreach pending',
+    active: false,
+  },
+  {
+    name: 'Partner C  -  Brevard County',
+    type: 'Hardware',
+    status: 'Outreach pending',
+    active: false,
+  },
+  {
+    name: 'Partner D  -  Brevard County',
+    type: 'Nursery',
+    status: 'Outreach pending',
+    active: false,
+  },
+  {
+    name: 'Partner E  -  Brevard County',
+    type: 'Garden center',
+    status: 'Outreach pending',
+    active: false,
+  },
+  {
+    name: 'Partner F  -  Brevard County',
+    type: 'Hardware',
+    status: 'Outreach pending',
+    active: false,
+  },
 ]
 
-function Fade({
+const partnerValue = [
+  {
+    title: 'No cost to stores',
+    body: 'BLACKOUT provides the tags, installs them, and removes them at the end of the blackout window.',
+  },
+  {
+    title: 'Simple placement',
+    body: 'Tags sit directly beside fertilizer products so customers see the ordinance before purchasing.',
+  },
+  {
+    title: 'Community-facing role',
+    body: 'Partner stores help customers avoid accidental violations while supporting the Indian River Lagoon.',
+  },
+]
+
+const materials = [
+  'Printed Manatee Safe shelf tags',
+  'One-page partner agreement',
+  'Placement photo record',
+  'Weekly traffic estimate log',
+  'End-of-season reach summary',
+]
+
+function Reveal({
   children,
   delay = 0,
-  y = 14,
-  className = '',
 }: {
   children: ReactNode
   delay?: number
-  y?: number
-  className?: string
 }) {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-120px' })
+  const inView = useInView(ref, { once: true, margin: '-80px' })
   const reduceMotion = useReducedMotion()
 
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y, filter: 'blur(8px)' }}
-      animate={isInView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
-      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
+      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      transition={{
+        duration: 0.55,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
     >
       {children}
     </motion.div>
   )
 }
 
-function Accent({ children }: { children: ReactNode }) {
-  return <span className="text-[#a3b18a]">{children}</span>
+function LightSection({
+  id,
+  children,
+}: {
+  id?: string
+  children: ReactNode
+}) {
+  return (
+    <section
+      id={id}
+      className="bg-[#f7f2e8] px-6 py-16 text-[#173027] sm:px-10 sm:py-20 lg:px-12"
+    >
+      <div className="mx-auto max-w-6xl">{children}</div>
+    </section>
+  )
 }
 
-function SectionTitle({
+function DarkSection({
+  id,
+  children,
+}: {
+  id?: string
+  children: ReactNode
+}) {
+  return (
+    <section
+      id={id}
+      className="bg-[#07100d] px-6 py-16 text-white sm:px-10 sm:py-20 lg:px-12"
+    >
+      <div className="mx-auto max-w-6xl">{children}</div>
+    </section>
+  )
+}
+
+function SectionHeader({
   eyebrow,
   title,
+  body,
   dark = false,
 }: {
   eyebrow: string
   title: ReactNode
+  body?: ReactNode
   dark?: boolean
 }) {
   return (
-    <div className="mb-10">
-      <p
-        className={`text-[10px] uppercase tracking-[0.3em] ${
-          dark ? 'text-[#8f978a]' : 'text-[#6f8167]'
-        }`}
-      >
-        {eyebrow}
-      </p>
-      <h2
-        className={`mt-3 max-w-4xl font-sans text-[clamp(2rem,4vw,3.6rem)] font-semibold leading-[1.02] tracking-[-0.045em] ${
-          dark ? 'text-[#f3efe5]' : 'text-[#173027]'
-        }`}
-      >
-        {title}
-      </h2>
+    <div>
+      <Reveal>
+        <p
+          className={`text-xs font-semibold uppercase tracking-[0.22em] ${dark ? 'text-[#a8b98c]' : 'text-[#6f8167]'
+            }`}
+        >
+          {eyebrow}
+        </p>
+      </Reveal>
+
+      <Reveal delay={0.06}>
+        <h2
+          className={`mt-4 max-w-4xl text-[clamp(2.35rem,5vw,4.45rem)] font-semibold leading-[0.98] tracking-[-0.06em] ${dark ? 'text-[#f5efe3]' : 'text-[#173027]'
+            }`}
+        >
+          {title}
+        </h2>
+      </Reveal>
+
+      {body ? (
+        <Reveal delay={0.12}>
+          <p
+            className={`mt-6 max-w-2xl text-base leading-8 sm:text-[1.05rem] ${dark ? 'text-white/62' : 'text-[#5e665d]'
+              }`}
+          >
+            {body}
+          </p>
+        </Reveal>
+      ) : null}
     </div>
   )
 }
 
-function DividerLabel({ label }: { label: string }) {
+function Hero() {
+  const reduceMotion = useReducedMotion()
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    if (reduceMotion) return
+
+    const timer = window.setInterval(() => {
+      setIndex((current) => (current + 1) % heroImages.length)
+    }, 5000)
+
+    return () => window.clearInterval(timer)
+  }, [reduceMotion])
+
+  const activeImage = heroImages[index]
+
   return (
-    <div className="mb-8 flex items-center gap-3">
-      <span className="h-px w-10 bg-[#7a8d73]/35" />
-      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#6f8167]">
-        {label}
-      </span>
-    </div>
-  )
-}
-
-function LightBand({ children }: { children: ReactNode }) {
-  return <section className="bg-[#faf7f0] py-16 sm:py-20 lg:py-24">{children}</section>
-}
-
-function DarkBand({ children }: { children: ReactNode }) {
-  return <section className="bg-[#060807] py-16 text-[#f3efe5] sm:py-20 lg:py-24">{children}</section>
-}
-
-function Row({
-  left,
-  right,
-  dark = false,
-}: {
-  left: string
-  right: ReactNode
-  dark?: boolean
-}) {
-  return (
-    <div
-      className={`grid gap-3 border-b py-6 last:border-b-0 lg:grid-cols-[260px_1fr] ${
-        dark ? 'border-white/10' : 'border-[#e2dbc9]'
-      }`}
+    <section
+      id="top"
+      className="relative isolate h-[100svh] overflow-hidden bg-[#07100d] text-white"
     >
-      <p
-        className={`text-[11px] uppercase tracking-[0.18em] ${
-          dark ? 'text-[#8f978a]' : 'text-[#7c8576]'
-        }`}
-      >
-        {left}
-      </p>
-      <div className={`text-[14px] leading-[1.9] ${dark ? 'text-[#b8afa1]' : 'text-[#5a625b]'}`}>
-        {right}
-      </div>
-    </div>
-  )
-}
+      <div aria-hidden="true" className="absolute inset-0">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={activeImage.src}
+            src={activeImage.src}
+            alt=""
+            draggable={false}
+            referrerPolicy="no-referrer"
+            className="absolute inset-0 h-full w-full object-cover"
+            initial={{ opacity: 0, scale: 1.03 }}
+            animate={{
+              opacity: 0.34,
+              scale: reduceMotion ? 1 : 1.07,
+            }}
+            exit={{ opacity: 0 }}
+            transition={{
+              opacity: { duration: 1 },
+              scale: { duration: 5.2, ease: 'easeOut' },
+            }}
+          />
+        </AnimatePresence>
 
-function StatusRow({
-  name,
-  type,
-  status,
-  active,
-}: {
-  name: string
-  type: string
-  status: string
-  active: boolean
-}) {
-  return (
-    <div className="grid gap-4 border-b border-[#e2dbc9] px-5 py-5 last:border-b-0 md:grid-cols-[1.3fr_0.7fr_0.8fr] md:items-center">
-      <p className="font-medium text-[#173027]">{name}</p>
-      <p className="text-[13px] text-[#5a625b]">{type}</p>
-      <div className="flex items-center gap-2">
-        <span className={`h-2 w-2 rounded-full ${active ? 'bg-emerald-500' : 'bg-[#c7c0b0]'}`} />
-        <span className={`text-[13px] ${active ? 'text-emerald-800' : 'text-[#7c8576]'}`}>{status}</span>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#07100d] via-[#07100d]/82 to-[#07100d]/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07100d] via-transparent to-[#07100d]/20" />
       </div>
-    </div>
+
+      <motion.div
+        initial="hidden"
+        animate="show"
+        transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
+        className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-12"
+      >
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#b9c89c]"
+        >
+          Retail partners
+        </motion.p>
+
+        <motion.h1
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-5xl text-[clamp(2.8rem,8vw,5.85rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-[#f5efe3]"
+        >
+          The shelf is the
+          <br />
+          decision point.
+        </motion.h1>
+
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-6 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] leading-[1.5] text-white/70"
+        >
+          BLACKOUT places ordinance information beside fertilizer products, where
+          customers can see the blackout window before purchase becomes
+          application.
+        </motion.p>
+
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 flex flex-col gap-3 sm:flex-row"
+        >
+          <Link
+            href="#program"
+            className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07100d] transition hover:bg-white"
+          >
+            Program snapshot
+          </Link>
+
+          <Link
+            href="#partner"
+            className="inline-flex items-center justify-center rounded-full border border-white/18 px-6 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
+          >
+            Become a partner
+          </Link>
+        </motion.div>
+
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 flex max-w-2xl flex-wrap gap-2 text-xs text-white/58"
+        >
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            4 - 6 partner stores
+          </span>
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            Manatee Safe shelf tags
+          </span>
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            June 1 - September 30
+          </span>
+        </motion.div>
+      </motion.div>
+
+      <div className="absolute bottom-6 left-6 right-6 z-10 mx-auto flex max-w-6xl items-center justify-between text-xs text-white/42 sm:left-10 sm:right-10 lg:left-12 lg:right-12">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={activeImage.label}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.3 }}
+          >
+            {activeImage.label}
+          </motion.span>
+        </AnimatePresence>
+
+        <div className="flex gap-2">
+          {heroImages.map((image, imageIndex) => (
+            <button
+              key={image.src}
+              type="button"
+              aria-label={`Show ${image.label}`}
+              onClick={() => setIndex(imageIndex)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${imageIndex === index
+                  ? 'w-8 bg-[#f5efe3]'
+                  : 'w-3 bg-white/25 hover:bg-white/45'
+                }`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
   )
 }
 
 export function RetailPartnersPageClient() {
-  const [loaded, setLoaded] = useState(false)
-  const reduceMotion = useReducedMotion()
-
-  useEffect(() => {
-    setLoaded(true)
-  }, [])
-
   return (
     <SiteLayout>
-      <main className="overflow-hidden bg-[#f6f1e7] text-[#111814] selection:bg-[#d9cfb6] selection:text-[#111814] font-sans">
-        {/* Hero */}
-        <section id="top" className="relative isolate overflow-hidden bg-[#060807] text-white">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-20"
-            style={{ backgroundImage: `url(${heroImage})` }}
-            aria-hidden="true"
-          />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(163,177,138,0.16),transparent_30%),radial-gradient(circle_at_top_right,rgba(255,255,255,0.06),transparent_22%),linear-gradient(180deg,#0a0f0d_0%,#050706_100%)]" />
-          <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:radial-gradient(circle_at_center,black,transparent_82%)]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#060807] via-[#060807]/82 to-[#060807]/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#060807] via-transparent to-transparent" />
+      <main className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
+        <Hero />
 
-          <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-            <Fade y={10}>
-              <p className="text-[10px] uppercase tracking-[0.32em] text-[#8f978a]">04B / Retail Partners</p>
-            </Fade>
+        <LightSection id="program">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              eyebrow="Program snapshot"
+              title="A simple retail intervention with a specific job."
+              body="The shelf tag is placed where fertilizer decisions happen. It gives customers the blackout dates before they buy, not after nutrients have already reached the runoff pathway."
+            />
 
-            <div className="mt-8 grid gap-10 lg:grid-cols-[1.12fr_0.88fr] lg:items-start">
-              <div className="max-w-3xl">
-                <Fade delay={0.05}>
-                  <h1 className="max-w-5xl font-sans text-[clamp(3.25rem,6vw,6.25rem)] font-semibold leading-[0.92] tracking-[-0.06em] text-[#f4efe5]">
-                    The shelf is the{' '}
-                    <span className="text-[#a3b18a]">
-                      decision point.
-                    </span>
-                  </h1>
-                </Fade>
+            <Reveal delay={0.1}>
+              <div className="grid gap-px overflow-hidden rounded-3xl border border-[#ded6c8] bg-[#ded6c8] sm:grid-cols-2">
+                {programTargets.map((item) => (
+                  <div key={item.label} className="bg-[#fbf8f1] p-5 sm:p-6">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                      {item.label}
+                    </p>
 
-                <Fade delay={0.12}>
-                  <p className="mt-6 max-w-xl text-[1.05rem] leading-8 text-[#c1c8ba]">
-                    BLACKOUT places the ordinance where the choice happens: at the fertilizer display, before the purchase becomes an application.
-                  </p>
-                </Fade>
+                    <p className="mt-3 text-[1.4rem] font-semibold leading-tight tracking-[-0.04em] text-[#173027]">
+                      {item.value}
+                    </p>
 
-                <Fade delay={0.18}>
-                  <p className="mt-4 max-w-xl text-base leading-7 text-[#9fa79a]">
-                    The page stays calm and structured: one image-led hero, one program snapshot, one sequence, and one partner list.
-                  </p>
-                </Fade>
-
-                <Fade delay={0.24}>
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <Link
-                      href="#how-it-works"
-                      className="group inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg"
-                    >
-                      How it works
-                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
-                        →
-                      </span>
-                    </Link>
-                    <Link
-                      href="#partners"
-                      className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
-                    >
-                      Partner list
-                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
-                        →
-                      </span>
-                    </Link>
+                    <p className="mt-3 text-sm leading-6 text-[#657064]">
+                      {item.note}
+                    </p>
                   </div>
-                </Fade>
+                ))}
               </div>
+            </Reveal>
+          </div>
 
-              <motion.div
-                initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 16, scale: 0.99 }}
-                animate={loaded ? { opacity: 1, y: 0, scale: 1 } : undefined}
-                transition={{ duration: 0.9, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-                className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-[0_18px_60px_rgba(0,0,0,0.18)] backdrop-blur-xl"
-              >
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  <motion.div
-                    aria-hidden="true"
-                    initial={reduceMotion ? { scale: 1 } : { scale: 1.05, opacity: 0.85 }}
-                    animate={loaded ? { scale: 1, opacity: 1 } : undefined}
-                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${heroImage})` }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050706] via-transparent to-transparent" />
-                  <div className="absolute inset-0 ring-1 ring-inset ring-white/5" />
-                </div>
-                <div className="border-t border-white/10 px-6 py-5">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Point of purchase</p>
-                  <p className="mt-2 text-sm leading-7 text-[#f3efe5]">
-                    A nursery or hardware aisle is where the ordinance can be seen at the exact moment it matters.
+          <Reveal delay={0.16}>
+            <div className="mt-12 rounded-3xl bg-[#173027] p-6 text-[#f7f2e8] sm:p-7">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#a8b98c]">
+                Core idea
+              </p>
+
+              <p className="mt-3 max-w-3xl text-[1.45rem] font-semibold leading-tight tracking-[-0.04em]">
+                The purchase moment is the last clean chance to prevent a summer
+                fertilizer application.
+              </p>
+            </div>
+          </Reveal>
+        </LightSection>
+
+        <DarkSection id="why-retail">
+          <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              dark
+              eyebrow="Why retail"
+              title="A resident usually buys fertilizer before applying it."
+              body="That makes the fertilizer display one of the strongest intervention points in the whole project. The message appears before the behavior, inside the place where the behavior becomes possible."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl bg-[#f5efe3] p-6 text-[#07100d] sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#607357]">
+                  Partner role
+                </p>
+
+                <p className="mt-3 text-[1.45rem] font-semibold leading-tight tracking-[-0.04em]">
+                  Let BLACKOUT place a small ordinance reminder at the fertilizer
+                  shelf during the blackout window.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+
+          <div className="mt-10 grid gap-4 lg:grid-cols-3">
+            {partnerValue.map((item, index) => (
+              <Reveal key={item.title} delay={index * 0.05}>
+                <div className="h-full rounded-3xl border border-white/10 bg-white/[0.035] p-6">
+                  <h3 className="text-[1.15rem] font-semibold tracking-[-0.035em] text-[#f5efe3]">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-7 text-white/58">
+                    {item.body}
                   </p>
                 </div>
-              </motion.div>
-            </div>
+              </Reveal>
+            ))}
           </div>
-        </section>
+        </DarkSection>
 
-        {/* Snapshot */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="01 / Snapshot" />
-            <SectionTitle eyebrow="Program summary" title={<>A small, repeatable shelf tag program with a clear season and a clear log.</>} />
+        <LightSection id="steps">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              eyebrow="Partner process"
+              title="Five steps. Low lift for the store."
+              body="The process is designed to be lightweight. BLACKOUT handles the materials, installation, documentation, and season summary."
+            />
 
-            <div className="mt-8 border-t border-[#e2dbc9]">
-              {programTargets.map((item, index) => (
-                <Fade key={item.label} delay={index * 0.04}>
-                  <Row
-                    left={item.label}
-                    right={
-                      <>
-                        <span className="block text-[16px] font-medium text-[#173027]">{item.value}</span>
-                        <span className="mt-1 block text-[13px] text-[#5a625b]">{item.note}</span>
-                      </>
-                    }
-                  />
-                </Fade>
+            <div className="divide-y divide-[#ded6c8] border-y border-[#ded6c8]">
+              {partnerSteps.map((item, index) => (
+                <Reveal key={item.step} delay={index * 0.05}>
+                  <div className="grid gap-4 py-6 sm:grid-cols-[3rem_11rem_1fr] sm:gap-6">
+                    <p className="font-mono text-xs text-[#6f8167]">
+                      {item.step}
+                    </p>
+
+                    <h3 className="text-sm font-semibold text-[#173027]">
+                      {item.label}
+                    </h3>
+
+                    <p className="max-w-3xl text-sm leading-7 text-[#5e665d]">
+                      {item.desc}
+                    </p>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>
-        </LightBand>
+        </LightSection>
 
-        {/* How it works */}
-        <DarkBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="02 / How it works" />
-            <SectionTitle
-              eyebrow="The intervention"
-              title={
-                <>
-                  Shelf tags meet the buyer <Accent>at the display</Accent> and turn a retail decision into a compliance moment.
-                </>
-              }
+        <DarkSection id="materials">
+          <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16">
+            <SectionHeader
               dark
+              eyebrow="Materials"
+              title="Everything needed is prepared before the tag goes up."
+              body="A partner does not need to design anything, print anything, or manage a campaign. The store provides shelf access and a weekly reach estimate."
             />
 
-            <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
-              <div className="space-y-6 text-[15px] leading-[1.9] text-[#b8afa1]">
-                <Fade>
-                  <p>
-                    BLACKOUT partners with local garden centers, nurseries, and hardware stores that sell fertilizer in Brevard County. Each partner receives a simple shelf tag placed directly at the fertilizer display.
-                  </p>
-                </Fade>
-                <Fade delay={0.06}>
-                  <p>
-                    The tag carries the ordinance window, the Manatee Safe message, and the blackout dates. It is meant to interrupt the purchase decision before the product leaves the shelf.
-                  </p>
-                </Fade>
-                <Fade delay={0.12}>
-                  <p>
-                    Partners also log weekly customer reach. That estimate becomes part of the county handoff package and the project’s final evidence set.
-                  </p>
-                </Fade>
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl border border-white/10 bg-white/[0.035] p-6 sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#a8b98c]">
+                  Partner kit
+                </p>
+
+                <div className="mt-5 divide-y divide-white/10">
+                  {materials.map((item, index) => (
+                    <div
+                      key={item}
+                      className="grid gap-3 py-4 first:pt-0 last:pb-0 sm:grid-cols-[3rem_1fr]"
+                    >
+                      <p className="font-mono text-xs text-[#a8b98c]">
+                        {String(index + 1).padStart(2, '0')}
+                      </p>
+
+                      <p className="text-sm leading-7 text-white/62">
+                        {item}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </DarkSection>
+
+        <LightSection id="partners">
+          <SectionHeader
+            eyebrow="Partner list"
+            title="Retail outreach status."
+            body="The partner list tracks target stores, store type, and placement status. Once agreements are signed, this section can be updated with confirmed names and active placements."
+          />
+
+          <Reveal delay={0.1}>
+            <div className="mt-10 overflow-hidden rounded-3xl border border-[#ded6c8] bg-[#fbf8f1]">
+              <div className="hidden border-b border-[#ded6c8] bg-white/55 px-6 py-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f8167] md:grid md:grid-cols-[1.3fr_0.7fr_0.8fr]">
+                <p>Store</p>
+                <p>Type</p>
+                <p>Status</p>
               </div>
 
-              <Fade delay={0.1}>
-                <div className="rounded-[2rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Partner sequence</p>
-                  <div className="mt-5 border-t border-white/10">
-                    {partnerSteps.map((item) => (
-                      <div key={item.step} className="grid gap-4 border-b border-white/10 py-6 last:border-b-0 lg:grid-cols-[72px_1fr]">
-                        <div>
-                          <p className="text-[10px] uppercase tracking-[0.18em] text-[#8f978a]">Step {item.step}</p>
-                        </div>
-                        <div>
-                          <h3 className="font-sans text-xl font-semibold tracking-[-0.03em] text-[#f3efe5]">
-                            {item.label}
-                          </h3>
-                          <p className="mt-2 text-[14px] leading-[1.85] text-[#a6ad9f]">{item.desc}</p>
-                        </div>
-                      </div>
-                    ))}
+              {retailPartners.map((partner) => (
+                <div
+                  key={partner.name}
+                  className="grid gap-4 border-b border-[#ded6c8] px-5 py-5 last:border-b-0 md:grid-cols-[1.3fr_0.7fr_0.8fr] md:items-center"
+                >
+                  <p className="font-medium text-[#173027]">
+                    {partner.name}
+                  </p>
+
+                  <p className="text-sm text-[#5e665d]">
+                    {partner.type}
+                  </p>
+
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`h-2 w-2 rounded-full ${partner.active ? 'bg-[#6f8167]' : 'bg-[#c7c0b0]'
+                        }`}
+                    />
+                    <span
+                      className={`text-sm ${partner.active ? 'text-[#173027]' : 'text-[#7c8576]'
+                        }`}
+                    >
+                      {partner.status}
+                    </span>
                   </div>
                 </div>
-              </Fade>
+              ))}
             </div>
-          </div>
-        </DarkBand>
+          </Reveal>
+        </LightSection>
 
-        {/* Partner status */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="03 / Current partner status" />
-            <SectionTitle
-              eyebrow="Outreach list"
-              title={<>A simple live list keeps the project organized without turning the page into a dashboard.</>}
-            />
-
-            <div id="partners" className="mt-8 overflow-hidden rounded-[2rem] border border-[#e2dbc9] bg-white/75">
-              <div className="grid gap-4 border-b border-[#e2dbc9] bg-[#efe8da] px-5 py-4 md:grid-cols-[1.3fr_0.7fr_0.8fr]">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#7c8576]">Retail outlet</p>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#7c8576]">Classification</p>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#7c8576]">Status</p>
-              </div>
-
-              <div>
-                {retailPartners.map((partner) => (
-                  <StatusRow
-                    key={partner.name}
-                    name={partner.name}
-                    type={partner.type}
-                    status={partner.status}
-                    active={partner.active}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <p className="mt-5 max-w-3xl rounded-[1.25rem] border border-[#e2dbc9] bg-white/60 px-4 py-3 text-[12px] leading-[1.65] text-[#7c8576]">
-              Partner outreach begins before the June 1 blackout window. Store names update once outreach is finalized.
-            </p>
-          </div>
-        </LightBand>
-
-        {/* What partners agree to */}
-        <DarkBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="04 / What partners agree to" />
-            <SectionTitle
-              eyebrow="The ask"
-              title={<>The agreement is intentionally small: access, placement, and a weekly log.</>}
+        <DarkSection id="partner">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+            <SectionHeader
               dark
+              eyebrow="Become a partner"
+              title="A small shelf tag can prevent an accidental violation."
+              body="Retail partners help customers see the ordinance before the blackout window is broken. BLACKOUT handles the setup, documentation, and end-of-season summary."
             />
 
-            <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-start">
-              <div className="space-y-6 text-[15px] leading-[1.9] text-[#b8afa1]">
-                <p>
-                  Partners do not need to change their inventory or their pricing. They only need to allow shelf tags near the fertilizer display and confirm the placement during the season.
-                </p>
-                <p>
-                  BLACKOUT handles the print materials, installation, and the seasonal closeout summary. The partner’s role is light and repeatable.
-                </p>
-              </div>
-
-              <Fade delay={0.1}>
-                <div className="rounded-[2rem] border border-white/10 bg-white/[0.035] p-6 backdrop-blur-md">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Program targets</p>
-                  <div className="mt-5 border-t border-white/10">
-                    {programTargets.map((item) => (
-                      <div key={item.label} className="grid gap-3 border-b border-white/10 py-5 last:border-b-0 lg:grid-cols-[1fr_auto]">
-                        <div>
-                          <p className="text-[13px] uppercase tracking-[0.18em] text-[#8f978a]">{item.label}</p>
-                          <p className="mt-1 text-[14px] text-[#a6ad9f]">{item.note}</p>
-                        </div>
-                        <p className="text-[15px] font-medium text-[#f3efe5] lg:text-right">{item.value}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </Fade>
-            </div>
-          </div>
-        </DarkBand>
-
-        {/* CTA */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="05 / Partner with BLACKOUT" />
-            <SectionTitle
-              eyebrow="Next step"
-              title={<>A short conversation is enough to start the season.</>}
-            />
-
-            <div className="rounded-[2rem] border border-[#e2dbc9] bg-white/70 p-6 lg:p-8">
-              <div className="grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-center">
-                <div>
-                  <h3 className="font-sans text-[clamp(1.4rem,2.8vw,2.2rem)] font-semibold tracking-[-0.03em] text-[#173027]">
-                    One meeting. One tag placement. One clearer decision point.
-                  </h3>
-                  <p className="mt-4 max-w-2xl text-[15px] leading-[1.9] text-[#5a625b]">
-                    The best retail partner is a store that wants customers to have the right information in front of them before they buy fertilizer. BLACKOUT makes that easy to do.
+            <Reveal delay={0.1}>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Link
+                  href="mailto:blackoutinitiative@gmail.com"
+                  className="group block rounded-3xl bg-[#f5efe3] p-6 text-[#07100d] transition hover:-translate-y-0.5 hover:bg-white"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#607357]">
+                    Contact
                   </p>
-                </div>
 
-                <div className="lg:text-right">
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center justify-center rounded-full bg-[#173027] px-6 py-3 text-sm font-medium text-[#faf7f0] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#223a2e]"
-                  >
-                    Become a partner
-                  </Link>
-                </div>
+                  <p className="mt-5 text-[1.25rem] font-semibold tracking-[-0.035em]">
+                    Request a partner packet
+                  </p>
+
+                  <p className="mt-3 text-sm leading-7 text-[#526052]">
+                    Ask for the one-page agreement, tag mockup, and placement
+                    instructions.
+                  </p>
+
+                  <p className="mt-6 text-sm text-[#607357] transition group-hover:translate-x-0.5">
+                    Email the team →
+                  </p>
+                </Link>
+
+                <Link
+                  href="#steps"
+                  className="group block rounded-3xl border border-white/10 bg-white/[0.035] p-6 transition hover:-translate-y-0.5 hover:bg-white/[0.055]"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#a8b98c]">
+                    Process
+                  </p>
+
+                  <p className="mt-5 text-[1.25rem] font-semibold tracking-[-0.035em] text-[#f5efe3]">
+                    Review the steps
+                  </p>
+
+                  <p className="mt-3 text-sm leading-7 text-white/58">
+                    See exactly what participation requires before agreeing.
+                  </p>
+
+                  <p className="mt-6 text-sm text-[#a8b98c] transition group-hover:translate-x-0.5">
+                    Go to process →
+                  </p>
+                </Link>
               </div>
-            </div>
+            </Reveal>
           </div>
-        </LightBand>
-
-        {/* Closing */}
-        <DarkBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="06 / Closing" />
-            <SectionTitle
-              eyebrow="Closing"
-              title={<>The shelf is where the ordinance becomes visible in everyday life.</>}
-              dark
-            />
-
-            <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
-              <div className="space-y-3 text-[14px] leading-[1.85] text-[#a6ad9f]">
-                <p>The shelf tag makes the rule visible.</p>
-                <p>The weekly log makes the reach measurable.</p>
-                <p>The season summary turns retail work into evidence.</p>
-              </div>
-
-              <div>
-                <h3 className="font-sans text-2xl font-semibold tracking-[-0.03em] text-white">
-                  BLACKOUT keeps the design calm so the message can do the work.
-                </h3>
-                <p className="mt-4 text-[14px] leading-[1.9] text-[#a6ad9f]">
-                  This version stays consistent with the other pages: dark hero, light bands, soft motion, rounded corners, and no oversized cards or harsh tables.
-                </p>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <Link
-                    href="#how-it-works"
-                    className="inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
-                  >
-                    Back to how it works
-                    <span aria-hidden>→</span>
-                  </Link>
-                  <Link
-                    href="#top"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
-                  >
-                    Back to top
-                    <span aria-hidden>→</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </DarkBand>
+        </DarkSection>
       </main>
     </SiteLayout>
   )

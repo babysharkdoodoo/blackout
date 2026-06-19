@@ -1,13 +1,34 @@
 'use client'
 
 import Link from 'next/link'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  useReducedMotion,
+} from 'framer-motion'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { SiteLayout } from '@/components/site-layout'
 import { SurveyForm } from '@/components/survey-form'
 
-const heroBg =
-  'https://commons.wikimedia.org/wiki/Special:Redirect/file/Indian%20River%20Lagoon%20National%20Scenic%20Byway%20-%20Underwater%20Manatee%20-%20NARA%20-%207719534.jpg'
+const heroImages = [
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Indian%20River%20Lagoon%20Area.jpg',
+    label: 'Indian River Lagoon',
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Indian%20River%20Lagoon%20National%20Scenic%20Byway%20-%20Underwater%20Manatee%20-%20NARA%20-%207719534.jpg',
+    label: 'Manatee habitat',
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Storm%20Drain.JPG',
+    label: 'Storm drain pathway',
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Floridian%20seagrass%20bed.jpg',
+    label: 'Seagrass beds',
+  },
+]
 
 const stats = [
   { k: 'Wave 1', v: 'Pre-intervention baseline' },
@@ -51,19 +72,16 @@ const auditMetrics = [
 
 const pipelines = [
   {
-    title: 'Competition submissions',
-    body:
-      'CmPS, HOSA, Earth Prize, EPA PEYA, and GENIUS Olympiad all need documented quantitative outcomes. The wave gap provides that verified evidence.',
+    title: 'Project submissions',
+    body: 'Documented quantitative outcomes need a clear before/after comparison. The wave gap provides that verified evidence.',
   },
   {
     title: 'County handoff package',
-    body:
-      'Brevard County environmental management receives the raw survey dataset, methodology settings, and a validated baseline for future municipal use.',
+    body: 'Brevard County environmental management receives the raw survey dataset, methodology settings, and a validated baseline for future municipal use.',
   },
   {
     title: 'Replication guide',
-    body:
-      'The survey instrument and field protocol are documented so external teams can repeat the work without rebuilding the process from scratch.',
+    body: 'The survey instrument and field protocol are documented so external teams can repeat the work without rebuilding the process from scratch.',
   },
 ]
 
@@ -76,90 +94,116 @@ const wavePoints = [
 const dataFlow = [
   'Door-to-door collection becomes a clean baseline dataset.',
   'Baseline data is compared against the post-intervention wave.',
-  'The resulting delta is reused for county handoff and competition submissions.',
+  'The resulting delta is reused for county handoff and project documentation.',
 ]
 
-function Fade({
+function Reveal({
   children,
   delay = 0,
-  y = 14,
-  className = '',
 }: {
   children: ReactNode
   delay?: number
-  y?: number
-  className?: string
 }) {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-120px' })
+  const inView = useInView(ref, { once: true, margin: '-80px' })
   const reduceMotion = useReducedMotion()
 
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y, filter: 'blur(8px)' }}
-      animate={isInView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
-      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
+      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      transition={{
+        duration: 0.55,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
     >
       {children}
     </motion.div>
   )
 }
 
-function Accent({ children }: { children: ReactNode }) {
-  return <span className="text-[#a3b18a]">{children}</span>
+function LightSection({
+  id,
+  children,
+}: {
+  id?: string
+  children: ReactNode
+}) {
+  return (
+    <section
+      id={id}
+      className="bg-[#f7f2e8] px-6 py-16 text-[#173027] sm:px-10 sm:py-20 lg:px-12"
+    >
+      <div className="mx-auto max-w-6xl">{children}</div>
+    </section>
+  )
 }
 
-function SectionTitle({
+function DarkSection({
+  id,
+  children,
+}: {
+  id?: string
+  children: ReactNode
+}) {
+  return (
+    <section
+      id={id}
+      className="bg-[#07100d] px-6 py-16 text-white sm:px-10 sm:py-20 lg:px-12"
+    >
+      <div className="mx-auto max-w-6xl">{children}</div>
+    </section>
+  )
+}
+
+function SectionHeader({
   eyebrow,
   title,
+  body,
   dark = false,
 }: {
   eyebrow: string
   title: ReactNode
+  body?: ReactNode
   dark?: boolean
 }) {
   return (
-    <div className="mb-10">
-      <p
-        className={`text-[10px] uppercase tracking-[0.3em] ${
-          dark ? 'text-[#8f978a]' : 'text-[#6f8167]'
-        }`}
-      >
-        {eyebrow}
-      </p>
-      <h2
-        className={`mt-3 max-w-4xl font-sans text-[clamp(2rem,4vw,3.55rem)] font-semibold leading-[1.02] tracking-[-0.045em] ${
-          dark ? 'text-[#f3efe5]' : 'text-[#173027]'
-        }`}
-      >
-        {title}
-      </h2>
+    <div>
+      <Reveal>
+        <p
+          className={`text-xs font-semibold uppercase tracking-[0.22em] ${dark ? 'text-[#a8b98c]' : 'text-[#6f8167]'
+            }`}
+        >
+          {eyebrow}
+        </p>
+      </Reveal>
+
+      <Reveal delay={0.06}>
+        <h2
+          className={`mt-4 max-w-4xl text-[clamp(2.35rem,5vw,4.45rem)] font-semibold leading-[0.98] tracking-[-0.06em] ${dark ? 'text-[#f5efe3]' : 'text-[#173027]'
+            }`}
+        >
+          {title}
+        </h2>
+      </Reveal>
+
+      {body ? (
+        <Reveal delay={0.12}>
+          <p
+            className={`mt-6 max-w-2xl text-base leading-8 sm:text-[1.05rem] ${dark ? 'text-white/62' : 'text-[#5e665d]'
+              }`}
+          >
+            {body}
+          </p>
+        </Reveal>
+      ) : null}
     </div>
   )
 }
 
-function DividerLabel({ label }: { label: string }) {
-  return (
-    <div className="mb-8 flex items-center gap-3">
-      <span className="h-px w-10 bg-[#7a8d73]/35" />
-      <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#6f8167]">
-        {label}
-      </span>
-    </div>
-  )
-}
-
-function LightBand({ children }: { children: ReactNode }) {
-  return <section className="bg-[#faf7f0] py-16 sm:py-20 lg:py-24">{children}</section>
-}
-
-function DarkBand({ children }: { children: ReactNode }) {
-  return <section className="bg-[#060807] py-16 text-[#f3efe5] sm:py-20 lg:py-24">{children}</section>
-}
-
-function LineItem({
+function MetricRow({
   label,
   value,
   note,
@@ -172,28 +216,28 @@ function LineItem({
 }) {
   return (
     <div
-      className={`grid gap-3 border-b py-6 last:border-b-0 lg:grid-cols-[260px_1fr] ${
-        dark ? 'border-white/10' : 'border-[#e2dbc9]'
-      }`}
+      className={`grid gap-3 border-b py-5 last:border-b-0 sm:grid-cols-[12rem_1fr] sm:gap-6 ${dark ? 'border-white/10' : 'border-[#ded6c8]'
+        }`}
     >
+      <p
+        className={`text-[10px] font-semibold uppercase tracking-[0.18em] ${dark ? 'text-[#a8b98c]' : 'text-[#6f8167]'
+          }`}
+      >
+        {label}
+      </p>
+
       <div>
         <p
-          className={`text-[11px] uppercase tracking-[0.18em] ${
-            dark ? 'text-[#8f978a]' : 'text-[#7c8576]'
-          }`}
-        >
-          {label}
-        </p>
-      </div>
-      <div>
-        <p
-          className={`text-[16px] font-medium tracking-[-0.02em] ${
-            dark ? 'text-[#f3efe5]' : 'text-[#173027]'
-          }`}
+          className={`text-sm font-semibold leading-6 ${dark ? 'text-[#f5efe3]' : 'text-[#173027]'
+            }`}
         >
           {value}
         </p>
-        <p className={`mt-2 text-[14px] leading-[1.85] ${dark ? 'text-[#b8afa1]' : 'text-[#5a625b]'}`}>
+
+        <p
+          className={`mt-1 text-sm leading-7 ${dark ? 'text-white/56' : 'text-[#5e665d]'
+            }`}
+        >
           {note}
         </p>
       </div>
@@ -201,333 +245,473 @@ function LineItem({
   )
 }
 
-function StatLine({
-  k,
-  v,
-  dark = false,
-}: {
-  k: string
-  v: string
-  dark?: boolean
-}) {
+function Hero() {
+  const reduceMotion = useReducedMotion()
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    if (reduceMotion) return
+
+    const timer = window.setInterval(() => {
+      setIndex((current) => (current + 1) % heroImages.length)
+    }, 5000)
+
+    return () => window.clearInterval(timer)
+  }, [reduceMotion])
+
+  const activeImage = heroImages[index]
+
   return (
-    <div className={`grid gap-3 border-b py-5 last:border-b-0 lg:grid-cols-[220px_1fr] ${dark ? 'border-white/10' : 'border-[#e2dbc9]'}`}>
-      <p
-        className={`text-[10px] uppercase tracking-[0.18em] ${
-          dark ? 'text-[#8f978a]' : 'text-[#7c8576]'
-        }`}
+    <section
+      id="top"
+      className="relative isolate h-[100svh] overflow-hidden bg-[#07100d] text-white"
+    >
+      <div aria-hidden="true" className="absolute inset-0">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={activeImage.src}
+            src={activeImage.src}
+            alt=""
+            draggable={false}
+            referrerPolicy="no-referrer"
+            className="absolute inset-0 h-full w-full object-cover"
+            initial={{ opacity: 0, scale: 1.03 }}
+            animate={{
+              opacity: 0.34,
+              scale: reduceMotion ? 1 : 1.07,
+            }}
+            exit={{ opacity: 0 }}
+            transition={{
+              opacity: { duration: 1 },
+              scale: { duration: 5.2, ease: 'easeOut' },
+            }}
+          />
+        </AnimatePresence>
+
+        <div className="absolute inset-0 bg-gradient-to-r from-[#07100d] via-[#07100d]/80 to-[#07100d]/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07100d] via-transparent to-[#07100d]/20" />
+      </div>
+
+      <motion.div
+        initial="hidden"
+        animate="show"
+        transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
+        className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-12"
       >
-        {k}
-      </p>
-      <p className={`text-[15px] leading-[1.8] ${dark ? 'text-[#f3efe5]' : 'text-[#173027]'}`}>{v}</p>
-    </div>
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#b9c89c]"
+        >
+          Community survey
+        </motion.p>
+
+        <motion.h1
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-5xl text-[clamp(2.8rem,8vw,5.85rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-[#f5efe3]"
+        >
+          Measure awareness.
+          <br />
+          Reveal real change.
+        </motion.h1>
+
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-6 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] leading-[1.5] text-white/70"
+        >
+          The survey framework turns outreach into defensible data. Wave 1
+          establishes the baseline before any BLACKOUT activity begins; Wave 2
+          measures what changed.
+        </motion.p>
+
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 flex flex-col gap-3 sm:flex-row"
+        >
+          <Link
+            href="#survey"
+            className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07100d] transition hover:bg-white"
+          >
+            Open the survey
+          </Link>
+
+          <Link
+            href="#method"
+            className="inline-flex items-center justify-center rounded-full border border-white/18 px-6 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
+          >
+            Read the method
+          </Link>
+        </motion.div>
+
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 18 },
+            show: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 flex max-w-2xl flex-wrap gap-2 text-xs text-white/58"
+        >
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            Wave 1 baseline
+          </span>
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            Wave 2 follow-up
+          </span>
+          <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
+            Door-to-door method
+          </span>
+        </motion.div>
+      </motion.div>
+
+      <div className="absolute bottom-6 left-6 right-6 z-10 mx-auto flex max-w-6xl items-center justify-between text-xs text-white/42 sm:left-10 sm:right-10 lg:left-12 lg:right-12">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={activeImage.label}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.3 }}
+          >
+            {activeImage.label}
+          </motion.span>
+        </AnimatePresence>
+
+        <div className="flex gap-2">
+          {heroImages.map((image, imageIndex) => (
+            <button
+              key={image.src}
+              type="button"
+              aria-label={`Show ${image.label}`}
+              onClick={() => setIndex(imageIndex)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${imageIndex === index
+                  ? 'w-8 bg-[#f5efe3]'
+                  : 'w-3 bg-white/25 hover:bg-white/45'
+                }`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
   )
 }
 
 export function SurveyPageClient() {
-  const [loaded, setLoaded] = useState(false)
-  const reduceMotion = useReducedMotion()
-
-  useEffect(() => {
-    setLoaded(true)
-  }, [])
-
   return (
     <SiteLayout>
-      <main className="overflow-hidden bg-[#f6f1e7] text-[#111814] selection:bg-[#d9cfb6] selection:text-[#111814] font-sans">
-        {/* Hero */}
-        <section id="top" className="relative isolate overflow-hidden bg-[#060807] text-white">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-18"
-            style={{ backgroundImage: `url(${heroBg})` }}
-            aria-hidden="true"
-          />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(163,177,138,0.16),transparent_30%),radial-gradient(circle_at_top_right,rgba(255,255,255,0.06),transparent_22%),linear-gradient(180deg,#0a0f0d_0%,#050706_100%)]" />
-          <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:radial-gradient(circle_at_center,black,transparent_82%)]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#060807] via-[#060807]/84 to-[#060807]/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#060807] via-transparent to-transparent" />
+      <main className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
+        <Hero />
 
-          <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">
-            <Fade y={10}>
-              <p className="text-[10px] uppercase tracking-[0.32em] text-[#8f978a]">04A / Community Survey</p>
-            </Fade>
-
-            <div className="mt-8 grid gap-10 lg:grid-cols-[1.12fr_0.88fr] lg:items-start">
-              <div className="max-w-3xl">
-                <Fade delay={0.05}>
-                  <h1 className="max-w-5xl font-sans text-[clamp(3.25rem,6vw,6.25rem)] font-semibold leading-[0.92] tracking-[-0.06em] text-[#f4efe5]">
-                    Measure awareness.
-                    <br />
-                    <span className="text-[#a3b18a]">Reveal real change.</span>
-                  </h1>
-                </Fade>
-
-                <Fade delay={0.12}>
-                  <p className="mt-6 max-w-xl text-[1.05rem] leading-8 text-[#c1c8ba]">
-                    The survey framework turns outreach into defensible data. Wave 1 establishes the baseline before any BLACKOUT activity begins; Wave 2 measures what changed.
-                  </p>
-                </Fade>
-
-                <Fade delay={0.18}>
-                  <p className="mt-4 max-w-xl text-base leading-7 text-[#9fa79a]">
-                    The page is deliberately simple: a live instrument, a few clear metrics, and the logic that connects the data to the broader project.
-                  </p>
-                </Fade>
-
-                <Fade delay={0.24}>
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <Link
-                      href="#survey"
-                      className="group inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg"
-                    >
-                      Open the survey
-                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
-                    </Link>
-                    <Link
-                      href="#method"
-                      className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white/90 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
-                    >
-                      Read the method
-                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
-                    </Link>
-                  </div>
-                </Fade>
-              </div>
-
-              <motion.div
-                initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 16, scale: 0.99 }}
-                animate={loaded ? { opacity: 1, y: 0, scale: 1 } : undefined}
-                transition={{ duration: 0.9, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-                className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-[0_18px_60px_rgba(0,0,0,0.18)] backdrop-blur-xl"
-              >
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  <motion.div
-                    aria-hidden="true"
-                    initial={reduceMotion ? { scale: 1 } : { scale: 1.05, opacity: 0.85 }}
-                    animate={loaded ? { scale: 1, opacity: 1 } : undefined}
-                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${heroBg})` }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050706] via-transparent to-transparent" />
-                  <div className="absolute inset-0 ring-1 ring-inset ring-white/5" />
-                </div>
-                <div className="border-t border-white/10 px-6 py-5">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#8f978a]">Field instrument</p>
-                  <p className="mt-2 text-sm leading-7 text-[#f3efe5]">
-                    A single visual anchor keeps the hero calm while the page focuses on the audit logic.
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Snapshot */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="01 / Snapshot" />
-            <SectionTitle eyebrow="Snapshot" title={<>The project in <Accent>one glance</Accent>.</>} />
-            <div className="mt-8 border-t border-[#e2dbc9]">
-              {stats.map((item, index) => (
-                <Fade key={item.k} delay={0.04 * index}>
-                  <StatLine k={item.k} v={item.v} />
-                </Fade>
-              ))}
-            </div>
-          </div>
-        </LightBand>
-
-        {/* Live instrument */}
-        <DarkBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="02 / Live instrument" />
-            <SectionTitle
-              eyebrow="Wave 1 operational audit"
-              title={<>The field form is the baseline capture for the entire project.</>}
-              dark
+        <LightSection id="snapshot">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              eyebrow="Snapshot"
+              title="The audit in one view."
+              body="The survey page is the project’s field instrument. It keeps the focus on the two-wave structure, the sampling method, and the evidence generated by the gap between baseline and follow-up."
             />
 
-            <div id="survey" className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-              <div className="space-y-8">
-                <div className="border-t border-white/10 pt-8">
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-[#8f978a]">Field context</p>
-                  <p className="mt-4 max-w-xl text-[15px] leading-[1.9] text-[#b8afa1]">
-                    This standardized instrument is deployed across the campaign zone before any outreach, tagging, or drain marking begins. The right side mirrors the questions used at residential access points.
-                  </p>
-                </div>
-
-                <div className="border-t border-white/10 pt-8">
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-[#8f978a]">Wave status</p>
-                  <div className="mt-5 space-y-3">
-                    <div className="flex items-center justify-between border border-emerald-900/15 bg-emerald-50/80 px-4 py-3 text-[#111814]">
-                      <div className="flex items-center gap-2.5">
-                        <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                        <span className="text-[13px] font-medium text-emerald-900">Wave 1  -  Live baseline</span>
-                      </div>
-                      <span className="text-[10px] uppercase tracking-[0.18em] text-emerald-700">Active</span>
-                    </div>
-
-                    <div className="flex items-center justify-between border border-white/10 bg-white/[0.03] px-4 py-3">
-                      <div className="flex items-center gap-2.5">
-                        <span className="h-2 w-2 rounded-full bg-[#c7c0b0]" />
-                        <span className="text-[13px] font-medium text-[#b8afa1]">Wave 2  -  Post-intervention</span>
-                      </div>
-                      <span className="text-[10px] uppercase tracking-[0.18em] text-[#8f978a]">Pending</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="border-t border-white/10 pt-8">
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-[#8f978a]">Data directive</p>
-                  <p className="mt-4 max-w-xl text-[15px] leading-[1.9] text-[#b8afa1]">
-                    Verified door-to-door metadata acts as the primary baseline anchor. Digital supplements can help verify coverage, but they do not replace direct physical collection.
-                  </p>
-                </div>
-              </div>
-
-              <Fade delay={0.1}>
-                <div className="overflow-hidden border border-white/10 bg-white/[0.035]">
-                  <div className="border-b border-white/10 px-6 py-5">
-                    <p className="text-[10px] font-mono font-bold tracking-[0.22em] text-[#8f978a] uppercase">
-                      Document ref: BLK-SRV-2026A
+            <Reveal delay={0.1}>
+              <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-[#ded6c8] bg-[#ded6c8]">
+                {stats.map((item) => (
+                  <div key={item.k} className="bg-[#fbf8f1] p-5 sm:p-6">
+                    <p className="text-[1.6rem] font-semibold leading-none tracking-[-0.055em] text-[#173027] sm:text-[2rem]">
+                      {item.k}
                     </p>
-                    <h3 className="mt-2 font-sans text-2xl font-semibold tracking-[-0.03em] text-[#f3efe5]">
-                      Fertilizer Ordinance Awareness Verification
-                    </h3>
-                    <p className="mt-1 text-[13px] text-[#a6ad9f]">Brevard County residential sampling protocol</p>
+
+                    <p className="mt-3 max-w-[12rem] text-sm leading-6 text-[#657064]">
+                      {item.v}
+                    </p>
                   </div>
-                  <div className="p-6">
-                    <SurveyForm />
-                  </div>
-                </div>
-              </Fade>
-            </div>
-          </div>
-        </DarkBand>
-
-        {/* Method */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="03 / Method" />
-            <SectionTitle eyebrow="Two-wave audit logic" title={<>The baseline must finish before the intervention starts.</>} />
-
-            <div id="method" className="max-w-3xl space-y-6 text-[15px] leading-[1.9] text-[#5a625b]">
-              <p>
-                Wave 1 anchors the pre-intervention dataset. It is collected in full resolution before any BLACKOUT awareness collateral, storm drain markers, or retail shelf tags are placed in the field.
-              </p>
-              <p>
-                Wave 2 runs only after the intervention sequence is complete. The comparison between the two waves becomes the project’s primary empirical outcome.
-              </p>
-              <p>
-                The split is non-negotiable because the data needs to show change, not a blurred mix of before and after.
-              </p>
-            </div>
-          </div>
-        </LightBand>
-
-        {/* Technical parameters */}
-        <DarkBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="04 / Technical parameters" />
-            <SectionTitle eyebrow="Survey specifications" title={<>A small set of numbers keeps the fieldwork consistent.</>} dark />
-
-            <div className="mt-8 border-t border-white/10">
-              {auditMetrics.map((item, index) => (
-                <Fade key={item.label} delay={index * 0.04}>
-                  <LineItem label={item.label} value={item.value} note={item.note} dark />
-                </Fade>
-              ))}
-            </div>
-          </div>
-        </DarkBand>
-
-        {/* Data flow */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="05 / Data flow" />
-            <SectionTitle eyebrow="What the data feeds" title={<>The survey delta is reused everywhere the project needs proof.</>} />
-
-            <div className="max-w-3xl space-y-4 text-[15px] leading-[1.9] text-[#5a625b]">
-              {wavePoints.map((item) => (
-                <div key={item} className="border-b border-[#e2dbc9] pb-4 last:border-b-0 last:pb-0">
-                  {item}
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-10 border-t border-[#e2dbc9] pt-8">
-              <p className="text-[10px] uppercase tracking-[0.22em] text-[#6f8167]">Data path</p>
-              <div className="mt-5 space-y-4">
-                {dataFlow.map((item) => (
-                  <Fade key={item}>
-                    <div className="border-b border-[#e2dbc9] pb-4 last:border-b-0 last:pb-0 text-[15px] leading-[1.9] text-[#5a625b]">
-                      {item}
-                    </div>
-                  </Fade>
                 ))}
               </div>
-            </div>
+            </Reveal>
           </div>
-        </LightBand>
 
-        {/* Outputs */}
-        <DarkBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="06 / Outputs" />
-            <SectionTitle eyebrow="Where the survey goes next" title={<>One instrument, multiple destinations.</>} dark />
+          <Reveal delay={0.16}>
+            <div className="mt-12 border-t border-[#ded6c8] pt-8">
+              <p className="max-w-3xl text-[clamp(1.3rem,3vw,1.95rem)] font-semibold leading-tight tracking-[-0.04em]">
+                The survey exists to separate assumption from evidence: what
+                residents knew before BLACKOUT, and what changed after.
+              </p>
+            </div>
+          </Reveal>
+        </LightSection>
 
-            <div className="max-w-3xl space-y-6 text-[15px] leading-[1.9] text-[#b8afa1]">
-              {pipelines.map((item) => (
-                <div key={item.title} className="border-b border-white/10 pb-4 last:border-b-0 last:pb-0">
-                  <span className="block text-[#f3efe5] font-medium">{item.title}</span>
-                  <span className="block mt-2">{item.body}</span>
+        <DarkSection id="survey">
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              dark
+              eyebrow="Live instrument"
+              title="The field form captures the baseline."
+              body="This standardized instrument is deployed across the campaign zone before any outreach, tagging, or drain marking begins. The form mirrors the questions used at residential access points."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.035] shadow-[0_24px_70px_rgba(0,0,0,0.22)] backdrop-blur-sm">
+                <div className="border-b border-white/10 px-6 py-5">
+                  <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[#a8b98c]">
+                    BLK-SRV-2026A
+                  </p>
+
+                  <h3 className="mt-2 text-[1.45rem] font-semibold tracking-[-0.04em] text-[#f5efe3]">
+                    Fertilizer Ordinance Awareness Verification
+                  </h3>
+
+                  <p className="mt-2 text-sm leading-7 text-white/56">
+                    Brevard County residential sampling protocol
+                  </p>
                 </div>
-              ))}
-            </div>
-          </div>
-        </DarkBand>
 
-        {/* Closing */}
-        <LightBand>
-          <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <DividerLabel label="07 / Closing" />
-            <SectionTitle eyebrow="Closing" title={<>The survey is the project’s cleanest proof that the work changed something measurable.</>} />
-
-            <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
-              <div className="space-y-3 text-[14px] leading-[1.85] text-[#5a625b]">
-                <p>Wave 1 establishes the baseline.</p>
-                <p>Wave 2 tests whether BLACKOUT moved the numbers.</p>
-                <p>The difference becomes the evidence for the rest of the site.</p>
+                <div className="bg-[#f7f2e8] p-5 text-[#173027] sm:p-6">
+                  <SurveyForm />
+                </div>
               </div>
+            </Reveal>
+          </div>
 
-              <div>
-                <h3 className="font-sans text-2xl font-semibold tracking-[-0.03em] text-[#173027]">
-                  The survey page should feel like a field instrument, not a dashboard.
-                </h3>
-                <p className="mt-4 text-[14px] leading-[1.9] text-[#5a625b]">
-                  This version keeps the layout restrained, the motion subtle, and the structure consistent with the other pages: dark hero, light bands, clean rows, and one strong image-led anchor.
+          <Reveal delay={0.16}>
+            <div className="mt-12 grid gap-4 sm:grid-cols-2">
+              <div className="rounded-3xl bg-[#f5efe3] p-6 text-[#07100d]">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#607357]">
+                  Wave 1
                 </p>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <Link
-                    href="#survey"
-                    className="inline-flex items-center gap-2 rounded-full bg-[#efe8d6] px-5 py-3 text-sm font-medium text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
-                  >
-                    Open the instrument
-                    <span aria-hidden>→</span>
-                  </Link>
-                  <Link
-                    href="#top"
-                    className="inline-flex items-center gap-2 rounded-full border border-[#e2dbc9] bg-white/60 px-5 py-3 text-sm font-medium text-[#173027] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
-                  >
-                    Back to top
-                    <span aria-hidden>→</span>
-                  </Link>
-                </div>
+
+                <p className="mt-3 text-[1.35rem] font-semibold leading-tight tracking-[-0.04em]">
+                  Live baseline before intervention.
+                </p>
+              </div>
+
+              <div className="rounded-3xl border border-white/10 bg-white/[0.035] p-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#a8b98c]">
+                  Wave 2
+                </p>
+
+                <p className="mt-3 text-[1.35rem] font-semibold leading-tight tracking-[-0.04em] text-[#f5efe3]">
+                  Post-intervention follow-up.
+                </p>
               </div>
             </div>
+          </Reveal>
+        </DarkSection>
+
+        <LightSection id="method">
+          <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              eyebrow="Method"
+              title="The baseline must finish before the intervention starts."
+              body="Wave 1 anchors the pre-intervention dataset. It is collected before BLACKOUT awareness collateral, storm drain markers, or retail shelf tags are placed in the field."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                  Why the split matters
+                </p>
+
+                <p className="mt-3 text-[1.45rem] font-semibold leading-tight tracking-[-0.04em]">
+                  The data needs to show change, not a blurred mix of before and
+                  after.
+                </p>
+
+                <p className="mt-4 text-sm leading-7 text-[#5e665d]">
+                  Wave 2 runs only after the intervention sequence is complete.
+                  The comparison between the two waves becomes the project’s
+                  primary empirical outcome.
+                </p>
+              </div>
+            </Reveal>
           </div>
-        </LightBand>
+
+          <div className="mt-12 divide-y divide-[#ded6c8] border-y border-[#ded6c8]">
+            {wavePoints.map((item, index) => (
+              <Reveal key={item} delay={index * 0.05}>
+                <div className="grid gap-4 py-6 sm:grid-cols-[3rem_1fr] sm:gap-6">
+                  <p className="font-mono text-xs text-[#6f8167]">
+                    {String(index + 1).padStart(2, '0')}
+                  </p>
+
+                  <p className="max-w-3xl text-sm leading-7 text-[#5e665d]">
+                    {item}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </LightSection>
+
+        <DarkSection id="specifications">
+          <SectionHeader
+            dark
+            eyebrow="Technical parameters"
+            title="A small set of numbers keeps the fieldwork consistent."
+            body="The survey has to be simple enough to run door-to-door, but structured enough to produce a clean before/after comparison."
+          />
+
+          <div className="mt-10 divide-y divide-white/10 border-y border-white/10">
+            {auditMetrics.map((item, index) => (
+              <Reveal key={item.label} delay={index * 0.04}>
+                <MetricRow
+                  label={item.label}
+                  value={item.value}
+                  note={item.note}
+                  dark
+                />
+              </Reveal>
+            ))}
+          </div>
+        </DarkSection>
+
+        <LightSection id="data-flow">
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              eyebrow="Data flow"
+              title="The survey delta is reused wherever the project needs proof."
+              body="Door-to-door collection becomes the clean baseline dataset. That baseline is compared against the post-intervention wave, and the result becomes the evidence behind the rest of the project."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                  Data path
+                </p>
+
+                <div className="mt-5 divide-y divide-[#ded6c8]">
+                  {dataFlow.map((item, index) => (
+                    <div
+                      key={item}
+                      className="grid gap-3 py-4 first:pt-0 last:pb-0 sm:grid-cols-[3rem_1fr]"
+                    >
+                      <p className="font-mono text-xs text-[#6f8167]">
+                        {String(index + 1).padStart(2, '0')}
+                      </p>
+
+                      <p className="text-sm leading-7 text-[#5e665d]">
+                        {item}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </LightSection>
+
+        <DarkSection id="outputs">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              dark
+              eyebrow="Outputs"
+              title="One instrument, multiple destinations."
+              body="The survey does more than collect responses. It feeds the county handoff, the replication guide, and the quantitative story behind the project."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl border border-white/10 bg-white/[0.035] p-6 sm:p-7">
+                <div className="divide-y divide-white/10">
+                  {pipelines.map((item, index) => (
+                    <div
+                      key={item.title}
+                      className="grid gap-3 py-5 first:pt-0 last:pb-0 sm:grid-cols-[3rem_1fr]"
+                    >
+                      <p className="font-mono text-xs text-[#a8b98c]">
+                        {String(index + 1).padStart(2, '0')}
+                      </p>
+
+                      <div>
+                        <p className="text-sm font-semibold text-[#f5efe3]">
+                          {item.title}
+                        </p>
+
+                        <p className="mt-2 text-sm leading-7 text-white/56">
+                          {item.body}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.16}>
+            <div className="mt-12 border-t border-white/10 pt-8">
+              <p className="max-w-3xl text-[clamp(1.35rem,3vw,2rem)] font-semibold leading-tight tracking-[-0.04em] text-[#f5efe3]">
+                Wave 1 establishes the baseline. Wave 2 tests whether BLACKOUT
+                moved the numbers. The difference becomes the evidence.
+              </p>
+            </div>
+          </Reveal>
+        </DarkSection>
+
+        <LightSection id="closing">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              eyebrow="Closing"
+              title="The survey should feel like a field instrument, not a dashboard."
+              body="The layout stays restrained because the point is not visual noise. The point is clarity: what was measured, when it was measured, and how the result proves whether the project changed something real."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Link
+                  href="#survey"
+                  className="group block rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 transition hover:-translate-y-0.5 hover:border-[#b7c5aa] hover:bg-white"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                    Instrument
+                  </p>
+
+                  <p className="mt-5 text-[1.25rem] font-semibold tracking-[-0.035em]">
+                    Open the survey
+                  </p>
+
+                  <p className="mt-3 text-sm leading-7 text-[#5e665d]">
+                    Use the live field form for baseline awareness capture.
+                  </p>
+
+                  <p className="mt-6 text-sm text-[#6f8167] transition group-hover:translate-x-0.5">
+                    Go to survey →
+                  </p>
+                </Link>
+
+                <Link
+                  href="#top"
+                  className="group block rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 transition hover:-translate-y-0.5 hover:border-[#b7c5aa] hover:bg-white"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                    Navigation
+                  </p>
+
+                  <p className="mt-5 text-[1.25rem] font-semibold tracking-[-0.035em]">
+                    Back to top
+                  </p>
+
+                  <p className="mt-3 text-sm leading-7 text-[#5e665d]">
+                    Return to the hero and overview of the survey structure.
+                  </p>
+
+                  <p className="mt-6 text-sm text-[#6f8167] transition group-hover:translate-x-0.5">
+                    Go back →
+                  </p>
+                </Link>
+              </div>
+            </Reveal>
+          </div>
+        </LightSection>
       </main>
     </SiteLayout>
   )
