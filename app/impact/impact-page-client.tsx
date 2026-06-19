@@ -120,7 +120,7 @@ const furtherReading = [
     type: 'Overview report',
   },
   {
-    title: 'Unusual Mortality Event  -  Florida Manatee (2021)',
+    title: 'Unusual Mortality Event - Florida Manatee (2021)',
     org: 'FWC Wildlife Research Institute',
     type: 'Mortality investigation',
   },
@@ -436,8 +436,8 @@ function Hero() {
               aria-label={`Show ${image.label}`}
               onClick={() => setIndex(imageIndex)}
               className={`h-1.5 rounded-full transition-all duration-300 ${imageIndex === index
-                ? 'w-8 bg-[#f5efe3]'
-                : 'w-3 bg-white/25 hover:bg-white/45'
+                  ? 'w-8 bg-[#f5efe3]'
+                  : 'w-3 bg-white/25 hover:bg-white/45'
                 }`}
             />
           ))}
@@ -637,7 +637,7 @@ export function ImpactPageClient() {
                 </p>
 
                 <div className="mt-5 divide-y divide-[#ded6c8]">
-                  {organizationPoints.map((point, index) => (
+                  {archiveLogic.map((point, index) => (
                     <div
                       key={point}
                       className="grid gap-3 py-4 first:pt-0 last:pb-0 sm:grid-cols-[3rem_1fr]"
