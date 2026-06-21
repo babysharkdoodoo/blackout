@@ -1,8 +1,8 @@
 import { AboutPageClient } from './about-page-client'
 
 export const metadata = {
-  title: 'About BLACKOUT',
-  description: 'What BLACKOUT is, where it came from, and why a student team built it.',
+  title: 'About',
+  description: 'What BLACKOUT is, why it is being planned, and how the student-led model works.',
 }
 
 export default function Page() {

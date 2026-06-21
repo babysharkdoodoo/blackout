@@ -11,22 +11,24 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { SiteLayout } from '@/components/site-layout'
 import { ContactForm } from '@/components/contact-form'
 
+const PROJECT_EMAIL = 'blackoutprojectirl@gmail.com'
+
 const heroImages = [
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Indian%20River%20Lagoon%20Area.jpg',
-    label: 'Indian River Lagoon',
+    src: '/heroes/contact-1.webp',
+    label: 'Community meeting',
   },
   {
-    src: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1800&q=80',
-    label: 'Project coordination',
+    src: '/heroes/contact-2.webp',
+    label: 'Contact desk',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Storm%20Drain.JPG',
-    label: 'Storm drain pathway',
+    src: '/heroes/contact-3.webp',
+    label: 'Public meeting',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Florida%20Manatee%20FWS%2018.jpg',
-    label: 'Manatee habitat',
+    src: '/heroes/contact-4.webp',
+    label: 'Business conversation',
   },
 ]
 
@@ -34,25 +36,25 @@ const directory = [
   {
     type: 'General & Media',
     desc: 'Press inquiries, project documentation requests, and general questions.',
-    contact: 'blackout.irl@westshore.edu',
+    contact: PROJECT_EMAIL,
     note: 'Direct inbox',
   },
   {
     type: 'Retail Partnerships',
     desc: 'Hardware stores, garden centers, and nurseries interested in shelf tag participation.',
-    contact: 'blackout.irl@westshore.edu',
+    contact: PROJECT_EMAIL,
     note: 'Partnership Inquiry',
   },
   {
     type: 'County Coordination',
     desc: 'Brevard County Natural Resources, stormwater management, or official correspondence.',
-    contact: 'blackout.irl@westshore.edu',
+    contact: PROJECT_EMAIL,
     note: 'County',
   },
   {
     type: 'Academic / Replication',
     desc: 'Schools or organizations interested in replicating the BLACKOUT model.',
-    contact: 'blackout.irl@westshore.edu',
+    contact: PROJECT_EMAIL,
     note: 'Replication',
   },
 ]
@@ -60,19 +62,19 @@ const directory = [
 const quickLinks = [
   {
     head: 'Take the survey',
-    body: 'Brevard County residents can participate in the community compliance audit.',
+    body: 'Brevard County residents can review the awareness questions and help shape the baseline.',
     href: '/survey',
     cta: 'Open survey',
   },
   {
     head: 'Retail partnership',
-    body: 'Hardware and garden retailers can host a shelf tag in the fertilizer section.',
+    body: 'Hardware and garden retailers can ask about planned shelf tags for the fertilizer section.',
     href: '/retail-partners',
     cta: 'Learn more',
   },
   {
     head: 'Follow the project',
-    body: 'The website is updated as field activities progress through the 2026 season.',
+    body: 'See the records BLACKOUT is preparing for survey, retail, drain, and handoff work.',
     href: '/impact',
     cta: 'View impact',
   },
@@ -122,12 +124,12 @@ function Reveal({
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      initial={reduceMotion ? false : { opacity: 0, y: 18, filter: 'blur(10px)' }}
+      animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
       transition={{
-        duration: 0.55,
+        duration: 0.72,
         delay,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       }}
     >
       {children}
@@ -222,6 +224,8 @@ function Hero() {
     if (reduceMotion) return
 
     const timer = window.setInterval(() => {
+      if (document.hidden) return
+
       setIndex((current) => (current + 1) % heroImages.length)
     }, 5000)
 
@@ -243,16 +247,20 @@ function Hero() {
             alt=""
             draggable={false}
             referrerPolicy="no-referrer"
+            loading="eager"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
-            initial={{ opacity: 0, scale: 1.03 }}
+            initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
             animate={{
               opacity: 0.34,
               scale: reduceMotion ? 1 : 1.07,
+              filter: reduceMotion ? 'none' : 'blur(0px)',
             }}
-            exit={{ opacity: 0 }}
+            exit={{ opacity: 0, filter: 'blur(10px)' }}
             transition={{
-              opacity: { duration: 1 },
-              scale: { duration: 5.2, ease: 'easeOut' },
+              opacity: { duration: 1.1 },
+              filter: { duration: 1.1 },
+              scale: { duration: 6.2, ease: [0.16, 1, 0.3, 1] as const },
             }}
           />
         </AnimatePresence>
@@ -262,17 +270,17 @@ function Hero() {
       </div>
 
       <motion.div
-        initial="hidden"
+        initial={reduceMotion ? false : 'hidden'}
         animate="show"
-        transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
+        transition={{ staggerChildren: 0.08, delayChildren: 0.14 }}
         className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-12"
       >
         <motion.p
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#b9c89c]"
         >
           Contact
@@ -280,10 +288,10 @@ function Hero() {
 
         <motion.h1
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="max-w-5xl text-[clamp(2.8rem,8vw,5.85rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-[#f5efe3]"
         >
           One inbox.
@@ -293,46 +301,45 @@ function Hero() {
 
         <motion.p
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-6 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] leading-[1.5] text-white/70"
         >
-          Media inquiries, retail partnerships, county coordination,
-          replication questions, and general project messages all route through
-          the same contact path.
+          Use one contact path for media, retail, county, school, or general
+          questions.
         </motion.p>
 
         <motion.div
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-8 flex flex-col gap-3 sm:flex-row"
         >
           <Link
             href="#directory"
             className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07100d] transition hover:bg-white"
           >
-            Contact directory
+            Directory
           </Link>
 
           <Link
             href="#form"
             className="inline-flex items-center justify-center rounded-full border border-white/18 px-6 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
           >
-            Send a message
+            Message form
           </Link>
         </motion.div>
 
         <motion.div
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-8 flex max-w-2xl flex-wrap gap-2 text-xs text-white/58"
         >
           <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
@@ -351,10 +358,10 @@ function Hero() {
         <AnimatePresence mode="wait">
           <motion.span
             key={activeImage.label}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, y: 4, filter: 'blur(6px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -4, filter: 'blur(6px)' }}
+            transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] as const }}
           >
             {activeImage.label}
           </motion.span>
@@ -366,6 +373,7 @@ function Hero() {
               key={image.src}
               type="button"
               aria-label={`Show ${image.label}`}
+              aria-pressed={imageIndex === index}
               onClick={() => setIndex(imageIndex)}
               className={`h-1.5 rounded-full transition-all duration-300 ${imageIndex === index
                   ? 'w-8 bg-[#f5efe3]'
@@ -386,15 +394,15 @@ function mailto(contact: string, subject?: string) {
 export function ContactPageClient() {
   return (
     <SiteLayout>
-      <main className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
+      <main id="main-content" tabIndex={-1} className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
         <Hero />
 
         <LightSection id="overview">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Contact overview"
-              title="A direct contact path keeps the project organized."
-              body="BLACKOUT uses one inbox so messages do not split across different people or platforms. The Project Lead routes inquiries based on topic."
+              title="One contact path."
+              body="BLACKOUT uses one inbox so messages stay organized and can be routed by topic."
             />
 
             <Reveal delay={0.1}>
@@ -433,7 +441,7 @@ export function ContactPageClient() {
             <SectionHeader
               dark
               eyebrow="Directory"
-              title="Every inquiry type has a clear path."
+              title="Clear routing."
               body="Use the same inbox for all messages. Include the relevant topic in the subject line so the team can route it quickly."
             />
 
@@ -465,7 +473,7 @@ export function ContactPageClient() {
                         )}
                         className="text-sm font-semibold text-[#f5efe3] transition hover:text-[#a8b98c]"
                       >
-                        {item.contact} <span className="text-[#a8b98c]">↗</span>
+                        {item.contact} <span className="text-[#a8b98c]">&nearr;</span>
                       </a>
 
                       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#a8b98c] md:text-right">
@@ -498,8 +506,8 @@ export function ContactPageClient() {
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Send a message"
-              title="Questions, partnerships, or feedback all belong here."
-              body="The form keeps the contact process simple while still giving visitors a direct path to the project inbox."
+              title="Send a message."
+              body="Use the directory for direct email delivery. The form keeps the message topics clear while inbox routing is being prepared."
             />
 
             <Reveal delay={0.1}>
@@ -514,8 +522,8 @@ export function ContactPageClient() {
           <SectionHeader
             dark
             eyebrow="Get involved"
-            title="Common ways people engage with the project."
-            body="Most visitors are here for one of three reasons: to take the survey, to explore retail partnership, or to follow the season’s field progress."
+            title="Ways to engage."
+            body="Most visitors are here to take the survey, explore retail partnership, or follow field progress."
           />
 
           <div className="mt-10 grid gap-4 lg:grid-cols-3">
@@ -540,7 +548,7 @@ export function ContactPageClient() {
                   </div>
 
                   <p className="mt-6 text-sm font-semibold text-[#a8b98c] transition group-hover:translate-x-0.5">
-                    {item.cta} →
+                    {item.cta} &rarr;
                   </p>
                 </Link>
               </Reveal>
@@ -552,8 +560,8 @@ export function ContactPageClient() {
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Routing"
-              title="The team keeps communication calm and traceable."
-              body="A single response path prevents messages from being lost across separate inboxes, text threads, or informal side conversations."
+              title="Traceable communication."
+              body="A single response path keeps project questions, partner messages, and county coordination easier to track."
             />
 
             <Reveal delay={0.1}>
@@ -585,17 +593,17 @@ export function ContactPageClient() {
           <Reveal delay={0.16}>
             <div className="mt-12 flex flex-col gap-3 border-t border-[#ded6c8] pt-8 sm:flex-row">
               <Link
-                href="#directory"
+                href="/retail-partners"
                 className="inline-flex items-center justify-center rounded-full bg-[#173027] px-6 py-3 text-sm font-semibold text-[#f7f2e8] transition hover:bg-[#223a2e]"
               >
-                Contact directory
+                Retail partnership details
               </Link>
 
               <Link
-                href="#top"
+                href="/impact"
                 className="inline-flex items-center justify-center rounded-full border border-[#d8d0c2] px-6 py-3 text-sm font-semibold text-[#53634f] transition hover:border-[#173027]/30 hover:text-[#173027]"
               >
-                Back to top
+                Review impact first
               </Link>
             </div>
           </Reveal>

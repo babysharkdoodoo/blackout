@@ -6,20 +6,20 @@ import { useRef, type ReactNode } from 'react'
 
 const stats = [
   {
-    figure: '1,101',
-    label: 'Manatee deaths recorded in 2021',
+    figure: '1,100+',
+    label: 'Manatee deaths in the 2021 IRL event',
   },
   {
-    figure: '58%',
-    label: 'Lagoon seagrass loss',
+    figure: '60%+',
+    label: 'IRL seagrass loss since 2011',
   },
   {
     figure: '4,300+',
     label: 'Species supported by the estuary',
   },
   {
-    figure: '$2.2B',
-    label: 'Estimated annual economic value',
+    figure: '$430M',
+    label: 'Estimated yearly economic impact of IRL decline',
   },
 ]
 
@@ -58,12 +58,12 @@ function Reveal({
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      initial={reduceMotion ? false : { opacity: 0, y: 18, filter: 'blur(10px)' }}
+      animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
       transition={{
-        duration: 0.55,
+        duration: 0.72,
         delay,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       }}
       className={className}
     >
@@ -89,33 +89,33 @@ export function ProblemSection() {
 
             <Reveal delay={0.06}>
               <h2 className="mt-4 max-w-3xl text-[clamp(2.25rem,5vw,4.4rem)] font-semibold leading-[0.98] tracking-[-0.06em]">
-                Runoff is a solvable part of the lagoon crisis.
+                Lawn choices move downstream.
               </h2>
             </Reveal>
 
             <Reveal delay={0.12}>
               <p className="mt-6 max-w-2xl text-base leading-8 text-[#5d675d] sm:text-[1.05rem]">
-                Brevard County already restricts nitrogen and phosphorus fertilizer
-                from June 1 through September 30. BLACKOUT focuses on the missing
-                link: making the rule visible before fertilizer enters the runoff
-                pathway.
+                Fertilizer used during the rainy season can wash into storm
+                drains and feed algae blooms. BLACKOUT focuses on the first
+                preventable decision: whether fertilizer is bought or applied
+                during the blackout window.
               </p>
             </Reveal>
 
             <Reveal delay={0.18}>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href="#approach"
+                  href="/mission"
                   className="inline-flex items-center justify-center rounded-full bg-[#12291f] px-6 py-3 text-sm font-semibold text-[#f7f2e8] transition hover:bg-[#1e3a2d]"
                 >
-                  See the approach
+                  Follow the runoff chain
                 </Link>
 
                 <Link
                   href="/ordinance"
                   className="inline-flex items-center justify-center rounded-full border border-[#d8d0c2] px-6 py-3 text-sm font-semibold text-[#475746] transition hover:border-[#12291f]/30 hover:text-[#12291f]"
                 >
-                  View ordinance
+                  Understand the rule
                 </Link>
               </div>
             </Reveal>
@@ -145,8 +145,8 @@ export function ProblemSection() {
               </p>
 
               <p className="mt-4 max-w-sm text-[1.55rem] font-semibold leading-tight tracking-[-0.04em]">
-                The issue is not awareness in general. It is awareness at the exact
-                point of decision.
+                The best time to prevent runoff is before fertilizer leaves the
+                shelf or the lawn.
               </p>
             </div>
           </Reveal>

@@ -8,19 +8,19 @@ const approaches = [
   {
     number: '01',
     title: 'Measure awareness',
-    body: 'Survey residents before and after outreach to quantify what changed.',
+    body: 'Close Wave 1 before outreach so the awareness baseline stays clean.',
     detail: 'Baseline + follow-up survey',
   },
   {
     number: '02',
     title: 'Reach the purchase moment',
-    body: 'Place ordinance reminders beside fertilizer, where the decision actually happens.',
+    body: 'Prepare shelf tags for the fertilizer aisle, where the decision happens.',
     detail: 'Retail shelf tags',
   },
   {
     number: '03',
     title: 'Mark the runoff pathway',
-    body: 'Label storm drains so residents connect lawn care with lagoon impact.',
+    body: 'Install only approved markers, then log each drain with GPS and photos.',
     detail: 'GPS-logged drain markers',
   },
 ]
@@ -39,12 +39,12 @@ function Reveal({
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      initial={reduceMotion ? false : { opacity: 0, y: 18, filter: 'blur(10px)' }}
+      animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
       transition={{
-        duration: 0.55,
+        duration: 0.72,
         delay,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       }}
     >
       {children}
@@ -105,14 +105,15 @@ export function ApproachSection() {
 
             <Reveal delay={0.06}>
               <h2 className="mt-4 max-w-3xl text-[clamp(2.3rem,5vw,4.35rem)] font-semibold leading-[0.98] tracking-[-0.06em]">
-                Make the ordinance visible where it matters.
+                Three field steps.
               </h2>
             </Reveal>
 
             <Reveal delay={0.12}>
               <p className="mt-6 max-w-2xl text-base leading-8 text-[#5f675f] sm:text-[1.05rem]">
-                BLACKOUT is a three-part field intervention: measure the awareness
-                gap, interrupt the purchase decision, and mark the runoff pathway.
+                BLACKOUT is being planned around one sequence: measure first,
+                then place store reminders, then mark approved drains in the
+                same campaign zone.
               </p>
             </Reveal>
 
@@ -123,8 +124,8 @@ export function ApproachSection() {
                 </p>
 
                 <p className="mt-3 text-[1.35rem] font-semibold leading-tight tracking-[-0.04em] text-[#163127]">
-                  The policy already exists. The missing layer is public contact:
-                  survey, store, storm drain.
+                  The rule is already written. The work in progress is making
+                  it visible before fertilizer reaches the water.
                 </p>
               </div>
             </Reveal>
@@ -132,17 +133,17 @@ export function ApproachSection() {
             <Reveal delay={0.24}>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href="#problem"
+                  href="/retail-partners"
                   className="inline-flex items-center justify-center rounded-full bg-[#163127] px-6 py-3 text-sm font-semibold text-[#faf7f0] transition hover:bg-[#223a2e]"
                 >
-                  Review the problem
+                  Explore retail reminders
                 </Link>
 
                 <Link
-                  href="#top"
+                  href="/storm-drains"
                   className="inline-flex items-center justify-center rounded-full border border-[#d8d0c2] px-6 py-3 text-sm font-semibold text-[#53634f] transition hover:border-[#163127]/30 hover:text-[#163127]"
                 >
-                  Back to top
+                  See storm drain marking
                 </Link>
               </div>
             </Reveal>

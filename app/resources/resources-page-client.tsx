@@ -12,20 +12,20 @@ import { SiteLayout } from '@/components/site-layout'
 
 const heroImages = [
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Indian%20River%20Lagoon%20Area.jpg',
-    label: 'Indian River Lagoon',
+    src: '/heroes/resources-1.webp',
+    label: 'Document contents',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Florida%20Manatee%20FWS%2018.jpg',
-    label: 'Manatee habitat',
+    src: '/heroes/resources-2.webp',
+    label: 'Research files',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Storm%20Drain.JPG',
-    label: 'Storm drain pathway',
+    src: '/heroes/resources-3.webp',
+    label: 'Reference page',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Floridian%20seagrass%20bed.jpg',
-    label: 'Seagrass beds',
+    src: '/heroes/resources-4.webp',
+    label: 'Appendix record',
   },
 ]
 
@@ -45,7 +45,7 @@ const primarySources = [
   {
     name: 'Brevard County Code of Ordinances',
     org: 'Brevard County',
-    use: 'Ordinance text § 62-3601',
+    use: 'Ordinance text \u00a7 62-3601',
     href: 'https://library.municode.com/fl/brevard_county',
   },
   {
@@ -77,37 +77,37 @@ const primarySources = [
 const fieldMaterials = [
   {
     title: 'Wave 1 Survey Instrument',
-    desc: 'The door-to-door questionnaire used to establish the pre-intervention baseline.',
+    desc: 'The door-to-door questionnaire planned to establish the pre-intervention baseline.',
     status: 'Available',
     href: '/survey',
   },
   {
     title: 'Manatee Safe Shelf Tag Design',
-    desc: 'Print-ready retail tag layout for fertilizer aisles and point-of-purchase placement.',
+    desc: 'Retail tag layout being prepared for fertilizer aisles and point-of-purchase placement.',
     status: 'In development',
     href: null,
   },
   {
     title: 'Storm Drain Marker Spec Sheet',
-    desc: 'Hardware specifications, installation steps, and distance-calculation notes for each drain marker.',
+    desc: 'Hardware specifications, marker placement steps, and distance-calculation notes for each approved drain.',
     status: 'In development',
     href: null,
   },
   {
     title: 'Retail Partner Agreement Template',
-    desc: 'Standard placement, season timing, and weekly reach logging terms for store partners.',
+    desc: 'Standard placement, season timing, and weekly reach logging terms planned for store partners.',
     status: 'In development',
     href: null,
   },
   {
     title: 'County Handoff Package Template',
-    desc: 'Documentation structure for transferring the program to Brevard County after the season ends.',
+    desc: 'Documentation structure for transferring the planned program to Brevard County after the season.',
     status: 'Post-season',
     href: null,
   },
   {
     title: 'Wave 2 Survey Instrument',
-    desc: 'Matched follow-up instrument used to measure post-intervention awareness changes.',
+    desc: 'Matched follow-up instrument planned to measure post-intervention awareness changes.',
     status: 'Pending close',
     href: null,
   },
@@ -155,7 +155,7 @@ const resourceSnapshot = [
   {
     label: 'Field files',
     value: '6',
-    note: 'Working materials for survey, retail, drains, and handoff.',
+    note: 'Planned materials for survey, retail, drains, and handoff.',
   },
   {
     label: 'Reading set',
@@ -171,9 +171,9 @@ const resourceSnapshot = [
 
 const organizationPoints = [
   'Primary sources support the public claims made across the project.',
-  'Field materials keep the campaign consistent from one activity to the next.',
+  'Field materials are being organized to keep the campaign consistent from one activity to the next.',
   'Background reading keeps the work grounded in lagoon science and compliance practice.',
-  'The final archive makes the project easier to check, repeat, and hand off.',
+  'The planned final archive will make the project easier to check, repeat, and hand off.',
 ]
 
 function Reveal({
@@ -190,12 +190,12 @@ function Reveal({
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      initial={reduceMotion ? false : { opacity: 0, y: 18, filter: 'blur(10px)' }}
+      animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
       transition={{
-        duration: 0.55,
+        duration: 0.72,
         delay,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       }}
     >
       {children}
@@ -290,6 +290,8 @@ function Hero() {
     if (reduceMotion) return
 
     const timer = window.setInterval(() => {
+      if (document.hidden) return
+
       setIndex((current) => (current + 1) % heroImages.length)
     }, 5000)
 
@@ -311,16 +313,20 @@ function Hero() {
             alt=""
             draggable={false}
             referrerPolicy="no-referrer"
+            loading="eager"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
-            initial={{ opacity: 0, scale: 1.03 }}
+            initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
             animate={{
               opacity: 0.34,
               scale: reduceMotion ? 1 : 1.07,
+              filter: reduceMotion ? 'none' : 'blur(0px)',
             }}
-            exit={{ opacity: 0 }}
+            exit={{ opacity: 0, filter: 'blur(10px)' }}
             transition={{
-              opacity: { duration: 1 },
-              scale: { duration: 5.2, ease: 'easeOut' },
+              opacity: { duration: 1.1 },
+              filter: { duration: 1.1 },
+              scale: { duration: 6.2, ease: [0.16, 1, 0.3, 1] as const },
             }}
           />
         </AnimatePresence>
@@ -330,17 +336,17 @@ function Hero() {
       </div>
 
       <motion.div
-        initial="hidden"
+        initial={reduceMotion ? false : 'hidden'}
         animate="show"
-        transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
+        transition={{ staggerChildren: 0.08, delayChildren: 0.14 }}
         className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-12"
       >
         <motion.p
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#b9c89c]"
         >
           Resources
@@ -348,59 +354,58 @@ function Hero() {
 
         <motion.h1
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="max-w-5xl text-[clamp(2.8rem,8vw,5.85rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-[#f5efe3]"
         >
-          Sources, files,
+          Sources and files.
           <br />
-          and field materials.
+          All in one place.
         </motion.h1>
 
         <motion.p
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-6 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] leading-[1.5] text-white/70"
         >
-          BLACKOUT keeps its ordinance references, research sources, survey
-          materials, retail files, drain records, and handoff templates in one
-          traceable system.
+          Ordinance sources, research, field materials, and handoff templates
+          stay in one traceable system.
         </motion.p>
 
         <motion.div
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-8 flex flex-col gap-3 sm:flex-row"
         >
           <Link
-            href="#sources"
+            href="/impact"
             className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07100d] transition hover:bg-white"
           >
-            Primary sources
+            Impact records
           </Link>
 
           <Link
-            href="#materials"
+            href="/survey"
             className="inline-flex items-center justify-center rounded-full border border-white/18 px-6 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
           >
-            Field materials
+            Survey page
           </Link>
         </motion.div>
 
         <motion.div
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-8 flex max-w-2xl flex-wrap gap-2 text-xs text-white/58"
         >
           <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
@@ -419,10 +424,10 @@ function Hero() {
         <AnimatePresence mode="wait">
           <motion.span
             key={activeImage.label}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, y: 4, filter: 'blur(6px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -4, filter: 'blur(6px)' }}
+            transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] as const }}
           >
             {activeImage.label}
           </motion.span>
@@ -434,6 +439,7 @@ function Hero() {
               key={image.src}
               type="button"
               aria-label={`Show ${image.label}`}
+              aria-pressed={imageIndex === index}
               onClick={() => setIndex(imageIndex)}
               className={`h-1.5 rounded-full transition-all duration-300 ${imageIndex === index
                   ? 'w-8 bg-[#f5efe3]'
@@ -450,15 +456,15 @@ function Hero() {
 export function ResourcesPageClient() {
   return (
     <SiteLayout>
-      <main className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
+      <main id="main-content" tabIndex={-1} className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
         <Hero />
 
         <LightSection id="overview">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Resource archive"
-              title="The project stays stronger when every claim is traceable."
-              body="This page collects the public data, ordinance references, working field files, and background reading used to keep BLACKOUT transparent and reusable."
+              title="Trace every claim."
+              body="This page collects the ordinance references, source data, working files, and background reading behind BLACKOUT."
             />
 
             <Reveal delay={0.1}>
@@ -486,7 +492,7 @@ export function ResourcesPageClient() {
             <div className="mt-12 border-t border-[#ded6c8] pt-8">
               <p className="max-w-3xl text-[clamp(1.3rem,3vw,1.95rem)] font-semibold leading-tight tracking-[-0.04em]">
                 Sources explain the problem. Field materials keep the work
-                consistent. Documentation makes the handoff possible.
+                consistent. Planned documentation makes the handoff possible.
               </p>
             </div>
           </Reveal>
@@ -497,8 +503,8 @@ export function ResourcesPageClient() {
             <SectionHeader
               dark
               eyebrow="Primary sources"
-              title="Public data, ordinance text, and regional research that can be checked."
-              body="These sources support the project’s core claims about manatee mortality, seagrass loss, ordinance language, species diversity, fertilizer guidance, and lagoon value."
+              title="Checkable sources."
+              body="These sources support the core claims about manatees, seagrass, ordinance language, fertilizer guidance, and lagoon value."
             />
 
             <Reveal delay={0.1}>
@@ -519,7 +525,7 @@ export function ResourcesPageClient() {
                     >
                       <p className="text-sm font-semibold leading-6 text-[#f5efe3]">
                         {item.name}{' '}
-                        <span className="text-[#a8b98c]">↗</span>
+                        <span className="text-[#a8b98c]">&nearr;</span>
                       </p>
 
                       <p className="text-sm text-white/54">
@@ -538,10 +544,10 @@ export function ResourcesPageClient() {
         </DarkSection>
 
         <LightSection id="materials">
-          <SectionHeader
-            eyebrow="Field materials"
-            title="Working documents that keep the campaign organized."
-            body="The field materials are the documents the team uses to run the actual campaign: survey instruments, shelf tags, drain marker specs, partner agreements, and handoff templates."
+            <SectionHeader
+              eyebrow="Field materials"
+              title="Working documents."
+              body="These materials are being prepared to keep surveys, shelf tags, marker specs, partner agreements, and handoff files organized."
           />
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -568,7 +574,7 @@ export function ResourcesPageClient() {
                         href={item.href}
                         className="inline-flex items-center rounded-full bg-[#173027] px-4 py-2 text-xs font-semibold text-[#f7f2e8] transition hover:bg-[#223a2e]"
                       >
-                        Access →
+                        Access &rarr;
                       </Link>
                     ) : (
                       <span className="inline-flex items-center rounded-full border border-[#d8d0c2] bg-white/60 px-4 py-2 text-xs font-semibold text-[#7c8576]">
@@ -587,8 +593,8 @@ export function ResourcesPageClient() {
             <SectionHeader
               dark
               eyebrow="Further reading"
-              title="Background reading keeps the project grounded in science and practice."
-              body="These readings support the broader context behind BLACKOUT: lagoon ecology, manatee mortality, fertilizer practice, voluntary compliance, seagrass decline, and model fertilizer policy."
+              title="Grounded in science."
+              body="These readings explain the broader context: lagoon ecology, manatee mortality, fertilizer practice, compliance, seagrass decline, and model policy."
             />
 
             <Reveal delay={0.1}>
@@ -628,8 +634,8 @@ export function ResourcesPageClient() {
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Organization"
-              title="A useful archive has to be easy to check."
-              body="The resource system is not just a collection of links. It is the structure that lets the project defend its claims, run its field work, and transfer the program after the season."
+              title="Easy to check."
+              body="The resource system is the structure that lets the project defend its claims, run planned field work, and transfer the program after the season."
             />
 
             <Reveal delay={0.1}>
@@ -661,17 +667,17 @@ export function ResourcesPageClient() {
           <Reveal delay={0.16}>
             <div className="mt-12 flex flex-col gap-3 border-t border-[#ded6c8] pt-8 sm:flex-row">
               <Link
-                href="/about"
+                href="/impact"
                 className="inline-flex items-center justify-center rounded-full bg-[#173027] px-6 py-3 text-sm font-semibold text-[#f7f2e8] transition hover:bg-[#223a2e]"
               >
-                About BLACKOUT
+                View impact
               </Link>
 
               <Link
-                href="#top"
+                href="/contact"
                 className="inline-flex items-center justify-center rounded-full border border-[#d8d0c2] px-6 py-3 text-sm font-semibold text-[#53634f] transition hover:border-[#173027]/30 hover:text-[#173027]"
               >
-                Back to top
+                Contact the team
               </Link>
             </div>
           </Reveal>

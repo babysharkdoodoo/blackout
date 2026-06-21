@@ -1,0 +1,289 @@
+[
+  {
+    "page": "about",
+    "slot": 1,
+    "file": "/heroes/about-1.webp",
+    "query": "seagrass underwater",
+    "title": "File:Carbon uptake and photosynthesis in a seagrass meadow.png",
+    "source": "https://commons.wikimedia.org/wiki/File:Carbon_uptake_and_photosynthesis_in_a_seagrass_meadow.png",
+    "author": "Cullen-Unsworth L, Jones B, Lilley R and Unsworth R",
+    "license": "CC BY 4.0"
+  },
+  {
+    "page": "about",
+    "slot": 2,
+    "file": "/heroes/about-2.webp",
+    "query": "Florida seagrass",
+    "title": "File:Coconut & Thalassia seagrass on marine beach (Captiva Island, Florida, USA) (26076621771).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Coconut_%26_Thalassia_seagrass_on_marine_beach_(Captiva_Island,_Florida,_USA)_(26076621771).jpg",
+    "author": "James St. John",
+    "license": "CC BY 2.0"
+  },
+  {
+    "page": "about",
+    "slot": 3,
+    "file": "/heroes/about-3.webp",
+    "query": "storm drain curb",
+    "title": "File:34th Street 10th Avenue 09.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:34th_Street_10th_Avenue_09.jpg",
+    "author": "Tdorante10",
+    "license": "CC BY-SA 4.0"
+  },
+  {
+    "page": "about",
+    "slot": 4,
+    "file": "/heroes/about-4.webp",
+    "query": "stormwater inlet",
+    "title": "File:Dry Detention Basin Pfaffengrund 002.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Dry_Detention_Basin_Pfaffengrund_002.jpg",
+    "author": "Loracco",
+    "license": "CC BY-SA 4.0"
+  },
+  {
+    "page": "mission",
+    "slot": 1,
+    "file": "/heroes/mission-1.webp",
+    "query": "seagrass underwater Florida",
+    "title": "File:Scorpionfish In Seagrass (29904628858).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Scorpionfish_In_Seagrass_(29904628858).jpg",
+    "author": "National Marine Sanctuaries",
+    "license": "Public domain"
+  },
+  {
+    "page": "mission",
+    "slot": 2,
+    "file": "/heroes/mission-2.webp",
+    "query": "algal bloom water",
+    "title": "File:Algal bloom in Lake Pyramid, USA (Copernicus 2024-10-17).png",
+    "source": "https://commons.wikimedia.org/wiki/File:Algal_bloom_in_Lake_Pyramid,_USA_(Copernicus_2024-10-17).png",
+    "author": "European Union, Copernicus Sentinel-2 imagery",
+    "license": "Attribution"
+  },
+  {
+    "page": "ordinance",
+    "slot": 1,
+    "file": "/heroes/ordinance-1.webp",
+    "query": "Brevard County Florida landscape",
+    "title": "File:Runnymede Florida LOC 2012592599.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Runnymede_Florida_LOC_2012592599.jpg",
+    "author": "Aldrich, A. C.; Burk &amp; Mcfetridge",
+    "license": "Public domain"
+  },
+  {
+    "page": "ordinance",
+    "slot": 2,
+    "file": "/heroes/ordinance-2.webp",
+    "query": "fertilizer lawn",
+    "title": "File:2023 Naw\u00f3z do kwiat\u00f3w.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:2023_Naw%C3%B3z_do_kwiat%C3%B3w.jpg",
+    "author": "Jacek Halicki",
+    "license": "CC BY-SA 4.0"
+  },
+  {
+    "page": "ordinance",
+    "slot": 3,
+    "file": "/heroes/ordinance-3.webp",
+    "query": "rain storm drain street",
+    "title": "File:2019-07-29 172052 Rain in Berlin.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:2019-07-29_172052_Rain_in_Berlin.jpg",
+    "author": "Bernard Ladenthin",
+    "license": "CC BY 4.0"
+  },
+  {
+    "page": "survey",
+    "slot": 1,
+    "file": "/heroes/survey-1.webp",
+    "query": "clipboard field survey",
+    "title": "File:A field scientist conducting vegetation surveys in Denali (c3deacfc-29b9-4fc0-be28-e947452540ef).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:A_field_scientist_conducting_vegetation_surveys_in_Denali_(c3deacfc-29b9-4fc0-be28-e947452540ef).jpg",
+    "author": "NPS Photo / Kira Heeschen",
+    "license": "Public domain"
+  },
+  {
+    "page": "survey",
+    "slot": 2,
+    "file": "/heroes/survey-2.webp",
+    "query": "door to door neighborhood",
+    "title": "File:A door in the neighborhood of Plaka on 11-17-2023.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:A_door_in_the_neighborhood_of_Plaka_on_11-17-2023.jpg",
+    "author": "George E. Koronaios",
+    "license": "CC BY-SA 4.0"
+  },
+  {
+    "page": "survey",
+    "slot": 4,
+    "file": "/heroes/survey-4.webp",
+    "query": "residential street Florida",
+    "title": "File:A typical residential neighborhood street in Coconut Creek.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:A_typical_residential_neighborhood_street_in_Coconut_Creek.jpg",
+    "author": "Faisal0926",
+    "license": "CC0"
+  },
+  {
+    "page": "storm-drains",
+    "slot": 1,
+    "file": "/heroes/storm-drains-1.webp",
+    "query": "storm drain marker",
+    "title": "File:Plaque-1310757, Wainuiomata, Wellington, New Zealand.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Plaque-1310757,_Wainuiomata,_Wellington,_New_Zealand.jpg",
+    "author": "Wainuio",
+    "license": "CC BY-SA 4.0"
+  },
+  {
+    "page": "storm-drains",
+    "slot": 2,
+    "file": "/heroes/storm-drains-2.webp",
+    "query": "storm drain curb",
+    "title": "File:Curb inlet and catch basin.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Curb_inlet_and_catch_basin.jpg",
+    "author": "Mds08011",
+    "license": "CC BY 4.0"
+  },
+  {
+    "page": "storm-drains",
+    "slot": 3,
+    "file": "/heroes/storm-drains-3.webp",
+    "query": "stormwater drain street",
+    "title": "File:Footbridge over the stormwater drain next to Yamba Drive in Woden May 2015.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Footbridge_over_the_stormwater_drain_next_to_Yamba_Drive_in_Woden_May_2015.jpg",
+    "author": "Nick-D",
+    "license": "CC BY-SA 4.0"
+  },
+  {
+    "page": "impact",
+    "slot": 1,
+    "file": "/heroes/impact-1.webp",
+    "query": "field data clipboard",
+    "title": "File:Brown Booby -22, one day old, Kure Atoll (undated). (9395427486).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Brown_Booby_-22,_one_day_old,_Kure_Atoll_(undated)._(9395427486).jpg",
+    "author": "Smithsonian Institution from United States",
+    "license": "No restrictions"
+  },
+  {
+    "page": "resources",
+    "slot": 2,
+    "file": "/heroes/resources-2.webp",
+    "query": "map documents table",
+    "title": "File:447 of 'Histoire du Gastinois. ... Nouvelle \u00e9dition, accompagn\u00e9e de notes, de documents et d'une table des mati\u00e8res' (11165508266).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:447_of_%27Histoire_du_Gastinois._..._Nouvelle_%C3%A9dition,_accompagn%C3%A9e_de_notes,_de_documents_et_d%27une_table_des_mati%C3%A8res%27_(11165508266).jpg",
+    "author": "The British Library",
+    "license": "No restrictions"
+  },
+  {
+    "page": "team",
+    "slot": 1,
+    "file": "/heroes/team-1.webp",
+    "query": "student team meeting",
+    "title": "File:Igbo Student's Digital Circle team 02.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Igbo_Student%27s_Digital_Circle_team_02.jpg",
+    "author": "Chiziqa",
+    "license": "CC BY-SA 4.0"
+  },
+  {
+    "page": "team",
+    "slot": 2,
+    "file": "/heroes/team-2.webp",
+    "query": "students planning project",
+    "title": "File:Middle school students work on Tin Can Construction project (4603208383).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Middle_school_students_work_on_Tin_Can_Construction_project_(4603208383).jpg",
+    "author": "U.S. Army Corps of Engineers Europe District from Wiesbaden, Germany",
+    "license": "Public domain"
+  },
+  {
+    "file": "public/heroes/ordinance-4.webp",
+    "title": "BLACKOUT Initiative PDF page 08",
+    "label": "Ordinance document page",
+    "reason": "Actual BLACKOUT ordinance/problem page used for policy context.",
+    "source": "Local BLACKOUT Initiative PDF",
+    "page": "C:\\Users\\faiza\\Downloads\\BLACKOUT_Initiative (Repaired) (1).pdf"
+  },
+  {
+    "file": "public/heroes/impact-2.webp",
+    "title": "BLACKOUT Initiative PDF page 29",
+    "label": "Awareness scoring record",
+    "reason": "Actual BLACKOUT community awareness scoring/material page for impact tracking.",
+    "source": "Local BLACKOUT Initiative PDF",
+    "page": "C:\\Users\\faiza\\Downloads\\BLACKOUT_Initiative (Repaired) (1).pdf"
+  },
+  {
+    "file": "public/heroes/impact-4.webp",
+    "title": "BLACKOUT Initiative PDF page 40",
+    "label": "Implementation records",
+    "reason": "Actual BLACKOUT implementation planning tables for handoff and outcomes.",
+    "source": "Local BLACKOUT Initiative PDF",
+    "page": "C:\\Users\\faiza\\Downloads\\BLACKOUT_Initiative (Repaired) (1).pdf"
+  },
+  {
+    "file": "public/heroes/resources-1.webp",
+    "title": "BLACKOUT Initiative PDF page 03",
+    "label": "Table of contents",
+    "reason": "Actual BLACKOUT document table of contents for resource navigation.",
+    "source": "Local BLACKOUT Initiative PDF",
+    "page": "C:\\Users\\faiza\\Downloads\\BLACKOUT_Initiative (Repaired) (1).pdf"
+  },
+  {
+    "file": "public/heroes/resources-3.webp",
+    "title": "BLACKOUT Initiative PDF page 31",
+    "label": "Reference page",
+    "reason": "Actual BLACKOUT research/resource page.",
+    "source": "Local BLACKOUT Initiative PDF",
+    "page": "C:\\Users\\faiza\\Downloads\\BLACKOUT_Initiative (Repaired) (1).pdf"
+  },
+  {
+    "file": "public/heroes/resources-4.webp",
+    "title": "BLACKOUT Initiative PDF page 50",
+    "label": "Appendix page",
+    "reason": "Actual BLACKOUT appendix/resource documentation page.",
+    "source": "Local BLACKOUT Initiative PDF",
+    "page": "C:\\Users\\faiza\\Downloads\\BLACKOUT_Initiative (Repaired) (1).pdf"
+  },
+  {
+    "file": "public/heroes/team-4.webp",
+    "title": "BLACKOUT Initiative PDF page 42",
+    "label": "Team operations plan",
+    "reason": "Actual BLACKOUT operations/task planning page.",
+    "source": "Local BLACKOUT Initiative PDF",
+    "page": "C:\\Users\\faiza\\Downloads\\BLACKOUT_Initiative (Repaired) (1).pdf"
+  },
+  {
+    "file": "public/heroes/impact-3.webp",
+    "title": "PDA Mapping.jpg",
+    "label": "GIS field mapping",
+    "reason": "Shows field mapping/data collection for impact documentation.",
+    "source": "Wikimedia Commons",
+    "page": "https://commons.wikimedia.org/wiki/File:PDA_Mapping.jpg",
+    "downloaded_from": "https://upload.wikimedia.org/wikipedia/commons/a/a0/PDA_Mapping.jpg"
+  },
+  {
+    "file": "public/heroes/retail-1.webp",
+    "title": "Almondsbury.garden.centre.arp.jpg",
+    "label": "Garden center exterior",
+    "reason": "Retail partner page now shows garden-center context.",
+    "source": "Wikimedia Commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Almondsbury.garden.centre.arp.jpg"
+  },
+  {
+    "file": "public/heroes/retail-2.webp",
+    "title": "Stodels Bergvliet Garden Center Interior.jpg",
+    "label": "Garden center interior",
+    "reason": "Retail partner page now shows a real garden center interior.",
+    "source": "Wikimedia Commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Stodels_Bergvliet_Garden_Center_Interior.jpg"
+  },
+  {
+    "file": "public/heroes/retail-4.webp",
+    "title": "Foliage In Garden Center.jpg",
+    "label": "Garden center plants",
+    "reason": "Retail partner page now shows nursery/garden-center plants.",
+    "source": "Wikimedia Commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Foliage_In_Garden_Center.jpg"
+  },
+  {
+    "file": "public/heroes/survey-3.webp",
+    "title": "BLACKOUT Initiative PDF page 43",
+    "label": "Survey instrument",
+    "reason": "Survey page uses the actual project survey/documentation instead of a duplicate field photo.",
+    "source": "Local BLACKOUT Initiative PDF",
+    "page": "C:/Users/faiza/Downloads/BLACKOUT_Initiative (Repaired) (1).pdf"
+  }
+]

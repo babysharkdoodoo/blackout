@@ -13,20 +13,20 @@ import { SurveyForm } from '@/components/survey-form'
 
 const heroImages = [
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Indian%20River%20Lagoon%20Area.jpg',
-    label: 'Indian River Lagoon',
+    src: '/heroes/survey-1.webp',
+    label: 'Field survey work',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Indian%20River%20Lagoon%20National%20Scenic%20Byway%20-%20Underwater%20Manatee%20-%20NARA%20-%207719534.jpg',
-    label: 'Manatee habitat',
+    src: '/heroes/survey-2.webp',
+    label: 'Door-to-door route',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Storm%20Drain.JPG',
-    label: 'Storm drain pathway',
+    src: '/heroes/survey-3.webp',
+    label: 'Survey instrument',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Floridian%20seagrass%20bed.jpg',
-    label: 'Seagrass beds',
+    src: '/heroes/survey-4.webp',
+    label: 'Neighborhood sample',
   },
 ]
 
@@ -51,7 +51,7 @@ const auditMetrics = [
   {
     label: 'Wave 2 timing',
     value: 'Post-intervention',
-    note: 'Following conclusion of all field operations.',
+    note: 'Planned after the outreach sequence in the same zone.',
   },
   {
     label: 'Primary outcome',
@@ -72,12 +72,12 @@ const auditMetrics = [
 
 const pipelines = [
   {
-    title: 'Project submissions',
-    body: 'Documented quantitative outcomes need a clear before/after comparison. The wave gap provides that verified evidence.',
+    title: 'Project record',
+    body: 'The before/after comparison is planned to show whether awareness changed.',
   },
   {
     title: 'County handoff package',
-    body: 'Brevard County environmental management receives the raw survey dataset, methodology settings, and a validated baseline for future municipal use.',
+    body: 'The handoff is planned to include the raw dataset, method notes, and baseline results.',
   },
   {
     title: 'Replication guide',
@@ -86,8 +86,8 @@ const pipelines = [
 ]
 
 const wavePoints = [
-  'Wave 1 is the baseline. It closes before any BLACKOUT collateral is placed in the field.',
-  'Wave 2 repeats the same sampling logic after outreach, tagging, and drain marking are complete.',
+  'Wave 1 is the baseline. It closes before any BLACKOUT collateral appears in the field.',
+  'Wave 2 is planned for the same streets after outreach, tagging, and drain marking.',
   'The difference between the two waves is the evidence: awareness, understanding, and intent should move.',
 ]
 
@@ -111,12 +111,12 @@ function Reveal({
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      initial={reduceMotion ? false : { opacity: 0, y: 18, filter: 'blur(10px)' }}
+      animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
       transition={{
-        duration: 0.55,
+        duration: 0.72,
         delay,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       }}
     >
       {children}
@@ -253,6 +253,8 @@ function Hero() {
     if (reduceMotion) return
 
     const timer = window.setInterval(() => {
+      if (document.hidden) return
+
       setIndex((current) => (current + 1) % heroImages.length)
     }, 5000)
 
@@ -275,15 +277,17 @@ function Hero() {
             draggable={false}
             referrerPolicy="no-referrer"
             className="absolute inset-0 h-full w-full object-cover"
-            initial={{ opacity: 0, scale: 1.03 }}
+            initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
             animate={{
               opacity: 0.34,
               scale: reduceMotion ? 1 : 1.07,
+              filter: reduceMotion ? 'none' : 'blur(0px)',
             }}
-            exit={{ opacity: 0 }}
+            exit={{ opacity: 0, filter: 'blur(10px)' }}
             transition={{
-              opacity: { duration: 1 },
-              scale: { duration: 5.2, ease: 'easeOut' },
+              opacity: { duration: 1.1 },
+              filter: { duration: 1.1 },
+              scale: { duration: 6.2, ease: [0.16, 1, 0.3, 1] as const },
             }}
           />
         </AnimatePresence>
@@ -293,17 +297,17 @@ function Hero() {
       </div>
 
       <motion.div
-        initial="hidden"
+        initial={reduceMotion ? false : 'hidden'}
         animate="show"
-        transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
+        transition={{ staggerChildren: 0.08, delayChildren: 0.14 }}
         className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-12"
       >
         <motion.p
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#b9c89c]"
         >
           Community survey
@@ -311,59 +315,58 @@ function Hero() {
 
         <motion.h1
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="max-w-5xl text-[clamp(2.8rem,8vw,5.85rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-[#f5efe3]"
         >
-          Measure awareness.
+          Ask first.
           <br />
-          Reveal real change.
+          Measure later.
         </motion.h1>
 
         <motion.p
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-6 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] leading-[1.5] text-white/70"
         >
-          The survey framework turns outreach into defensible data. Wave 1
-          establishes the baseline before any BLACKOUT activity begins; Wave 2
-          measures what changed.
+          Wave 1 captures awareness before outreach. Wave 2 checks the same
+          area after the planned sequence.
         </motion.p>
 
         <motion.div
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-8 flex flex-col gap-3 sm:flex-row"
         >
           <Link
             href="#survey"
             className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07100d] transition hover:bg-white"
           >
-            Open the survey
+            Open survey
           </Link>
 
           <Link
-            href="#method"
+            href="/impact"
             className="inline-flex items-center justify-center rounded-full border border-white/18 px-6 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
           >
-            Read the method
+            Result plan
           </Link>
         </motion.div>
 
         <motion.div
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-8 flex max-w-2xl flex-wrap gap-2 text-xs text-white/58"
         >
           <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
@@ -382,10 +385,10 @@ function Hero() {
         <AnimatePresence mode="wait">
           <motion.span
             key={activeImage.label}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, y: 4, filter: 'blur(6px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -4, filter: 'blur(6px)' }}
+            transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] as const }}
           >
             {activeImage.label}
           </motion.span>
@@ -397,10 +400,11 @@ function Hero() {
               key={image.src}
               type="button"
               aria-label={`Show ${image.label}`}
+              aria-pressed={imageIndex === index}
               onClick={() => setIndex(imageIndex)}
               className={`h-1.5 rounded-full transition-all duration-300 ${imageIndex === index
-                  ? 'w-8 bg-[#f5efe3]'
-                  : 'w-3 bg-white/25 hover:bg-white/45'
+                ? 'w-8 bg-[#f5efe3]'
+                : 'w-3 bg-white/25 hover:bg-white/45'
                 }`}
             />
           ))}
@@ -413,26 +417,83 @@ function Hero() {
 export function SurveyPageClient() {
   return (
     <SiteLayout>
-      <main className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
+      <main id="main-content" tabIndex={-1} className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
         <Hero />
 
-        <LightSection id="snapshot">
-          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+        <LightSection id="survey">
+          <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-start lg:gap-16">
             <SectionHeader
-              eyebrow="Snapshot"
-              title="The audit in one view."
-              body="The survey page is the project’s field instrument. It keeps the focus on the two-wave structure, the sampling method, and the evidence generated by the gap between baseline and follow-up."
+              eyebrow="Live instrument"
+              title="The field form protects the baseline."
+              body="Wave 1 is planned before outreach, shelf tags, or drain markers. Wave 2 asks the same core questions after the campaign sequence."
             />
 
             <Reveal delay={0.1}>
-              <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-[#ded6c8] bg-[#ded6c8]">
+              <div className="overflow-hidden rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] shadow-[0_24px_70px_rgba(7,16,13,0.1)]">
+                <div className="border-b border-[#ded6c8] px-6 py-5 sm:px-7">
+                  <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[#6f8167]">
+                    BLK-SRV-2026A
+                  </p>
+
+                  <h3 className="mt-2 text-[1.45rem] font-semibold tracking-[-0.04em] text-[#173027]">
+                    Fertilizer Ordinance Awareness Verification
+                  </h3>
+
+                  <p className="mt-2 text-sm leading-7 text-[#5e665d]">
+                    Brevard County residential sampling protocol
+                  </p>
+                </div>
+
+                <div className="bg-[#f7f2e8] p-4 text-[#173027] sm:p-6">
+                  <SurveyForm />
+                </div>
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.16}>
+            <div className="mt-12 grid gap-4 sm:grid-cols-2">
+              <div className="rounded-3xl bg-[#173027] p-6 text-[#f5efe3]">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#a8b98c]">
+                  Wave 1
+                </p>
+
+                <p className="mt-3 text-[1.35rem] font-semibold leading-tight tracking-[-0.04em]">
+                  Planned baseline before intervention.
+                </p>
+              </div>
+
+              <div className="rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
+                  Wave 2
+                </p>
+
+                <p className="mt-3 text-[1.35rem] font-semibold leading-tight tracking-[-0.04em] text-[#173027]">
+                  Planned follow-up in the same zone.
+                </p>
+              </div>
+            </div>
+          </Reveal>
+        </LightSection>
+
+        <DarkSection id="snapshot">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+            <SectionHeader
+              dark
+              eyebrow="Snapshot"
+              title="One before-and-after view."
+              body="The survey is designed to measure what residents know before and after the campaign instead of relying on guesses."
+            />
+
+            <Reveal delay={0.1}>
+              <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-white/10 bg-white/10">
                 {stats.map((item) => (
-                  <div key={item.k} className="bg-[#fbf8f1] p-5 sm:p-6">
-                    <p className="text-[1.6rem] font-semibold leading-none tracking-[-0.055em] text-[#173027] sm:text-[2rem]">
+                  <div key={item.k} className="bg-white/[0.035] p-5 sm:p-6">
+                    <p className="text-[1.6rem] font-semibold leading-none tracking-[-0.055em] text-[#f5efe3] sm:text-[2rem]">
                       {item.k}
                     </p>
 
-                    <p className="mt-3 max-w-[12rem] text-sm leading-6 text-[#657064]">
+                    <p className="mt-3 max-w-[12rem] text-sm leading-6 text-white/56">
                       {item.v}
                     </p>
                   </div>
@@ -442,68 +503,11 @@ export function SurveyPageClient() {
           </div>
 
           <Reveal delay={0.16}>
-            <div className="mt-12 border-t border-[#ded6c8] pt-8">
-              <p className="max-w-3xl text-[clamp(1.3rem,3vw,1.95rem)] font-semibold leading-tight tracking-[-0.04em]">
-                The survey exists to separate assumption from evidence: what
-                residents knew before BLACKOUT, and what changed after.
+            <div className="mt-12 border-t border-white/10 pt-8">
+              <p className="max-w-3xl text-[clamp(1.3rem,3vw,1.95rem)] font-semibold leading-tight tracking-[-0.04em] text-[#f5efe3]">
+                The point is simple: do not assume awareness changed. Measure it
+                before and after the campaign.
               </p>
-            </div>
-          </Reveal>
-        </LightSection>
-
-        <DarkSection id="survey">
-          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
-            <SectionHeader
-              dark
-              eyebrow="Live instrument"
-              title="The field form captures the baseline."
-              body="This standardized instrument is deployed across the campaign zone before any outreach, tagging, or drain marking begins. The form mirrors the questions used at residential access points."
-            />
-
-            <Reveal delay={0.1}>
-              <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.035] shadow-[0_24px_70px_rgba(0,0,0,0.22)] backdrop-blur-sm">
-                <div className="border-b border-white/10 px-6 py-5">
-                  <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[#a8b98c]">
-                    BLK-SRV-2026A
-                  </p>
-
-                  <h3 className="mt-2 text-[1.45rem] font-semibold tracking-[-0.04em] text-[#f5efe3]">
-                    Fertilizer Ordinance Awareness Verification
-                  </h3>
-
-                  <p className="mt-2 text-sm leading-7 text-white/56">
-                    Brevard County residential sampling protocol
-                  </p>
-                </div>
-
-                <div className="bg-[#f7f2e8] p-5 text-[#173027] sm:p-6">
-                  <SurveyForm />
-                </div>
-              </div>
-            </Reveal>
-          </div>
-
-          <Reveal delay={0.16}>
-            <div className="mt-12 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-3xl bg-[#f5efe3] p-6 text-[#07100d]">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#607357]">
-                  Wave 1
-                </p>
-
-                <p className="mt-3 text-[1.35rem] font-semibold leading-tight tracking-[-0.04em]">
-                  Live baseline before intervention.
-                </p>
-              </div>
-
-              <div className="rounded-3xl border border-white/10 bg-white/[0.035] p-6">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#a8b98c]">
-                  Wave 2
-                </p>
-
-                <p className="mt-3 text-[1.35rem] font-semibold leading-tight tracking-[-0.04em] text-[#f5efe3]">
-                  Post-intervention follow-up.
-                </p>
-              </div>
             </div>
           </Reveal>
         </DarkSection>
@@ -512,8 +516,8 @@ export function SurveyPageClient() {
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Method"
-              title="The baseline must finish before the intervention starts."
-              body="Wave 1 anchors the pre-intervention dataset. It is collected before BLACKOUT awareness collateral, storm drain markers, or retail shelf tags are placed in the field."
+              title="Baseline first."
+              body="Wave 1 has to close first so the results show what residents knew before BLACKOUT appears in the neighborhood."
             />
 
             <Reveal delay={0.1}>
@@ -528,9 +532,9 @@ export function SurveyPageClient() {
                 </p>
 
                 <p className="mt-4 text-sm leading-7 text-[#5e665d]">
-                  Wave 2 runs only after the intervention sequence is complete.
-                  The comparison between the two waves becomes the project’s
-                  primary empirical outcome.
+                  Wave 2 is planned only after the intervention sequence. The
+                  comparison between the two waves becomes the project's primary
+                  empirical outcome.
                 </p>
               </div>
             </Reveal>
@@ -557,8 +561,8 @@ export function SurveyPageClient() {
           <SectionHeader
             dark
             eyebrow="Technical parameters"
-            title="A small set of numbers keeps the fieldwork consistent."
-            body="The survey has to be simple enough to run door-to-door, but structured enough to produce a clean before/after comparison."
+            title="A small set of numbers keeps the survey consistent."
+            body="The survey is short enough for door-to-door use and structured enough to compare the two waves clearly."
           />
 
           <div className="mt-10 divide-y divide-white/10 border-y border-white/10">
@@ -579,8 +583,8 @@ export function SurveyPageClient() {
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Data flow"
-              title="The survey delta is reused wherever the project needs proof."
-              body="Door-to-door collection becomes the clean baseline dataset. That baseline is compared against the post-intervention wave, and the result becomes the evidence behind the rest of the project."
+              title="Compare the waves."
+              body="The baseline is compared with the follow-up wave. That difference becomes the evidence for what changed."
             />
 
             <Reveal delay={0.1}>
@@ -615,8 +619,8 @@ export function SurveyPageClient() {
             <SectionHeader
               dark
               eyebrow="Outputs"
-              title="One instrument, multiple destinations."
-              body="The survey does more than collect responses. It feeds the county handoff, the replication guide, and the quantitative story behind the project."
+              title="One survey, many uses."
+              body="The survey is planned to feed the county handoff, the replication guide, and the quantitative project record."
             />
 
             <Reveal delay={0.1}>
@@ -661,51 +665,51 @@ export function SurveyPageClient() {
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Closing"
-              title="The survey should feel like a field instrument, not a dashboard."
-              body="The layout stays restrained because the point is not visual noise. The point is clarity: what was measured, when it was measured, and how the result proves whether the project changed something real."
+              title="The survey keeps the project honest."
+              body="It shows what was measured, when it was measured, and whether awareness moved after the campaign."
             />
 
             <Reveal delay={0.1}>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Link
-                  href="#survey"
+                  href="/retail-partners"
                   className="group block rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 transition hover:-translate-y-0.5 hover:border-[#b7c5aa] hover:bg-white"
                 >
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
-                    Instrument
+                    Next field step
                   </p>
 
                   <p className="mt-5 text-[1.25rem] font-semibold tracking-[-0.035em]">
-                    Open the survey
+                    Go to retail reminders
                   </p>
 
                   <p className="mt-3 text-sm leading-7 text-[#5e665d]">
-                    Use the live field form for baseline awareness capture.
+                    See how the rule appears at the fertilizer purchase point.
                   </p>
 
                   <p className="mt-6 text-sm text-[#6f8167] transition group-hover:translate-x-0.5">
-                    Go to survey →
+                    Go to retail partners &rarr;
                   </p>
                 </Link>
 
                 <Link
-                  href="#top"
+                  href="/impact"
                   className="group block rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 transition hover:-translate-y-0.5 hover:border-[#b7c5aa] hover:bg-white"
                 >
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
-                    Navigation
+                    Results
                   </p>
 
                   <p className="mt-5 text-[1.25rem] font-semibold tracking-[-0.035em]">
-                    Back to top
+                    See the impact record
                   </p>
 
                   <p className="mt-3 text-sm leading-7 text-[#5e665d]">
-                    Return to the hero and overview of the survey structure.
+                    Learn how survey data connects to store, drain, and handoff records.
                   </p>
 
                   <p className="mt-6 text-sm text-[#6f8167] transition group-hover:translate-x-0.5">
-                    Go back →
+                    Go to impact &rarr;
                   </p>
                 </Link>
               </div>
@@ -716,3 +720,5 @@ export function SurveyPageClient() {
     </SiteLayout>
   )
 }
+
+export default SurveyPageClient

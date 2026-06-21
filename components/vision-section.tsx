@@ -14,11 +14,11 @@ const frame = [
   },
   {
     label: 'Method',
-    value: 'Use surveys, retail reminders, drain markers, and documentation.',
+    value: 'Plan one campaign zone with a baseline survey, retail shelf tags, drain markers, and records.',
   },
   {
-    label: 'Finish line',
-    value: 'Leave Brevard County with a program it can operate without the student team.',
+    label: 'Handoff',
+    value: 'Prepare a package Brevard County or a future team can keep using.',
   },
 ]
 
@@ -36,12 +36,12 @@ function Reveal({
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      initial={reduceMotion ? false : { opacity: 0, y: 18, filter: 'blur(10px)' }}
+      animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
       transition={{
-        duration: 0.55,
+        duration: 0.72,
         delay,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       }}
     >
       {children}
@@ -66,15 +66,15 @@ export function VisionSection() {
 
             <Reveal delay={0.06}>
               <h2 className="mt-4 max-w-4xl text-[clamp(2.35rem,5vw,4.45rem)] font-semibold leading-[0.98] tracking-[-0.06em]">
-                The law exists. The system around it does not.
+                Make the rule easy to see.
               </h2>
             </Reveal>
 
             <Reveal delay={0.12}>
               <p className="mt-6 max-w-2xl text-base leading-8 text-[#5e665d] sm:text-[1.05rem]">
-                BLACKOUT treats the fertilizer blackout as an implementation
-                problem. The ordinance is already written; the missing work is
-                public contact, behavior timing, evidence, and handoff.
+                BLACKOUT is being planned as a field system: measure awareness
+                first, then add reminders at stores and storm drains, then hand
+                over the records.
               </p>
             </Reveal>
 
@@ -85,8 +85,8 @@ export function VisionSection() {
                 </p>
 
                 <p className="mt-3 max-w-2xl text-[1.45rem] font-semibold leading-tight tracking-[-0.04em]">
-                  A policy does not change behavior until people encounter it at
-                  the moment their behavior matters.
+                  People are more likely to follow a rule when they see it before
+                  the decision it is meant to guide.
                 </p>
               </div>
             </Reveal>
@@ -121,8 +121,8 @@ export function VisionSection() {
         <Reveal delay={0.16}>
           <div className="mt-12 border-t border-[#ded6c8] pt-8">
             <p className="max-w-3xl text-[clamp(1.35rem,3vw,2rem)] font-semibold leading-tight tracking-[-0.04em]">
-              The goal is not to keep students involved forever. The goal is to
-              build something clear enough for the County to inherit.
+              The goal is a clear public system Brevard County can review,
+              inherit, and repeat after the first campaign zone.
             </p>
           </div>
         </Reveal>

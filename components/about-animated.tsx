@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion, type Transition } from 'framer-motion'
 
 const fadeUp = {
     hidden: { opacity: 0, y: 24 },
@@ -31,9 +31,9 @@ function SectionLabel({ index, title }: { index: string; title: string }) {
 export function AboutAnimatedContent() {
     const reduceMotion = useReducedMotion()
 
-    const transition = reduceMotion
+    const transition: Transition = reduceMotion
         ? { duration: 0 }
-        : { duration: 0.55, ease: [0.22, 1, 0.36, 1] }
+        : { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const }
 
     const cards = [
         {
@@ -48,15 +48,6 @@ export function AboutAnimatedContent() {
             title: 'Not a one-off',
             body: 'The goal is a handoff that can keep running after the student team is gone.',
         },
-    ]
-
-    const competitions = [
-        'CmPS',
-        'HOSA',
-        'Earth Prize',
-        'EPA PEYA',
-        'GENIUS Olympiad',
-        'Jane Goodall Roots & Shoots',
     ]
 
     return (
@@ -121,7 +112,7 @@ export function AboutAnimatedContent() {
                                 </div>
                                 <div className="border-b border-black/5 pb-4">
                                     <p className="text-[10px] tracking-[0.2em] text-[#8a8f86] uppercase">Legal basis</p>
-                                    <p className="mt-1 text-[14px] text-[#151c19]">Brevard County Ord. § 62-3601</p>
+                                    <p className="mt-1 text-[14px] text-[#151c19]">Brevard County Ord. &sect; 62-3601</p>
                                 </div>
                                 <div className="border-b border-black/5 pb-4">
                                     <p className="text-[10px] tracking-[0.2em] text-[#8a8f86] uppercase">Institution</p>
@@ -158,7 +149,7 @@ export function AboutAnimatedContent() {
                             <div className="mt-8 space-y-5 max-w-2xl text-[15px] leading-[1.9] text-[#5b6259]">
                                 <p>
                                     The problem is not that nothing exists. The problem is that a rule can be on the
-                                    books and still not be part of anyone’s daily behavior.
+                                    books and still not be part of anyone&apos;s daily behavior.
                                 </p>
                                 <p>
                                     BLACKOUT is designed to close that gap. It focuses on the summer window when
@@ -247,7 +238,7 @@ export function AboutAnimatedContent() {
                 </div>
             </section>
 
-            {/* Competition context */}
+            {/* Continuity context */}
             <section className="border-t border-black/5 bg-[#f8f6f0]">
                 <div className="mx-auto max-w-6xl px-5 py-16 lg:px-8 lg:py-24">
                     <motion.div
@@ -258,16 +249,23 @@ export function AboutAnimatedContent() {
                         className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]"
                     >
                         <motion.div variants={fadeUp} transition={transition}>
-                            <SectionLabel index="04" title="Competition context" />
+                            <SectionLabel index="04" title="How it continues" />
                             <p className="mt-6 max-w-xl text-[15px] leading-[1.9] text-[#5b6259]">
-                                BLACKOUT is being submitted to multiple competitions and grant programs. The project
-                                does not change itself to fit a category. The categories happen to reward the same
-                                kind of work.
+                                BLACKOUT is organized so the work does not disappear after one field season. The
+                                survey, retail, drain, and handoff records are meant to be clear enough for another
+                                team or county partner to continue.
                             </p>
                         </motion.div>
 
                         <motion.div variants={fadeUp} transition={transition} className="flex flex-wrap gap-3">
-                            {competitions.map((item, i) => (
+                            {[
+                                'Survey instrument',
+                                'Retail tag files',
+                                'Drain marker log',
+                                'Photo archive',
+                                'Partner records',
+                                'Handoff package',
+                            ].map((item) => (
                                 <motion.div
                                     key={item}
                                     whileHover={reduceMotion ? undefined : { y: -3 }}
@@ -275,9 +273,6 @@ export function AboutAnimatedContent() {
                                     className="rounded-2xl border border-black/5 bg-[#f0ede5] px-4 py-3 shadow-sm"
                                 >
                                     <p className="text-[14px] text-[#151c19]">{item}</p>
-                                    {i === 0 && <p className="mt-0.5 text-[11px] text-[#8a8f86]">Primary competition</p>}
-                                    {i === 1 && <p className="mt-0.5 text-[11px] text-[#8a8f86]">Health and environment</p>}
-                                    {i === 3 && <p className="mt-0.5 text-[11px] text-[#8a8f86]">Presidential award</p>}
                                 </motion.div>
                             ))}
                         </motion.div>
@@ -299,7 +294,7 @@ export function AboutAnimatedContent() {
                                 href={item.href}
                                 className="rounded-full border border-black/10 bg-white/70 px-4 py-2 text-[13px] text-[#5b6259] transition-colors hover:border-black/20 hover:text-[#151c19]"
                             >
-                                {item.label} →
+                                {item.label} &rarr;
                             </Link>
                         ))}
                     </div>

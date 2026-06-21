@@ -103,13 +103,13 @@ export function Footer() {
 
                             <p className="mt-3 max-w-xl text-[1.35rem] font-medium leading-[1.25] tracking-[-0.03em] text-[#f4efe5]">
                                 June 1 to September 30
-                                <span className="text-[#a3b18a]"> · Summer Fertilizer Blackout</span>
+                                <span className="text-[#a3b18a]"> &middot; Summer Fertilizer Blackout</span>
                             </p>
                         </div>
 
                         <div className="flex flex-col gap-2 text-sm text-[#6f6a60] sm:flex-row sm:gap-6 lg:text-right">
-                            <p>Brevard County Ord. § 62-3601</p>
-                            <p>© {new Date().getFullYear()} BLACKOUT Initiative</p>
+                            <p>Brevard County Ord. &sect; 62-3601</p>
+                            <p>&copy; {new Date().getFullYear()} BLACKOUT Initiative</p>
                         </div>
                     </div>
                 </div>

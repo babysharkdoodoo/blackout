@@ -12,20 +12,20 @@ import { SiteLayout } from '@/components/site-layout'
 
 const heroImages = [
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Indian%20River%20Lagoon%20Area.jpg',
-    label: 'Indian River Lagoon',
+    src: '/heroes/mission-1.webp',
+    label: 'Seagrass habitat',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Florida%20Manatee%20FWS%2018.jpg',
-    label: 'Florida manatee',
+    src: '/heroes/mission-2.webp',
+    label: 'Waterway runoff',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Floridian%20seagrass%20bed.jpg',
-    label: 'Seagrass beds',
+    src: '/heroes/mission-3.webp',
+    label: 'Algal bloom',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Storm%20Drain.JPG',
-    label: 'Storm drain pathway',
+    src: '/heroes/mission-4.webp',
+    label: 'Underwater field view',
   },
 ]
 
@@ -51,7 +51,7 @@ const stats = [
 const chain = [
   {
     title: 'Fertilizer is applied',
-    body: 'Nitrogen and phosphorus are placed on lawns, landscapes, and turf during the rainy season, when runoff risk is highest.',
+    body: 'Nitrogen and phosphorus can be placed on lawns, landscapes, and turf during the rainy season, when runoff risk is highest.',
   },
   {
     title: 'Stormwater moves it',
@@ -71,29 +71,29 @@ const model = [
   {
     number: '01',
     title: 'Survey',
-    body: 'Measure what residents know before outreach begins, then return after the campaign to measure what changed.',
+    body: 'Measure what residents know before outreach begins, then return after the planned campaign sequence to measure what changed.',
     detail: 'Two-wave awareness audit',
   },
   {
     number: '02',
     title: 'Intercept',
-    body: 'Place ordinance information beside fertilizer products, where the decision happens and where the message can still prevent runoff.',
+    body: 'Prepare ordinance information beside fertilizer products, where the decision happens and where the message can still prevent runoff.',
     detail: 'Retail shelf-tag placement',
   },
   {
     number: '03',
     title: 'Mark',
-    body: 'Install storm drain markers so residents connect lawn behavior to the pathway that carries runoff toward the lagoon.',
+    body: 'Install approved storm drain markers so residents connect lawn behavior to the pathway that carries runoff toward the lagoon.',
     detail: 'GPS-logged drain markers',
   },
 ]
 
 const sequence = [
   'Wave 1 survey closes before any store tags, drain markers, or public-facing outreach.',
-  'Retail tags and drain markers go live only after the baseline awareness data is protected.',
-  'Outreach runs through the June 1 - September 30 blackout window.',
-  'Wave 2 surveys the same neighborhood zone after the intervention.',
-  'The final package gives Brevard County the tools to continue the program.',
+  'Retail tags and drain markers are planned only after the baseline awareness data is protected.',
+  'Outreach is planned through the June 1 - September 30 blackout window.',
+  'Wave 2 is planned for the same neighborhood zone after the intervention sequence.',
+  'The final package is planned to give Brevard County tools to continue the program.',
 ]
 
 const survey = [
@@ -144,11 +144,11 @@ const drains = [
 const documentation = [
   {
     title: 'Master project log',
-    body: 'Stores survey sessions, drain records, retail partners, partner letters, and raw data exports.',
+    body: 'Stores survey sessions, planned drain records, retail outreach, partner letters, and raw data exports.',
   },
   {
     title: 'Photo archive',
-    body: 'Keeps before/after drain photos, store tag photos, survey sessions, and field documentation organized by date.',
+    body: 'Keeps planned before/after drain photos, store tag photos, survey sessions, and field documentation organized by date.',
   },
   {
     title: 'Handoff folder',
@@ -156,7 +156,7 @@ const documentation = [
   },
   {
     title: 'Partner records',
-    body: 'Documents store agreements, public works communication, county correspondence, and confirmation of handoff.',
+    body: 'Documents store agreements, city approval, county correspondence, and confirmation of handoff.',
   },
 ]
 
@@ -171,11 +171,11 @@ const roles = [
   },
   {
     title: 'Retail Lead',
-    body: 'Contacts stores, secures partner agreements, places shelf tags, and tracks estimated reach.',
+    body: 'Contacts stores, prepares partner agreements, plans shelf tag placement, and tracks estimated reach.',
   },
   {
     title: 'Field Lead',
-    body: 'Selects drains, records GPS coordinates, manages installation sessions, and maintains the drain database.',
+    body: 'Selects approved drains, prepares GPS records, coordinates planned marker sessions, and maintains the drain database.',
   },
   {
     title: 'Documentation Lead',
@@ -197,12 +197,12 @@ function Reveal({
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      initial={reduceMotion ? false : { opacity: 0, y: 18, filter: 'blur(10px)' }}
+      animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
       transition={{
-        duration: 0.55,
+        duration: 0.72,
         delay,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       }}
     >
       {children}
@@ -334,6 +334,8 @@ function Hero() {
     if (reduceMotion) return
 
     const timer = window.setInterval(() => {
+      if (document.hidden) return
+
       setIndex((current) => (current + 1) % heroImages.length)
     }, 5000)
 
@@ -355,16 +357,20 @@ function Hero() {
             alt=""
             draggable={false}
             referrerPolicy="no-referrer"
+            loading="eager"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
-            initial={{ opacity: 0, scale: 1.03 }}
+            initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
             animate={{
               opacity: 0.34,
               scale: reduceMotion ? 1 : 1.07,
+              filter: reduceMotion ? 'none' : 'blur(0px)',
             }}
-            exit={{ opacity: 0 }}
+            exit={{ opacity: 0, filter: 'blur(10px)' }}
             transition={{
-              opacity: { duration: 1 },
-              scale: { duration: 5.2, ease: 'easeOut' },
+              opacity: { duration: 1.1 },
+              filter: { duration: 1.1 },
+              scale: { duration: 6.2, ease: [0.16, 1, 0.3, 1] as const },
             }}
           />
         </AnimatePresence>
@@ -374,17 +380,17 @@ function Hero() {
       </div>
 
       <motion.div
-        initial="hidden"
+        initial={reduceMotion ? false : 'hidden'}
         animate="show"
-        transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
+        transition={{ staggerChildren: 0.08, delayChildren: 0.14 }}
         className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-12"
       >
         <motion.p
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#b9c89c]"
         >
           Mission
@@ -392,70 +398,68 @@ function Hero() {
 
         <motion.h1
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="max-w-5xl text-[clamp(2.8rem,8vw,5.85rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-[#f5efe3]"
         >
-          The law exists.
+          Stop runoff
           <br />
-          The system does not.
+          before it starts.
         </motion.h1>
 
         <motion.p
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-6 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] leading-[1.5] text-white/70"
         >
-          BLACKOUT activates Brevard County’s Summer Fertilizer Blackout
-          Ordinance by measuring awareness, reaching residents at the point of
-          purchase, marking storm drains, and handing off a repeatable field
-          system.
+          BLACKOUT focuses on the moment before fertilizer becomes pollution:
+          awareness, buying, and runoff.
         </motion.p>
 
         <motion.div
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-8 flex flex-col gap-3 sm:flex-row"
         >
           <Link
-            href="#foundation"
+            href="#problem"
             className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07100d] transition hover:bg-white"
           >
-            Read the foundation
+            Runoff chain
           </Link>
 
           <Link
-            href="#model"
+            href="/survey"
             className="inline-flex items-center justify-center rounded-full border border-white/18 px-6 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
           >
-            See the field model
+            Survey plan
           </Link>
         </motion.div>
 
         <motion.div
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-8 flex max-w-2xl flex-wrap gap-2 text-xs text-white/58"
         >
           <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
-            Survey → stores → storm drains
+            Survey - stores - storm drains
           </span>
           <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
             June 1 - September 30
           </span>
           <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
-            Built for handoff
+            Planned for handoff
           </span>
         </motion.div>
       </motion.div>
@@ -464,10 +468,10 @@ function Hero() {
         <AnimatePresence mode="wait">
           <motion.span
             key={activeImage.label}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, y: 4, filter: 'blur(6px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -4, filter: 'blur(6px)' }}
+            transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] as const }}
           >
             {activeImage.label}
           </motion.span>
@@ -479,6 +483,7 @@ function Hero() {
               key={image.src}
               type="button"
               aria-label={`Show ${image.label}`}
+              aria-pressed={imageIndex === index}
               onClick={() => setIndex(imageIndex)}
               className={`h-1.5 rounded-full transition-all duration-300 ${imageIndex === index
                   ? 'w-8 bg-[#f5efe3]'
@@ -495,7 +500,7 @@ function Hero() {
 export default function MissionPageClient() {
   return (
     <SiteLayout>
-      <main className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
+      <main id="main-content" tabIndex={-1} className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
         <Hero />
 
         <LightSection id="snapshot">
@@ -504,10 +509,10 @@ export default function MissionPageClient() {
               eyebrow="Snapshot"
               title={
                 <>
-                  A focused mission, not a vague environmental campaign.
+                  Stop runoff early.
                 </>
               }
-              body="BLACKOUT targets one controllable failure point: residents often do not encounter the fertilizer ordinance before buying or applying fertilizer. The project turns that invisible rule into a visible system."
+              body="BLACKOUT targets one controllable gap: residents often miss the fertilizer rule before buying or applying fertilizer."
             />
 
             <Reveal delay={0.1}>
@@ -529,8 +534,8 @@ export default function MissionPageClient() {
           <Reveal delay={0.16}>
             <div className="mt-12 border-t border-[#ded6c8] pt-8">
               <p className="max-w-3xl text-[clamp(1.3rem,3vw,1.95rem)] font-semibold leading-tight tracking-[-0.04em]">
-                The ordinance is already written. The missing work is timing,
-                visibility, documentation, and transfer.
+                The ordinance is already written. The mission is to make it
+                visible early enough to prevent avoidable runoff.
               </p>
             </div>
           </Reveal>
@@ -543,11 +548,10 @@ export default function MissionPageClient() {
               eyebrow="Foundation"
               title={
                 <>
-                  BLACKOUT starts with a simple question: why is an existing law
-                  not changing behavior?
+                  Do residents see the rule?
                 </>
               }
-              body="Brevard County’s summer fertilizer restriction is a real policy, but a policy cannot protect the lagoon if residents do not see it before the moment of action. BLACKOUT treats the issue as an implementation problem."
+              body="Brevard County's summer fertilizer restriction is already real. BLACKOUT focuses on whether people see it in time to act."
             />
 
             <Reveal delay={0.1}>
@@ -557,10 +561,9 @@ export default function MissionPageClient() {
                 </p>
 
                 <p className="mt-3 text-[1.4rem] font-semibold leading-tight tracking-[-0.04em]">
-                  Protect manatees and the seagrass they depend on by activating
-                  the fertilizer ordinance through original awareness auditing,
-                  retail reminders, storm drain marking, and a clean county
-                  handoff.
+                  Protect seagrass and manatees by helping residents recognize
+                  the blackout window before fertilizer enters the stormwater
+                  pathway.
                 </p>
               </div>
             </Reveal>
@@ -602,10 +605,10 @@ export default function MissionPageClient() {
               eyebrow="The problem"
               title={
                 <>
-                  The lagoon crisis begins upstream, with ordinary lawn decisions.
+                  The problem starts upstream.
                 </>
               }
-              body="The causal chain is not abstract. Fertilizer applied during the rainy season can move through stormwater infrastructure, contribute to nutrient loading, fuel blooms, reduce seagrass, and weaken the habitat manatees depend on."
+              body="Rain can carry fertilizer through stormwater systems, feeding algae blooms and reducing the seagrass manatees depend on."
             />
 
             <Reveal delay={0.1}>
@@ -665,10 +668,10 @@ export default function MissionPageClient() {
             eyebrow="Field model"
             title={
               <>
-                Three contacts. One ordinance. One repeatable system.
+                  Three touchpoints.
               </>
             }
-            body="The project uses three coordinated prongs because no single message is enough. The survey measures the gap. The shelf tag reaches the purchase decision. The drain marker makes the runoff pathway visible in the neighborhood."
+            body="The survey measures the gap, the shelf tag reaches shoppers, and the drain marker makes runoff visible nearby."
           />
 
           <div className="mt-10 grid gap-4 lg:grid-cols-3">
@@ -701,10 +704,10 @@ export default function MissionPageClient() {
             eyebrow="Survey"
             title={
               <>
-                The survey turns a suspected awareness gap into evidence.
+                Survey first.
               </>
             }
-            body="Wave 1 protects the baseline. Wave 2 tests whether the project changed what residents know. The point is not to guess that the ordinance is invisible; the point is to measure it clearly enough that the result can guide future work."
+              body="Wave 1 captures what residents know before outreach. Wave 2 is planned to show whether the campaign changed that awareness."
           />
 
           <div className="mt-10 grid gap-4 lg:grid-cols-3">
@@ -722,7 +725,7 @@ export default function MissionPageClient() {
               </p>
 
               <p className="mt-3 max-w-3xl text-[1.45rem] font-semibold leading-tight tracking-[-0.04em]">
-                The key number is the share of residents who both know the
+                The key number will be the share of residents who both know the
                 ordinance exists and can identify the correct blackout dates.
               </p>
             </div>
@@ -735,10 +738,10 @@ export default function MissionPageClient() {
             eyebrow="Retail intercept"
             title={
               <>
-                The store shelf is where awareness can still change the outcome.
+                Reach the shelf.
               </>
             }
-            body="A resident who applies fertilizer during the blackout window usually buys it first. That makes the fertilizer shelf one of the most important intervention points in the whole project."
+            body="Most fertilizer use starts with a purchase. The shelf is a practical place to show the rule before the choice is made."
           />
 
           <div className="mt-10 grid gap-4 lg:grid-cols-3">
@@ -755,10 +758,10 @@ export default function MissionPageClient() {
             eyebrow="Drain marking"
             title={
               <>
-                The drain marker makes runoff local.
+                Mark the drain.
               </>
             }
-            body="Storm drains are where lawn behavior becomes a water-quality pathway. Marking them turns an invisible connection into a physical reminder in the exact neighborhood where runoff begins."
+            body="Storm drains turn lawn behavior into a water-quality pathway. Markers make that connection visible."
           />
 
           <div className="mt-10 grid gap-4 lg:grid-cols-3">
@@ -786,10 +789,10 @@ export default function MissionPageClient() {
               eyebrow="Team structure"
               title={
                 <>
-                  The work is divided by ownership, not by vague titles.
+                  Roles own the work.
                 </>
               }
-              body="Each role owns a concrete part of the field system. That keeps the project organized, prevents responsibilities from drifting, and makes the final handoff easier to assemble."
+              body="Each role owns a concrete part of the field system, which keeps responsibilities clear and the handoff easier to assemble."
             />
 
             <Reveal delay={0.1}>
@@ -800,7 +803,7 @@ export default function MissionPageClient() {
                   </p>
 
                   <p className="mt-3 max-w-xl text-sm leading-7 text-white/56">
-                    Five roles, each tied to a field or documentation output.
+                    Defined roles, each tied to a field or documentation output.
                   </p>
                 </div>
 
@@ -834,10 +837,10 @@ export default function MissionPageClient() {
             eyebrow="Documentation"
             title={
               <>
-                The project only survives if the records are clean.
+                Keep clean records.
               </>
             }
-            body="The field work creates the public-facing impact, but the documentation makes it transferable. Every survey session, store agreement, drain marker, photo, and meeting note needs a place in the system."
+            body="The field work is planned to create public impact. The records make it transferable."
           />
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
@@ -856,10 +859,10 @@ export default function MissionPageClient() {
               eyebrow="Handoff"
               title={
                 <>
-                  The finish line is transfer, not attention.
+                  Reusable program.
                 </>
               }
-              body="BLACKOUT is designed to leave Brevard County or a future student team with the tools to continue: survey forms, drain logs, tag templates, field protocols, photo records, and partner documentation."
+              body="BLACKOUT is planned to leave usable tools: survey forms, drain logs, tag templates, field protocols, photos, and partner records."
             />
 
             <Reveal delay={0.1}>
@@ -896,8 +899,8 @@ export default function MissionPageClient() {
           <Reveal delay={0.18}>
             <div className="mt-12 border-t border-white/10 pt-8">
               <p className="max-w-3xl text-[clamp(1.35rem,3vw,2rem)] font-semibold leading-tight tracking-[-0.04em] text-[#f5efe3]">
-                BLACKOUT is not asking for a new law. It is asking whether an
-                existing law can become visible enough to change behavior.
+                The mission succeeds when residents see the blackout window
+                before fertilizer reaches a lawn, drain, or canal.
               </p>
             </div>
           </Reveal>
@@ -909,55 +912,53 @@ export default function MissionPageClient() {
               eyebrow="Next"
               title={
                 <>
-                  From ordinance to everyday action.
+                  From rule to habit.
                 </>
               }
-              body="The project succeeds when residents encounter the blackout window before they buy, apply, or wash fertilizer into the stormwater system. That is the practical gap BLACKOUT is built to close."
+              body="The project succeeds when residents see the blackout window before they buy, apply, or wash fertilizer into stormwater."
             />
 
             <Reveal delay={0.1}>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Link
-                  href="#foundation"
+                  href="/ordinance"
                   className="group block rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 transition hover:-translate-y-0.5 hover:border-[#b7c5aa] hover:bg-white"
                 >
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
-                    Start here
+                    Next page
                   </p>
 
                   <p className="mt-5 text-[1.25rem] font-semibold tracking-[-0.035em] text-[#173027]">
-                    Read the foundation
+                    Understand the ordinance
                   </p>
 
                   <p className="mt-3 text-sm leading-7 text-[#5e665d]">
-                    Understand the ordinance, the sequence, and the logic behind
-                    the project.
+                    See the exact summer fertilizer rule BLACKOUT is helping residents follow.
                   </p>
 
                   <p className="mt-6 text-sm text-[#6f8167] transition group-hover:translate-x-0.5">
-                    Go to foundation →
+                    Go to ordinance &rarr;
                   </p>
                 </Link>
 
                 <Link
-                  href="#model"
+                  href="/retail-partners"
                   className="group block rounded-3xl border border-[#ded6c8] bg-[#fbf8f1] p-6 transition hover:-translate-y-0.5 hover:border-[#b7c5aa] hover:bg-white"
                 >
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
-                    Field system
+                    Purchase decision
                   </p>
 
                   <p className="mt-5 text-[1.25rem] font-semibold tracking-[-0.035em] text-[#173027]">
-                    See the model
+                    Explore retail reminders
                   </p>
 
                   <p className="mt-3 text-sm leading-7 text-[#5e665d]">
-                    Follow the survey, retail, and storm drain intervention
-                    structure.
+                    See how shelf tags reach residents before fertilizer is applied.
                   </p>
 
                   <p className="mt-6 text-sm text-[#6f8167] transition group-hover:translate-x-0.5">
-                    Go to model →
+                    Go to retail partners &rarr;
                   </p>
                 </Link>
               </div>

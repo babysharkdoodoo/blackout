@@ -7,7 +7,7 @@ import { useRef, type ReactNode } from 'react'
 const details = [
   {
     label: 'Code section',
-    value: '§ 62-3601 et seq.',
+    value: 'Section 62-3601 et seq.',
   },
   {
     label: 'Blackout period',
@@ -37,12 +37,12 @@ function Reveal({
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      initial={reduceMotion ? false : { opacity: 0, y: 18, filter: 'blur(10px)' }}
+      animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
       transition={{
-        duration: 0.55,
+        duration: 0.72,
         delay,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       }}
     >
       {children}
@@ -67,33 +67,32 @@ export function OrdinanceSection() {
 
             <Reveal delay={0.06}>
               <h2 className="mt-4 max-w-4xl text-[clamp(2.35rem,5vw,4.45rem)] font-semibold leading-[0.98] tracking-[-0.06em] text-[#f5efe3]">
-                Brevard already has the rule. The work is getting it seen.
+                The rule already exists.
               </h2>
             </Reveal>
 
             <Reveal delay={0.12}>
               <p className="mt-6 max-w-2xl text-base leading-8 text-white/62 sm:text-[1.05rem]">
                 From June 1 through September 30, Brevard County restricts
-                nitrogen and phosphorus fertilizer use on lawns, landscapes, and
-                turf. BLACKOUT is not a new policy proposal. It is an awareness
-                system for an existing rule.
+                nitrogen and phosphorus fertilizer use. BLACKOUT is preparing
+                reminders that make the existing rule easier to notice.
               </p>
             </Reveal>
 
             <Reveal delay={0.18}>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href="#approach"
+                  href="/survey"
                   className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07100d] transition hover:bg-white"
                 >
-                  How BLACKOUT works
+                  See the survey plan
                 </Link>
 
                 <Link
                   href="/ordinance"
                   className="inline-flex items-center justify-center rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-white/78 transition hover:border-white/30 hover:text-white"
                 >
-                  View ordinance
+                  Open the rule page
                 </Link>
               </div>
             </Reveal>

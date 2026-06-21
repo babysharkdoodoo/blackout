@@ -12,20 +12,20 @@ import { SiteLayout } from '@/components/site-layout'
 
 const heroImages = [
   {
-    src: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1800&q=80',
-    label: 'Garden center display',
+    src: '/heroes/retail-1.webp',
+    label: 'Garden center exterior',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Indian%20River%20Lagoon%20Area.jpg',
-    label: 'Indian River Lagoon',
+    src: '/heroes/retail-2.webp',
+    label: 'Garden center interior',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Storm%20Drain.JPG',
-    label: 'Storm drain pathway',
+    src: '/heroes/retail-3.webp',
+    label: 'Garden retail aisle',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Florida%20Manatee%20FWS%2018.jpg',
-    label: 'Manatee habitat',
+    src: '/heroes/retail-4.webp',
+    label: 'Garden center plants',
   },
 ]
 
@@ -43,7 +43,7 @@ const programTargets = [
   {
     label: 'Season duration',
     value: 'Jun 1 - Sep 30',
-    note: 'Tags remain in place throughout',
+    note: 'Tags are planned for the full blackout window',
   },
   {
     label: 'Reach tracking',
@@ -65,13 +65,13 @@ const partnerSteps = [
   },
   {
     step: '02',
-    label: 'Agreement signed',
-    desc: 'A written partner agreement confirms placement location, season dates, and weekly reach logging.',
+    label: 'Agreement prepared',
+    desc: 'A written partner agreement confirms placement location, season dates, and weekly reach logging before tags go up.',
   },
   {
     step: '03',
-    label: 'Tags installed',
-    desc: 'The BLACKOUT team installs the tags. Store staff only provides access to the display.',
+    label: 'Tags scheduled',
+    desc: 'The BLACKOUT team plans the installation. Store staff only provides access to the display.',
   },
   {
     step: '04',
@@ -81,43 +81,43 @@ const partnerSteps = [
   {
     step: '05',
     label: 'Season close',
-    desc: 'Tags are removed on October 1. The partner receives a one-page summary of estimated season reach.',
+    desc: 'Tags are planned to come down on October 1. Partners receive a one-page summary of estimated season reach.',
   },
 ]
 
 const retailPartners = [
   {
-    name: 'Partner A  -  Brevard County',
+    name: 'Target store 01',
     type: 'Hardware',
     status: 'Outreach pending',
     active: false,
   },
   {
-    name: 'Partner B  -  Brevard County',
+    name: 'Target store 02',
     type: 'Garden center',
     status: 'Outreach pending',
     active: false,
   },
   {
-    name: 'Partner C  -  Brevard County',
+    name: 'Target store 03',
     type: 'Hardware',
     status: 'Outreach pending',
     active: false,
   },
   {
-    name: 'Partner D  -  Brevard County',
+    name: 'Target store 04',
     type: 'Nursery',
     status: 'Outreach pending',
     active: false,
   },
   {
-    name: 'Partner E  -  Brevard County',
+    name: 'Target store 05',
     type: 'Garden center',
     status: 'Outreach pending',
     active: false,
   },
   {
-    name: 'Partner F  -  Brevard County',
+    name: 'Target store 06',
     type: 'Hardware',
     status: 'Outreach pending',
     active: false,
@@ -127,7 +127,7 @@ const retailPartners = [
 const partnerValue = [
   {
     title: 'No cost to stores',
-    body: 'BLACKOUT provides the tags, installs them, and removes them at the end of the blackout window.',
+    body: 'BLACKOUT prepares the tags, schedules placement, and handles removal at the end of the blackout window.',
   },
   {
     title: 'Simple placement',
@@ -161,12 +161,12 @@ function Reveal({
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      initial={reduceMotion ? false : { opacity: 0, y: 18, filter: 'blur(10px)' }}
+      animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
       transition={{
-        duration: 0.55,
+        duration: 0.72,
         delay,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       }}
     >
       {children}
@@ -261,6 +261,8 @@ function Hero() {
     if (reduceMotion) return
 
     const timer = window.setInterval(() => {
+      if (document.hidden) return
+
       setIndex((current) => (current + 1) % heroImages.length)
     }, 5000)
 
@@ -282,16 +284,20 @@ function Hero() {
             alt=""
             draggable={false}
             referrerPolicy="no-referrer"
+            loading="eager"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
-            initial={{ opacity: 0, scale: 1.03 }}
+            initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
             animate={{
               opacity: 0.34,
               scale: reduceMotion ? 1 : 1.07,
+              filter: reduceMotion ? 'none' : 'blur(0px)',
             }}
-            exit={{ opacity: 0 }}
+            exit={{ opacity: 0, filter: 'blur(10px)' }}
             transition={{
-              opacity: { duration: 1 },
-              scale: { duration: 5.2, ease: 'easeOut' },
+              opacity: { duration: 1.1 },
+              filter: { duration: 1.1 },
+              scale: { duration: 6.2, ease: [0.16, 1, 0.3, 1] as const },
             }}
           />
         </AnimatePresence>
@@ -301,17 +307,17 @@ function Hero() {
       </div>
 
       <motion.div
-        initial="hidden"
+        initial={reduceMotion ? false : 'hidden'}
         animate="show"
-        transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
+        transition={{ staggerChildren: 0.08, delayChildren: 0.14 }}
         className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-12"
       >
         <motion.p
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#b9c89c]"
         >
           Retail partners
@@ -319,59 +325,58 @@ function Hero() {
 
         <motion.h1
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="max-w-5xl text-[clamp(2.8rem,8vw,5.85rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-[#f5efe3]"
         >
-          The shelf is the
+          The shelf is
           <br />
-          decision point.
+          the decision point.
         </motion.h1>
 
         <motion.p
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-6 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] leading-[1.5] text-white/70"
         >
-          BLACKOUT places ordinance information beside fertilizer products, where
-          customers can see the blackout window before purchase becomes
-          application.
+          BLACKOUT is preparing shelf reminders so customers see the rule before
+          buying fertilizer.
         </motion.p>
 
         <motion.div
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-8 flex flex-col gap-3 sm:flex-row"
         >
           <Link
             href="#program"
             className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07100d] transition hover:bg-white"
           >
-            Program snapshot
+            Partner plan
           </Link>
 
           <Link
-            href="#partner"
+            href="/storm-drains"
             className="inline-flex items-center justify-center rounded-full border border-white/18 px-6 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
           >
-            Become a partner
+            Drain markers
           </Link>
         </motion.div>
 
         <motion.div
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-8 flex max-w-2xl flex-wrap gap-2 text-xs text-white/58"
         >
           <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
@@ -390,10 +395,10 @@ function Hero() {
         <AnimatePresence mode="wait">
           <motion.span
             key={activeImage.label}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, y: 4, filter: 'blur(6px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -4, filter: 'blur(6px)' }}
+            transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] as const }}
           >
             {activeImage.label}
           </motion.span>
@@ -405,6 +410,7 @@ function Hero() {
               key={image.src}
               type="button"
               aria-label={`Show ${image.label}`}
+              aria-pressed={imageIndex === index}
               onClick={() => setIndex(imageIndex)}
               className={`h-1.5 rounded-full transition-all duration-300 ${imageIndex === index
                   ? 'w-8 bg-[#f5efe3]'
@@ -421,15 +427,15 @@ function Hero() {
 export function RetailPartnersPageClient() {
   return (
     <SiteLayout>
-      <main className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
+      <main id="main-content" tabIndex={-1} className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
         <Hero />
 
         <LightSection id="program">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Program snapshot"
-              title="A simple retail intervention with a specific job."
-              body="The shelf tag is placed where fertilizer decisions happen. It gives customers the blackout dates before they buy, not after nutrients have already reached the runoff pathway."
+              title="One job for stores."
+              body="The shelf tag gives customers the blackout dates before they buy fertilizer."
             />
 
             <Reveal delay={0.1}>
@@ -461,7 +467,7 @@ export function RetailPartnersPageClient() {
 
               <p className="mt-3 max-w-3xl text-[1.45rem] font-semibold leading-tight tracking-[-0.04em]">
                 The purchase moment is the last clean chance to prevent a summer
-                fertilizer application.
+                fertilizer use decision.
               </p>
             </div>
           </Reveal>
@@ -472,8 +478,8 @@ export function RetailPartnersPageClient() {
             <SectionHeader
               dark
               eyebrow="Why retail"
-              title="A resident usually buys fertilizer before applying it."
-              body="That makes the fertilizer display one of the strongest intervention points in the whole project. The message appears before the behavior, inside the place where the behavior becomes possible."
+              title="The shelf matters."
+              body="The fertilizer display is a strong intervention point because the reminder appears before the customer acts."
             />
 
             <Reveal delay={0.1}>
@@ -511,8 +517,8 @@ export function RetailPartnersPageClient() {
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Partner process"
-              title="Five steps. Low lift for the store."
-              body="The process is designed to be lightweight. BLACKOUT handles the materials, installation, documentation, and season summary."
+              title="Low lift for stores."
+              body="BLACKOUT handles materials, planned installation, documentation, and the season summary."
             />
 
             <div className="divide-y divide-[#ded6c8] border-y border-[#ded6c8]">
@@ -542,7 +548,7 @@ export function RetailPartnersPageClient() {
             <SectionHeader
               dark
               eyebrow="Materials"
-              title="Everything needed is prepared before the tag goes up."
+              title="Prepared first."
               body="A partner does not need to design anything, print anything, or manage a campaign. The store provides shelf access and a weekly reach estimate."
             />
 
@@ -576,8 +582,8 @@ export function RetailPartnersPageClient() {
         <LightSection id="partners">
           <SectionHeader
             eyebrow="Partner list"
-            title="Retail outreach status."
-            body="The partner list tracks target stores, store type, and placement status. Once agreements are signed, this section can be updated with confirmed names and active placements."
+            title="Outreach status."
+            body="The partner list tracks target stores, store type, and outreach status."
           />
 
           <Reveal delay={0.1}>
@@ -624,14 +630,14 @@ export function RetailPartnersPageClient() {
             <SectionHeader
               dark
               eyebrow="Become a partner"
-              title="A small shelf tag can prevent an accidental violation."
-              body="Retail partners help customers see the ordinance before the blackout window is broken. BLACKOUT handles the setup, documentation, and end-of-season summary."
+              title="Become a partner."
+              body="Retail partners help customers see the ordinance before they make a summer fertilizer decision."
             />
 
             <Reveal delay={0.1}>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Link
-                  href="mailto:blackoutinitiative@gmail.com"
+                  href="mailto:blackoutprojectirl@gmail.com?subject=Retail%20Partnership"
                   className="group block rounded-3xl bg-[#f5efe3] p-6 text-[#07100d] transition hover:-translate-y-0.5 hover:bg-white"
                 >
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#607357]">
@@ -648,28 +654,28 @@ export function RetailPartnersPageClient() {
                   </p>
 
                   <p className="mt-6 text-sm text-[#607357] transition group-hover:translate-x-0.5">
-                    Email the team →
+                    Email the team &rarr;
                   </p>
                 </Link>
 
                 <Link
-                  href="#steps"
+                  href="/storm-drains"
                   className="group block rounded-3xl border border-white/10 bg-white/[0.035] p-6 transition hover:-translate-y-0.5 hover:bg-white/[0.055]"
                 >
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#a8b98c]">
-                    Process
+                    Next field step
                   </p>
 
                   <p className="mt-5 text-[1.25rem] font-semibold tracking-[-0.035em] text-[#f5efe3]">
-                    Review the steps
+                    See storm drain marking
                   </p>
 
                   <p className="mt-3 text-sm leading-7 text-white/58">
-                    See exactly what participation requires before agreeing.
+                    Learn how the message continues after the store, at the runoff pathway.
                   </p>
 
                   <p className="mt-6 text-sm text-[#a8b98c] transition group-hover:translate-x-0.5">
-                    Go to process →
+                    Go to storm drains &rarr;
                   </p>
                 </Link>
               </div>

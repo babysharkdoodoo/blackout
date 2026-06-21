@@ -6,36 +6,36 @@ import { useRef, type ReactNode } from 'react'
 const evidenceStreams = [
   {
     label: 'Survey data',
-    description: 'Baseline and follow-up awareness results with methods notes.',
+    description: 'Wave 1 baseline, Wave 2 follow-up, and methods notes.',
   },
   {
     label: 'Retail documentation',
-    description: 'Partner stores, shelf-tag placement, and estimated weekly reach.',
+    description: 'Target stores, partner agreements, shelf tags, and estimated reach.',
   },
   {
     label: 'Drain map',
-    description: 'GPS-logged storm drains with installation photos and site notes.',
+    description: 'Approved drains, GPS fields, planned marker dates, and photos.',
   },
   {
     label: 'Field archive',
-    description: 'Timestamped photos from surveys, store outreach, and drain marking.',
+    description: 'Planned photos from survey sessions, store outreach, and drain marking.',
   },
   {
     label: 'County handoff',
-    description: 'A package Brevard County can reuse, revise, and expand.',
+    description: 'A planned package Brevard County can review, revise, and expand.',
   },
 ]
 
 const communityOutcomes = [
-  'Residents see the blackout window before applying fertilizer.',
-  'Stores display the rule where fertilizer decisions happen.',
-  'Drain markers connect lawn care to lagoon runoff.',
+  'Residents encounter the blackout window before fertilizer is applied.',
+  'Stores can display the rule where fertilizer decisions happen.',
+  'Drain markers can connect lawn care to lagoon runoff.',
 ]
 
 const countyOutcomes = [
   'A measurable baseline for ordinance awareness.',
-  'Documented partnerships the County can inherit.',
-  'A repeatable model for other neighborhoods or cities.',
+  'Partner and field records the County can inherit.',
+  'A repeatable model for another neighborhood.',
 ]
 
 function Reveal({
@@ -52,12 +52,12 @@ function Reveal({
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      initial={reduceMotion ? false : { opacity: 0, y: 18, filter: 'blur(10px)' }}
+      animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
       transition={{
-        duration: 0.55,
+        duration: 0.72,
         delay,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       }}
     >
       {children}
@@ -110,15 +110,15 @@ export function ImpactSection() {
 
             <Reveal delay={0.06}>
               <h2 className="mt-4 max-w-4xl text-[clamp(2.35rem,5vw,4.45rem)] font-semibold leading-[0.98] tracking-[-0.06em] text-[#f5efe3]">
-                Built to leave evidence, not just impressions.
+                Track what changes.
               </h2>
             </Reveal>
 
             <Reveal delay={0.12}>
               <p className="mt-6 max-w-2xl text-base leading-8 text-white/62 sm:text-[1.05rem]">
-                BLACKOUT is designed to produce a record Brevard County can use:
-                awareness data, retail documentation, mapped drain markers, and a
-                clean handoff package.
+                The project is set up to track survey results, store outreach,
+                approved drain markers, photos, and handoff files so the work
+                can be checked and continued.
               </p>
             </Reveal>
 
@@ -129,8 +129,8 @@ export function ImpactSection() {
                 </p>
 
                 <p className="mt-3 max-w-2xl text-[1.45rem] font-semibold leading-tight tracking-[-0.04em]">
-                  A documented program the County can operate after the student
-                  team steps away.
+                  A documented program Brevard County or a future student team
+                  can keep using.
                 </p>
               </div>
             </Reveal>

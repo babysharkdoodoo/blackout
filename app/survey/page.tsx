@@ -1,9 +1,9 @@
 import { SurveyPageClient } from './survey-page-client'
 
 export const metadata = {
-  title: 'Community Survey  -  BLACKOUT',
+  title: 'Community Survey',
   description:
-    'Two-wave compliance audit measuring fertilizer ordinance awareness before and after the BLACKOUT intervention.',
+    'Planned two-wave awareness survey for Brevard County fertilizer ordinance visibility.',
 }
 
 export default function Page() {

@@ -21,8 +21,9 @@ const playfair = Playfair_Display({
 
 const SITE_NAME = 'BLACKOUT'
 const SITE_URL = 'https://blackout.example'
+const SITE_ICON = '/icon.svg?v=public-icon'
 const SITE_DESCRIPTION =
-  "A student-led initiative protecting the Indian River Lagoon, seagrass, and manatees by activating Brevard County's existing Summer Fertilizer Blackout Ordinance through community awareness and measurable action."
+  "A student-led initiative preparing public reminders, survey data, and field records around Brevard County's existing Summer Fertilizer Blackout Ordinance."
 
 const siteKeywords = [
   'Indian River Lagoon',
@@ -80,7 +81,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'BLACKOUT | Protecting the Indian River Lagoon',
     description:
-      "Student-led initiative activating Brevard County's Summer Fertilizer Blackout Ordinance to protect manatees and seagrass.",
+      "Student-led initiative preparing survey, retail, and storm drain outreach around Brevard County's Summer Fertilizer Blackout Ordinance.",
     type: 'website',
     locale: 'en_US',
     url: SITE_URL,
@@ -98,21 +99,18 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'BLACKOUT | Protecting the Indian River Lagoon',
     description:
-      "Student-led initiative activating Brevard County's Summer Fertilizer Blackout Ordinance to protect manatees and seagrass.",
+      "Student-led initiative preparing survey, retail, and storm drain outreach around Brevard County's Summer Fertilizer Blackout Ordinance.",
     images: ['/og-image.png'],
     creator: '@blackout',
     site: '@blackout',
   },
   icons: {
     icon: [
-      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark-32x32.png', media: '(prefers-color-scheme: dark)' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: SITE_ICON, type: 'image/svg+xml', sizes: 'any' },
     ],
     apple: '/apple-icon.png',
-    shortcut: '/favicon.ico',
+    shortcut: SITE_ICON,
   },
-  manifest: '/site.webmanifest',
   formatDetection: {
     email: false,
     address: false,
@@ -145,9 +143,14 @@ export default function RootLayout({
     <html
       lang="en"
       dir="ltr"
+      data-scroll-behavior="smooth"
       className={`${inter.variable} ${playfair.variable} scroll-smooth`}
       suppressHydrationWarning
     >
+      <head>
+        <link rel="icon" href={SITE_ICON} type="image/svg+xml" sizes="any" />
+        <link rel="shortcut icon" href={SITE_ICON} type="image/svg+xml" />
+      </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
         <div id="top" aria-hidden="true" />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>

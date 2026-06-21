@@ -1,9 +1,9 @@
 import { StormDrainsPageClient } from './storm-drains-page-client'
 
 export const metadata = {
-  title: 'Storm Drain Marking  -  BLACKOUT',
+  title: 'Storm Drain Marking',
   description:
-    'GPS-documented storm drain markers connecting lawn behavior to specific manatee mortality events.',
+    'The city-approved plan for GPS-documented storm drain markers and local runoff reminders.',
 }
 
 export default function Page() {

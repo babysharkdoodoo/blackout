@@ -1,8 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 import { ContactForm } from '@/components/contact-form'
+
+const PROJECT_EMAIL = 'blackoutprojectirl@gmail.com'
 
 type ContactItem = {
     label: string
@@ -16,26 +18,26 @@ const contacts: ContactItem[] = [
     {
         label: 'General and Media',
         description: 'Press inquiries, project documentation requests, and general questions.',
-        email: 'blackout.irl@westshore.edu',
+        email: PROJECT_EMAIL,
     },
     {
         label: 'Retail Partnerships',
         description: 'Hardware stores, garden centers, and nurseries interested in shelf tag participation.',
-        email: 'blackout.irl@westshore.edu',
+        email: PROJECT_EMAIL,
         subject: 'Partnership Inquiry',
         note: 'Use this subject line.',
     },
     {
         label: 'County Coordination',
         description: 'Brevard County Natural Resources, stormwater management, or official correspondence.',
-        email: 'blackout.irl@westshore.edu',
+        email: PROJECT_EMAIL,
         subject: 'County',
         note: 'Use this subject line.',
     },
     {
         label: 'Academic Replication',
         description: 'Schools or organizations interested in adapting the BLACKOUT model.',
-        email: 'blackout.irl@westshore.edu',
+        email: PROJECT_EMAIL,
         subject: 'Replication',
         note: 'Use this subject line.',
     },
@@ -62,7 +64,7 @@ const involvedLinks = [
     },
 ]
 
-const container = {
+const container: Variants = {
     hidden: {},
     show: {
         transition: {
@@ -72,16 +74,16 @@ const container = {
     },
 }
 
-const rise = {
+const rise: Variants = {
     hidden: { opacity: 0, y: 18 },
     show: {
         opacity: 1,
         y: 0,
-        transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] as const },
     },
 }
 
-const fade = {
+const fade: Variants = {
     hidden: { opacity: 0 },
     show: {
         opacity: 1,
@@ -204,7 +206,7 @@ export function ContactPageContent() {
                                     href={item.href}
                                     className="text-[12px] text-[#8a8578] hover:text-[#e0ddd5] transition-colors uppercase tracking-wide"
                                 >
-                                    {item.cta} →
+                                    {item.cta} &rarr;
                                 </Link>
                             </motion.div>
                         ))}

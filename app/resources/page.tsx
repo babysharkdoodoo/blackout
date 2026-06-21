@@ -2,9 +2,9 @@
 import { ResourcesPageClient } from './resources-page-client'
 
 export const metadata = {
-  title: 'Resources  -  BLACKOUT',
+  title: 'Resources',
   description:
-    'Data sources, ordinance documentation, field materials, and references used by the BLACKOUT initiative.',
+    'Data sources, ordinance documentation, planned field materials, and references for BLACKOUT.',
 }
 
 export default function Page() {

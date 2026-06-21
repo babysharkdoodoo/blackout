@@ -1,8 +1,8 @@
 import { ImpactPageClient } from './impact-page-client'
 
 export const metadata = {
-  title: 'Impact & Results  -  BLACKOUT',
-  description: 'Every field activity produces a document. Every document survives the project.',
+  title: 'Impact Plan & Records',
+  description: 'Planned field activities, evidence streams, and handoff records for the BLACKOUT initiative.',
 }
 
 export default function Page() {

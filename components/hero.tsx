@@ -6,31 +6,32 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 
 const images = [
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Indian%20River%20Lagoon%20Area.jpg',
-    label: 'Indian River Lagoon',
+    src: '/heroes/home-1.webp',
+    label: 'Lagoon shoreline',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Floridian%20seagrass%20bed.jpg',
-    label: 'Seagrass beds',
+    src: '/heroes/home-2.webp',
+    label: 'Brevard waterway',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Manatee%20photo.jpg',
-    label: 'Manatee habitat',
+    src: '/heroes/home-3.webp',
+    label: 'Coastal water color',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Storm%20Drain.JPG',
-    label: 'Storm drain pathway',
+    src: '/heroes/home-4.webp',
+    label: 'Runoff pathway',
   },
 ]
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
   show: {
     opacity: 1,
     y: 0,
+    filter: 'blur(0px)',
     transition: {
-      duration: 0.7,
-      ease: [0.22, 1, 0.36, 1],
+      duration: 0.78,
+      ease: [0.16, 1, 0.3, 1] as const,
     },
   },
 }
@@ -43,6 +44,8 @@ export function Hero() {
     if (reduceMotion) return
 
     const timer = window.setInterval(() => {
+      if (document.hidden) return
+
       setIndex((current) => (current + 1) % images.length)
     }, 5000)
 
@@ -64,16 +67,20 @@ export function Hero() {
             alt=""
             draggable={false}
             referrerPolicy="no-referrer"
+            loading="eager"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
-            initial={{ opacity: 0, scale: 1.03 }}
+            initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
             animate={{
               opacity: 0.34,
               scale: reduceMotion ? 1 : 1.07,
+              filter: reduceMotion ? 'none' : 'blur(0px)',
             }}
-            exit={{ opacity: 0 }}
+            exit={{ opacity: 0, filter: 'blur(10px)' }}
             transition={{
-              opacity: { duration: 1 },
-              scale: { duration: 5.2, ease: 'easeOut' },
+              opacity: { duration: 1.1 },
+              filter: { duration: 1.1 },
+              scale: { duration: 6.2, ease: [0.16, 1, 0.3, 1] as const },
             }}
           />
         </AnimatePresence>
@@ -83,9 +90,9 @@ export function Hero() {
       </div>
 
       <motion.div
-        initial="hidden"
+        initial={reduceMotion ? false : 'hidden'}
         animate="show"
-        transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
+        transition={{ staggerChildren: 0.08, delayChildren: 0.14 }}
         className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-12"
       >
         <motion.p
@@ -99,17 +106,17 @@ export function Hero() {
           variants={fadeUp}
           className="max-w-4xl text-[clamp(2.8rem,8vw,5.7rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-[#f5efe3]"
         >
-          The rule exists.
+          Protect the lagoon
           <br />
-          Awareness does not.
+          before runoff.
         </motion.h1>
 
         <motion.p
           variants={fadeUp}
           className="mt-6 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] leading-[1.5] text-white/70"
         >
-          Brevard County restricts summer nitrogen and phosphorus fertilizer use to
-          reduce runoff into storm drains and the Indian River Lagoon.
+          BLACKOUT is preparing surveys, store reminders, and approved drain
+          markers for Brevard County's summer fertilizer rule.
         </motion.p>
 
         <motion.div
@@ -117,17 +124,17 @@ export function Hero() {
           className="mt-8 flex flex-col gap-3 sm:flex-row"
         >
           <Link
-            href="#ordinance"
+            href="#problem"
             className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07110d] transition hover:bg-white"
           >
-            Read the ordinance
+            The problem
           </Link>
 
           <Link
-            href="#mission"
+            href="/ordinance"
             className="inline-flex items-center justify-center rounded-full border border-white/18 px-6 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
           >
-            See the project
+            The rule
           </Link>
         </motion.div>
 
@@ -139,10 +146,10 @@ export function Hero() {
             June 1 - Sept. 30
           </span>
           <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
-            Nitrogen + phosphorus
+            Existing county rule
           </span>
           <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
-            Survey → stores → storm drains
+            Survey - stores - storm drains
           </span>
         </motion.div>
       </motion.div>
@@ -151,10 +158,10 @@ export function Hero() {
         <AnimatePresence mode="wait">
           <motion.span
             key={activeImage.label}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, y: 4, filter: 'blur(6px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -4, filter: 'blur(6px)' }}
+            transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] as const }}
           >
             {activeImage.label}
           </motion.span>
@@ -166,6 +173,7 @@ export function Hero() {
               key={image.src}
               type="button"
               aria-label={`Show ${image.label}`}
+              aria-pressed={imageIndex === index}
               onClick={() => setIndex(imageIndex)}
               className={`h-1.5 rounded-full transition-all duration-300 ${imageIndex === index
                   ? 'w-8 bg-[#f5efe3]'

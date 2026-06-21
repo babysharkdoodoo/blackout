@@ -7,27 +7,27 @@ import { useRef, type ReactNode } from 'react'
 const actions = [
   {
     audience: 'Residents',
-    text: 'Learn the blackout window before applying fertilizer.',
-    href: '/mission',
-    cta: 'Read more',
+    text: 'Start with the plain-language rule and why the dates matter.',
+    href: '/ordinance',
+    cta: 'Understand the rule',
   },
   {
     audience: 'Retailers',
-    text: 'Place a shelf tag beside fertilizer displays.',
+    text: 'Explore how stores can show the blackout dates before fertilizer is purchased.',
     href: '/retail-partners',
-    cta: 'Partner with us',
+    cta: 'See the partner process',
   },
   {
     audience: 'Educators',
-    text: 'Use BLACKOUT materials with students or community groups.',
-    href: '/survey',
-    cta: 'Get materials',
+    text: 'Use the sources, survey logic, and field materials to understand the plan.',
+    href: '/resources',
+    cta: 'Open sources and files',
   },
   {
     audience: 'County officials',
-    text: 'Review the handoff package and field documentation.',
-    href: '/ordinance',
-    cta: 'View deliverables',
+    text: 'Review the planned evidence streams and county handoff records.',
+    href: '/impact',
+    cta: 'Review the impact record',
   },
 ]
 
@@ -45,12 +45,12 @@ function Reveal({
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      initial={reduceMotion ? false : { opacity: 0, y: 18, filter: 'blur(10px)' }}
+      animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
       transition={{
-        duration: 0.55,
+        duration: 0.72,
         delay,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       }}
     >
       {children}
@@ -82,7 +82,7 @@ function ActionCard({
         </p>
 
         <span className="text-sm text-[#6f8167] transition group-hover:translate-x-0.5">
-          →
+          &rarr;
         </span>
       </div>
 
@@ -118,14 +118,14 @@ export function CTASection() {
 
             <Reveal delay={0.06}>
               <h2 className="mt-4 max-w-4xl text-[clamp(2.35rem,5vw,4.45rem)] font-semibold leading-[0.98] tracking-[-0.06em]">
-                The ordinance exists. Help make it visible.
+                Help the rule get seen.
               </h2>
             </Reveal>
 
             <Reveal delay={0.12}>
               <p className="mt-6 max-w-2xl text-base leading-8 text-[#5e665d] sm:text-[1.05rem]">
-                BLACKOUT works when the rule shows up before the decision:
-                at homes, in stores, in classrooms, and beside storm drains.
+                Residents, businesses, schools, and county partners each have a
+                clear next page based on what they need to understand.
               </p>
             </Reveal>
 
@@ -140,7 +140,7 @@ export function CTASection() {
                 </p>
 
                 <p className="mt-2 text-sm leading-7 text-white/62">
-                  Brevard County, Florida · Indian River Lagoon watershed
+                  Brevard County, Florida &middot; Indian River Lagoon watershed
                 </p>
               </div>
             </Reveal>
@@ -162,9 +162,8 @@ export function CTASection() {
         <Reveal delay={0.18}>
           <div className="mt-12 border-t border-[#ded6c8] pt-8">
             <p className="max-w-3xl text-[clamp(1.3rem,3vw,1.95rem)] font-semibold leading-tight tracking-[-0.04em]">
-              Resident outreach, retail placement, school partnerships, and
-              county handoff all point to the same goal: getting the rule seen
-              before runoff starts.
+              Every action points to the same goal: fewer accidental fertilizer
+              use decisions during the rainy season.
             </p>
           </div>
         </Reveal>

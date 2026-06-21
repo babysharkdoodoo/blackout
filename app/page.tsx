@@ -11,14 +11,16 @@ import { CTASection } from '@/components/cta-section'
 export default function HomePage() {
   return (
     <SiteLayout>
-      <Hero />
-      <ProblemSection />
-      <OrdinanceSection />
-      <ApproachSection />
-      <ImpactSection />
-      <VisionSection />
-      <TeamSection />
-      <CTASection />
+      <main id="main-content" tabIndex={-1}>
+        <Hero />
+        <ProblemSection />
+        <OrdinanceSection />
+        <ApproachSection />
+        <ImpactSection />
+        <VisionSection />
+        <TeamSection />
+        <CTASection />
+      </main>
     </SiteLayout>
   )
 }

@@ -1,122 +1,179 @@
-// components/contact-form.tsx
 'use client'
 
 import { useState } from 'react'
+import { submitToGoogleScript } from '@/lib/google-script'
 
 export function ContactForm() {
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setSubmitted(true)
+    setError('')
+    setSubmitting(true)
+
+    const form = e.currentTarget
+    const formData = new FormData(form)
+
+    try {
+      await submitToGoogleScript('contact', {
+        name: String(formData.get('name') || ''),
+        email: String(formData.get('email') || ''),
+        topic: String(formData.get('topic') || ''),
+        message: String(formData.get('message') || ''),
+      })
+
+      form.reset()
+      setSubmitted(true)
+    } catch {
+      setError('Message could not be sent yet. Please email the team directly.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   if (submitted) {
     return (
-      <div className="rounded-[2rem] p-6 lg:p-8">
-        <p className="mb-3 text-[10px] uppercase tracking-[0.18em] text-[#8f978a]">
+      <div className="rounded-[2rem] border border-[#ded6c8] bg-[#fbf8f1] p-6 text-[#173027] shadow-[0_18px_50px_rgba(7,16,13,0.08)] lg:p-8">
+        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
           Message received
         </p>
-        <h3 className="mb-3 font-sans text-2xl font-semibold tracking-[-0.03em] text-[#f3efe5]">
+
+        <h3 className="mb-3 text-2xl font-semibold tracking-[-0.03em] text-[#173027]">
           Thank you.
         </h3>
-        <p className="max-w-xl text-[14px] leading-[1.9] text-[#a6ad9f]">
-          This is a demonstration form. In the live version, messages will be delivered directly to the BLACKOUT team inbox.
+
+        <p className="max-w-xl text-[14px] leading-[1.9] text-[#5e665d]">
+          We received your message and sent a confirmation email. The team will
+          review it through the project inbox.
         </p>
       </div>
     )
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-[2rem] p-2 sm:p-4 lg:p-6">
+    <form
+      onSubmit={handleSubmit}
+      className="rounded-[2rem] border border-[#ded6c8] bg-[#fbf8f1] p-5 text-[#173027] shadow-[0_18px_50px_rgba(7,16,13,0.08)] sm:p-6 lg:p-8"
+    >
       <div className="mb-8">
-        <p className="mb-3 text-[10px] uppercase tracking-[0.18em] text-[#8f978a]">
+        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f8167]">
           Contact form
         </p>
-        <h3 className="font-sans text-3xl font-semibold tracking-[-0.03em] text-[#f3efe5]">
+
+        <h3 className="text-3xl font-semibold tracking-[-0.04em] text-[#173027]">
           Send a message.
         </h3>
-        <p className="mt-3 max-w-lg text-[14px] leading-[1.9] text-[#a6ad9f]">
-          Questions, partnership inquiries, media requests, or feedback. Complete the form below and a member of the team will review it.
+
+        <p className="mt-3 max-w-lg text-[14px] leading-[1.9] text-[#5e665d]">
+          Choose a topic and write the message you want routed to the team. For
+          direct delivery, use the email link in the directory above.
         </p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-5">
         <div>
           <label
             htmlFor="name"
-            className="mb-2 block text-[10px] uppercase tracking-[0.12em] text-[#8f978a]"
+            className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.12em] text-[#6f8167]"
           >
             Name
           </label>
+
           <input
             id="name"
+            name="name"
             type="text"
             required
             placeholder="Your name"
-            className="w-full border-0 border-b border-white/10 bg-transparent px-0 py-3 text-[15px] text-[#f3efe5] outline-none placeholder:text-[#70786c] focus:border-[#a3b18a]"
+            autoComplete="name"
+            className="w-full rounded-2xl border border-[#ded6c8] bg-white px-4 py-3.5 text-[15px] text-[#173027] outline-none placeholder:text-[#8a9285] transition focus:border-[#6f8167] focus:ring-4 focus:ring-[#6f8167]/15"
           />
         </div>
 
         <div>
           <label
             htmlFor="email"
-            className="mb-2 block text-[10px] uppercase tracking-[0.12em] text-[#8f978a]"
+            className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.12em] text-[#6f8167]"
           >
             Email
           </label>
+
           <input
             id="email"
+            name="email"
             type="email"
             required
             placeholder="you@example.com"
-            className="w-full border-0 border-b border-white/10 bg-transparent px-0 py-3 text-[15px] text-[#f3efe5] outline-none placeholder:text-[#70786c] focus:border-[#a3b18a]"
+            autoComplete="email"
+            className="w-full rounded-2xl border border-[#ded6c8] bg-white px-4 py-3.5 text-[15px] text-[#173027] outline-none placeholder:text-[#8a9285] transition focus:border-[#6f8167] focus:ring-4 focus:ring-[#6f8167]/15"
           />
         </div>
 
         <div>
           <label
             htmlFor="topic"
-            className="mb-2 block text-[10px] uppercase tracking-[0.12em] text-[#8f978a]"
+            className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.12em] text-[#6f8167]"
           >
             Topic
           </label>
+
           <select
             id="topic"
-            className="w-full border-0 border-b border-white/10 bg-transparent px-0 py-3 text-[15px] text-[#f3efe5] outline-none focus:border-[#a3b18a]"
+            name="topic"
+            required
+            defaultValue="General Question"
+            className="w-full rounded-2xl border border-[#ded6c8] bg-white px-4 py-3.5 text-[15px] text-[#173027] outline-none transition focus:border-[#6f8167] focus:ring-4 focus:ring-[#6f8167]/15"
           >
-            <option className="bg-[#0a0f0d]">General Question</option>
-            <option className="bg-[#0a0f0d]">Media Inquiry</option>
-            <option className="bg-[#0a0f0d]">Retail Partnership</option>
-            <option className="bg-[#0a0f0d]">County Coordination</option>
-            <option className="bg-[#0a0f0d]">Academic Replication</option>
+            <option>General Question</option>
+            <option>Media Inquiry</option>
+            <option>Retail Partnership</option>
+            <option>County Coordination</option>
+            <option>Academic Replication</option>
           </select>
         </div>
 
         <div>
           <label
             htmlFor="message"
-            className="mb-2 block text-[10px] uppercase tracking-[0.12em] text-[#8f978a]"
+            className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.12em] text-[#6f8167]"
           >
             Message
           </label>
+
           <textarea
             id="message"
+            name="message"
             required
             rows={7}
             placeholder="Write your message..."
-            className="w-full resize-none rounded-[1.25rem] border border-white/10 bg-white/[0.03] p-4 text-[15px] text-[#f3efe5] outline-none placeholder:text-[#70786c] focus:border-[#a3b18a]"
+            className="w-full resize-none rounded-[1.25rem] border border-[#ded6c8] bg-white p-4 text-[15px] text-[#173027] outline-none placeholder:text-[#8a9285] transition focus:border-[#6f8167] focus:ring-4 focus:ring-[#6f8167]/15"
           />
         </div>
       </div>
 
-      <div className="mt-10 flex items-center justify-between gap-6 border-t border-white/10 pt-6">
-        <p className="text-[11px] text-[#8f978a]">Demonstration form</p>
+      {error ? (
+        <div
+          className="mt-5 rounded-2xl border border-[#b5533c]/25 bg-[#fff3ed] px-4 py-3 text-[13px] leading-6 text-[#7a2f1f]"
+          role="alert"
+          aria-live="polite"
+        >
+          {error}
+        </div>
+      ) : null}
+
+      <div className="mt-8 flex flex-col gap-4 border-t border-[#ded6c8] pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-[12px] leading-6 text-[#657064]">
+          Routed to the BLACKOUT project inbox.
+        </p>
+
         <button
           type="submit"
-          className="rounded-full bg-[#efe8d6] px-6 py-3 text-[12px] font-medium uppercase tracking-[0.12em] text-[#111814] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
+          disabled={submitting}
+          className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#173027] px-6 py-3 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#f5efe3] transition hover:-translate-y-0.5 hover:bg-[#07100d] disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Send message
+          {submitting ? 'Sending...' : 'Send message'}
         </button>
       </div>
     </form>

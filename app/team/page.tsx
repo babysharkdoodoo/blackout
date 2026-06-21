@@ -2,8 +2,8 @@
 import { TeamPageClient } from './team-page-client'
 
 export const metadata = {
-  title: 'Team  -  BLACKOUT',
-  description: 'Five students. Defined roles. Clear ownership of every deliverable.',
+  title: 'Team',
+  description: 'Five students. Defined roles. Clear ownership of each planned deliverable.',
 }
 
 export default function Page() {

@@ -12,20 +12,20 @@ import { SiteLayout } from '@/components/site-layout'
 
 const heroImages = [
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Storm%20Drain%20Dryden.JPG',
-    label: 'Storm drain marker site',
+    src: '/heroes/storm-drains-1.webp',
+    label: 'Street drain marker',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Storm%20Drain.JPG',
-    label: 'Storm drain pathway',
+    src: '/heroes/storm-drains-2.webp',
+    label: 'Curbside drain',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Indian%20River%20Lagoon%20Area.jpg',
-    label: 'Indian River Lagoon',
+    src: '/heroes/storm-drains-3.webp',
+    label: 'Stormwater street',
   },
   {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Florida%20Manatee%20FWS%2018.jpg',
-    label: 'Manatee habitat',
+    src: '/heroes/storm-drains-4.webp',
+    label: 'Drainage inlet',
   },
 ]
 
@@ -48,12 +48,12 @@ const markerSpecs = [
   {
     label: 'Distance calculation',
     value: 'Straight-line km',
-    note: 'Calculated per drain at installation.',
+    note: 'Planned for each approved drain.',
   },
   {
     label: 'Documentation',
     value: 'GPS + photo',
-    note: 'Logged at each installation point.',
+    note: 'Planned at each marker location.',
   },
   {
     label: 'Target installations',
@@ -66,7 +66,7 @@ const geodatabaseFields = [
   {
     field: 'drain_id',
     type: 'STRING',
-    desc: 'Unique identifier per installation',
+    desc: 'Unique identifier per planned marker',
   },
   {
     field: 'lat',
@@ -81,7 +81,7 @@ const geodatabaseFields = [
   {
     field: 'install_date',
     type: 'DATE',
-    desc: 'Date of marker installation',
+    desc: 'Date of planned marker placement',
   },
   {
     field: 'mortality_site_id',
@@ -96,7 +96,7 @@ const geodatabaseFields = [
   {
     field: 'photo_ref',
     type: 'STRING',
-    desc: 'Filename of installation photo',
+    desc: 'Filename of marker photo',
   },
   {
     field: 'condition_notes',
@@ -109,22 +109,22 @@ const installationSteps = [
   {
     n: '01',
     head: 'Site selection',
-    body: 'Drains are selected within the campaign zone based on proximity to residential fertilizer use and lagoon connectivity.',
+    body: 'Drains are being selected within the campaign zone based on residential fertilizer use and lagoon connectivity.',
   },
   {
     n: '02',
     head: 'Distance calculation',
-    body: 'FWC mortality data is pulled and the nearest documented event is calculated for each drain by GPS coordinates.',
+    body: 'FWC mortality data will be used to calculate the nearest documented event for each approved drain.',
   },
   {
     n: '03',
-    head: 'Installation',
-    body: 'The marker is installed and GPS coordinates are logged at the exact location. A photo is taken for the archive.',
+    head: 'Marker placement',
+    body: 'Each marker will be placed only after the approved site is confirmed. GPS coordinates and photos will be logged for the archive.',
   },
   {
     n: '04',
     head: 'Database entry',
-    body: 'All fields are entered into the geodatabase within 24 hours. The data is reviewed before county handoff.',
+    body: 'All fields will be entered into the geodatabase after field work. The data will be reviewed before county handoff.',
   },
 ]
 
@@ -144,7 +144,7 @@ const markerLogic = [
 ]
 
 const closingPoints = [
-  'The marker is permanent.',
+  'The marker is designed to stay visible.',
   'The distance is specific.',
   'The archive becomes county-ready evidence.',
 ]
@@ -163,12 +163,12 @@ function Reveal({
   return (
     <motion.div
       ref={ref}
-      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
+      initial={reduceMotion ? false : { opacity: 0, y: 18, filter: 'blur(10px)' }}
+      animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
       transition={{
-        duration: 0.55,
+        duration: 0.72,
         delay,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1] as const,
       }}
     >
       {children}
@@ -263,6 +263,8 @@ function Hero() {
     if (reduceMotion) return
 
     const timer = window.setInterval(() => {
+      if (document.hidden) return
+
       setIndex((current) => (current + 1) % heroImages.length)
     }, 5000)
 
@@ -284,16 +286,20 @@ function Hero() {
             alt=""
             draggable={false}
             referrerPolicy="no-referrer"
+            loading="eager"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
-            initial={{ opacity: 0, scale: 1.03 }}
+            initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
             animate={{
               opacity: 0.34,
               scale: reduceMotion ? 1 : 1.07,
+              filter: reduceMotion ? 'none' : 'blur(0px)',
             }}
-            exit={{ opacity: 0 }}
+            exit={{ opacity: 0, filter: 'blur(10px)' }}
             transition={{
-              opacity: { duration: 1 },
-              scale: { duration: 5.2, ease: 'easeOut' },
+              opacity: { duration: 1.1 },
+              filter: { duration: 1.1 },
+              scale: { duration: 6.2, ease: [0.16, 1, 0.3, 1] as const },
             }}
           />
         </AnimatePresence>
@@ -303,17 +309,17 @@ function Hero() {
       </div>
 
       <motion.div
-        initial="hidden"
+        initial={reduceMotion ? false : 'hidden'}
         animate="show"
-        transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
+        transition={{ staggerChildren: 0.08, delayChildren: 0.14 }}
         className="relative z-10 mx-auto flex h-full w-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-12"
       >
         <motion.p
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#b9c89c]"
         >
           Storm drain marking
@@ -321,59 +327,58 @@ function Hero() {
 
         <motion.h1
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="max-w-5xl text-[clamp(2.8rem,8vw,5.85rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-[#f5efe3]"
         >
-          Every drain gets
+          Mark drains.
           <br />
-          a distance.
+          Explain runoff.
         </motion.h1>
 
         <motion.p
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-6 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] leading-[1.5] text-white/70"
         >
-          Each marker shows the fertilizer blackout dates and the straight-line
-          distance from that drain to the nearest documented FWC manatee
-          mortality site.
+          City approval is in place. Planned markers will show blackout dates
+          and connect drains to the lagoon.
         </motion.p>
 
         <motion.div
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-8 flex flex-col gap-3 sm:flex-row"
         >
           <Link
             href="#marker"
             className="inline-flex items-center justify-center rounded-full bg-[#f5efe3] px-6 py-3 text-sm font-semibold text-[#07100d] transition hover:bg-white"
           >
-            Marker details
+            Marker plan
           </Link>
 
           <Link
-            href="#database"
+            href="/impact"
             className="inline-flex items-center justify-center rounded-full border border-white/18 px-6 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
           >
-            View geodatabase
+            Impact plan
           </Link>
         </motion.div>
 
         <motion.div
           variants={{
-            hidden: { opacity: 0, y: 18 },
-            show: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 18, filter: 'blur(10px)' },
+            show: { opacity: 1, y: 0, filter: 'blur(0px)' },
           }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.78, ease: [0.16, 1, 0.3, 1] as const }}
           className="mt-8 flex max-w-2xl flex-wrap gap-2 text-xs text-white/58"
         >
           <span className="rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5">
@@ -392,10 +397,10 @@ function Hero() {
         <AnimatePresence mode="wait">
           <motion.span
             key={activeImage.label}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, y: 4, filter: 'blur(6px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -4, filter: 'blur(6px)' }}
+            transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] as const }}
           >
             {activeImage.label}
           </motion.span>
@@ -407,6 +412,7 @@ function Hero() {
               key={image.src}
               type="button"
               aria-label={`Show ${image.label}`}
+              aria-pressed={imageIndex === index}
               onClick={() => setIndex(imageIndex)}
               className={`h-1.5 rounded-full transition-all duration-300 ${imageIndex === index
                   ? 'w-8 bg-[#f5efe3]'
@@ -423,15 +429,15 @@ function Hero() {
 export function StormDrainsPageClient() {
   return (
     <SiteLayout>
-      <main className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
+      <main id="main-content" tabIndex={-1} className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
         <Hero />
 
         <LightSection id="marker">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Marker logic"
-              title="A storm drain marker should make runoff feel local."
-              body="Most drain markers tell people that water goes somewhere. BLACKOUT markers go further: they connect a specific drain to the fertilizer blackout window and the nearest documented manatee mortality site."
+              title="Make runoff local."
+              body="BLACKOUT markers connect each approved drain to the blackout window and the nearby lagoon impact story."
             />
 
             <Reveal delay={0.1}>
@@ -493,8 +499,8 @@ export function StormDrainsPageClient() {
             <SectionHeader
               dark
               eyebrow="Marker specifications"
-              title="Every marker carries the same core information."
-              body="The design stays consistent so each installation can be understood, photographed, logged, and handed off as part of one coherent field system."
+              title="Same message."
+              body="A consistent design keeps each marker easy to understand, photograph, log, and hand off."
             />
 
             <Reveal delay={0.1}>
@@ -534,8 +540,8 @@ export function StormDrainsPageClient() {
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Installation process"
-              title="The workflow makes every install consistent and auditable."
-              body="The drain marker is only useful if the field record is clean. Each installation needs a selected site, a calculated distance, an installed marker, and a complete database entry."
+              title="Consistent workflow."
+              body="Each planned marker needs a selected site, calculated distance, photo record, and database entry."
             />
 
             <div className="divide-y divide-[#ded6c8] border-y border-[#ded6c8]">
@@ -565,8 +571,8 @@ export function StormDrainsPageClient() {
             <SectionHeader
               dark
               eyebrow="Geodatabase"
-              title="Every drain becomes a county-ready record."
-              body="The final database turns the fieldwork into a usable spatial archive. It includes GPS variables, mortality proximity values, photo references, installation dates, and condition notes."
+              title="Each drain becomes a record."
+              body="The database stores GPS data, proximity values, photo references, installation dates, and condition notes."
             />
 
             <Reveal delay={0.1}>
@@ -607,7 +613,8 @@ export function StormDrainsPageClient() {
 
               <p className="mt-3 max-w-3xl text-[1.45rem] font-semibold leading-tight tracking-[-0.04em]">
                 The county can use the layer as a public record, a planning
-                layer, or a foundation for future stormwater messaging.
+                layer, or a foundation for future stormwater messaging after
+                the approved markers are in place.
               </p>
             </div>
           </Reveal>
@@ -617,8 +624,8 @@ export function StormDrainsPageClient() {
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Closing"
-              title="BLACKOUT makes every drain readable."
-              body="The marker is not decoration. It is a physical reminder, a field data point, and a small piece of public infrastructure."
+              title="Make drains readable."
+              body="Each marker is a reminder, a field data point, and a small piece of public infrastructure."
             />
 
             <Reveal delay={0.1}>
@@ -650,17 +657,17 @@ export function StormDrainsPageClient() {
           <Reveal delay={0.16}>
             <div className="mt-12 flex flex-col gap-3 border-t border-[#ded6c8] pt-8 sm:flex-row">
               <Link
-                href="#marker"
+                href="/impact"
                 className="inline-flex items-center justify-center rounded-full bg-[#173027] px-6 py-3 text-sm font-semibold text-[#f7f2e8] transition hover:bg-[#223a2e]"
               >
-                Back to marker logic
+                See the impact record
               </Link>
 
               <Link
-                href="#top"
+                href="/resources"
                 className="inline-flex items-center justify-center rounded-full border border-[#d8d0c2] px-6 py-3 text-sm font-semibold text-[#53634f] transition hover:border-[#173027]/30 hover:text-[#173027]"
               >
-                Back to top
+                View source files
               </Link>
             </div>
           </Reveal>
