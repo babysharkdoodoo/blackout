@@ -285,6 +285,7 @@ function Hero() {
             draggable={false}
             referrerPolicy="no-referrer"
             loading="eager"
+            fetchPriority="high"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
             initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
@@ -435,7 +436,7 @@ export function RetailPartnersPageClient() {
             <SectionHeader
               eyebrow="Program snapshot"
               title="One job for stores."
-              body="The shelf tag gives customers the blackout dates before they buy fertilizer."
+              body="The shelf tag gives customers the blackout dates before they buy fertilizer. Retail partners are not being asked to run the campaign; the request is shelf access, basic placement support, and a simple weekly reach estimate."
             />
 
             <Reveal delay={0.1}>
@@ -479,7 +480,7 @@ export function RetailPartnersPageClient() {
               dark
               eyebrow="Why retail"
               title="The shelf matters."
-              body="The fertilizer display is a strong intervention point because the reminder appears before the customer acts."
+              body="The fertilizer display is a strong intervention point because the reminder appears before the customer acts. A small sign in the right aisle can catch the decision earlier than a general social post or flyer."
             />
 
             <Reveal delay={0.1}>
@@ -518,7 +519,7 @@ export function RetailPartnersPageClient() {
             <SectionHeader
               eyebrow="Partner process"
               title="Low lift for stores."
-              body="BLACKOUT handles materials, planned installation, documentation, and the season summary."
+              body="BLACKOUT handles materials, planned installation, documentation, and the season summary. The steps are designed to limit staff time while still producing a clear record of where the message was placed."
             />
 
             <div className="divide-y divide-[#ded6c8] border-y border-[#ded6c8]">
@@ -549,7 +550,7 @@ export function RetailPartnersPageClient() {
               dark
               eyebrow="Materials"
               title="Prepared first."
-              body="A partner does not need to design anything, print anything, or manage a campaign. The store provides shelf access and a weekly reach estimate."
+              body="A partner does not need to design anything, print anything, or manage a campaign. The store provides shelf access and a weekly reach estimate, while BLACKOUT prepares the tag, agreement, placement record, and summary."
             />
 
             <Reveal delay={0.1}>
@@ -583,7 +584,7 @@ export function RetailPartnersPageClient() {
           <SectionHeader
             eyebrow="Partner list"
             title="Outreach status."
-            body="The partner list tracks target stores, store type, and outreach status."
+            body="The partner list tracks target stores, store type, and outreach status. Store names stay generic until a partner agrees, so the page shows the planned structure without implying commitments that are not finalized."
           />
 
           <Reveal delay={0.1}>
@@ -631,7 +632,7 @@ export function RetailPartnersPageClient() {
               dark
               eyebrow="Become a partner"
               title="Become a partner."
-              body="Retail partners help customers see the ordinance before they make a summer fertilizer decision."
+              body="Retail partners help customers see the ordinance before they make a summer fertilizer decision. The best fit is a hardware store, garden center, nursery, or lawn-supply aisle serving Brevard County residents during the blackout window."
             />
 
             <Reveal delay={0.1}>

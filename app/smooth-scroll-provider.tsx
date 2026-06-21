@@ -14,6 +14,13 @@ export function SmoothScrollProvider({
     let frameId = 0
     let active = true
     let cleanup: (() => void) | undefined
+    let idleId: number | undefined
+    let timeoutId: ReturnType<typeof setTimeout> | undefined
+    const win = window as Window &
+      typeof globalThis & {
+        requestIdleCallback?: (callback: IdleRequestCallback) => number
+        cancelIdleCallback?: (handle: number) => void
+      }
 
     async function start() {
       const { default: Lenis } = await import('lenis')
@@ -43,10 +50,24 @@ export function SmoothScrollProvider({
       }
     }
 
-    start()
+    if (typeof win.requestIdleCallback === 'function') {
+      idleId = win.requestIdleCallback(() => {
+        start()
+      })
+    } else {
+      timeoutId = setTimeout(() => {
+        start()
+      }, 1)
+    }
 
     return () => {
       active = false
+      if (idleId !== undefined) {
+        win.cancelIdleCallback?.(idleId)
+      }
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId)
+      }
       cleanup?.()
     }
   }, [])

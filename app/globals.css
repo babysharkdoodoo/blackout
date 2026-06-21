@@ -7,6 +7,17 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
   --font-heading: var(--font-source-serif);
   --font-sans: var(--font-inter), 'Inter Fallback', system-ui, sans-serif;
   --font-serif: var(--font-source-serif), 'Georgia', serif;
@@ -19,6 +30,18 @@
    PALETTE  -  Restrained, elegant, natural editorial themes
    ============================================================ */
 :root {
+  --background: 42 39% 94%;
+  --foreground: 154 32% 14%;
+  --card: 42 39% 97%;
+  --card-foreground: 154 32% 14%;
+  --popover: 42 39% 97%;
+  --popover-foreground: 154 32% 14%;
+  --muted: 42 24% 90%;
+  --muted-foreground: 150 9% 36%;
+  --border: 42 22% 78%;
+  --input: 42 22% 78%;
+  --ring: 83 18% 42%;
+
   /* Dark Section tokens */
   --dark-bg: #090e0b;
   --dark-surface: #121915;
@@ -38,6 +61,20 @@
   --light-border: rgba(0, 0, 0, 0.06);
 }
 
+.dark {
+  --background: 150 22% 5%;
+  --foreground: 40 45% 93%;
+  --card: 148 17% 9%;
+  --card-foreground: 40 45% 93%;
+  --popover: 148 17% 9%;
+  --popover-foreground: 40 45% 93%;
+  --muted: 148 14% 14%;
+  --muted-foreground: 80 12% 68%;
+  --border: 150 12% 24%;
+  --input: 150 12% 28%;
+  --ring: 82 24% 62%;
+}
+
 body {
   background: var(--dark-bg);
   color: var(--dark-text-primary);
@@ -47,6 +84,11 @@ body {
 ::selection {
   background: rgba(163, 177, 138, 0.25);
   color: #fff;
+}
+
+:where(a, button, summary, input, textarea, select, [tabindex]:not([tabindex='-1'])):focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 4px;
 }
 
 /* ============================================================

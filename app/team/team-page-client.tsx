@@ -326,6 +326,7 @@ function Hero() {
             draggable={false}
             referrerPolicy="no-referrer"
             loading="eager"
+            fetchPriority="high"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
             initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
@@ -475,7 +476,7 @@ export function TeamPageClient() {
             <SectionHeader
               eyebrow="Snapshot"
               title="Clear team structure."
-              body="Each student has a defined role, planned field responsibilities, and documentation to produce for the final handoff."
+              body="Each student has a defined role, planned field responsibilities, and documentation to produce for the final handoff. This page is the only place that explains the five-person structure, so visitors can see who owns each part of the planned work."
             />
 
             <Reveal delay={0.1}>
@@ -514,7 +515,7 @@ export function TeamPageClient() {
             dark
             eyebrow="Role map"
             title="Roles own deliverables."
-            body="The team structure prevents responsibilities from drifting. Each person has a dedicated section with their name, picture, summary, links, responsibilities, and deliverables."
+            body="The team structure prevents responsibilities from drifting. Each person has a dedicated section with their name, picture, summary, links, responsibilities, and deliverables, so the project can be reviewed by role instead of as one vague group effort."
           />
 
           <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -596,7 +597,7 @@ export function TeamPageClient() {
             <SectionHeader
               eyebrow="Institutional context"
               title="Built for public work."
-              body="BLACKOUT is based at West Shore Jr./Sr. High School and operates around Brevard County's fertilizer blackout window."
+              body="BLACKOUT is based at West Shore Jr./Sr. High School and operates around Brevard County's fertilizer blackout window. The work is being planned as a public-facing project, so roles, files, and timelines need to be easy for outside partners to understand."
             />
 
             <Reveal delay={0.1}>
@@ -648,6 +649,7 @@ export function TeamPageClient() {
           </div>
         </LightSection>
 
+        {/* Repeated on the About and Home pages.
         <DarkSection id="principles">
           <SectionHeader
             dark
@@ -672,7 +674,9 @@ export function TeamPageClient() {
             ))}
           </div>
         </DarkSection>
+        */}
 
+        {/* Repeated on the Mission and Survey pages.
         <LightSection id="sequence">
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
             <SectionHeader
@@ -700,7 +704,9 @@ export function TeamPageClient() {
             </div>
           </div>
         </LightSection>
+        */}
 
+        {/* Repeated on the Impact and Resources pages.
         <DarkSection id="closing">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
             <SectionHeader
@@ -754,6 +760,7 @@ export function TeamPageClient() {
             </div>
           </Reveal>
         </DarkSection>
+        */}
       </main>
     </SiteLayout>
   );

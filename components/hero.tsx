@@ -68,6 +68,7 @@ export function Hero() {
             draggable={false}
             referrerPolicy="no-referrer"
             loading="eager"
+            fetchPriority="high"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
             initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}

@@ -326,6 +326,7 @@ function Hero() {
             draggable={false}
             referrerPolicy="no-referrer"
             loading="eager"
+            fetchPriority="high"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
             initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
@@ -470,7 +471,7 @@ export function AboutPageClient() {
             <SectionHeading
               eyebrow="Snapshot"
               title="BLACKOUT at a glance."
-              body="BLACKOUT helps residents see Brevard County's summer fertilizer rule before they buy or apply fertilizer."
+              body="BLACKOUT helps residents see Brevard County's summer fertilizer rule before they buy or apply fertilizer. This page gives the quick version of what the project is, what is being prepared, and why the sequence matters."
             />
 
             <Reveal delay={0.1}>
@@ -505,7 +506,7 @@ export function AboutPageClient() {
               dark
               eyebrow="Foundation"
               title="Make the rule visible."
-              body="Brevard County already restricts summer nitrogen and phosphorus fertilizer use. BLACKOUT is preparing clear reminders, records, and public contact points around that rule."
+              body="Brevard County already restricts summer nitrogen and phosphorus fertilizer use. BLACKOUT is preparing clear reminders, records, and public contact points around that rule so residents can notice the blackout window before a lawn-care decision is made."
             />
 
             <Reveal delay={0.1}>
@@ -552,7 +553,7 @@ export function AboutPageClient() {
           <SectionHeading
             eyebrow="Project scope"
             title="A focused system."
-            body="The plan uses surveys to measure awareness, shelf tags to reach the purchase moment, drain markers to make runoff local, and a handoff to keep the work usable."
+            body="The plan uses surveys to measure awareness, shelf tags to reach the purchase moment, drain markers to make runoff local, and a handoff to keep the work usable. Each part has a different job, so the project can stay organized instead of becoming general outreach."
           />
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
@@ -571,6 +572,7 @@ export function AboutPageClient() {
           </div>
         </LightSection>
 
+        {/* Repeated on the dedicated Problem page.
         <DarkSection id="problem">
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16">
             <SectionHeading
@@ -628,7 +630,9 @@ export function AboutPageClient() {
             </div>
           </div>
         </DarkSection>
+        */}
 
+        {/* Repeated across the dedicated field-work pages.
         <LightSection id="model">
           <SectionHeading
             eyebrow="Field model"
@@ -660,7 +664,9 @@ export function AboutPageClient() {
             ))}
           </div>
         </LightSection>
+        */}
 
+        {/* Repeated on the Team page.
         <DarkSection id="team">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
             <SectionHeading
@@ -715,7 +721,9 @@ export function AboutPageClient() {
             </div>
           </Reveal>
         </DarkSection>
+        */}
 
+        {/* Repeated on the Impact and Resources pages.
         <LightSection id="documentation">
           <SectionHeading
             eyebrow="Documentation"
@@ -752,7 +760,9 @@ export function AboutPageClient() {
             </div>
           </Reveal>
         </LightSection>
+        */}
 
+        {/* Repeated on the Impact and Resources pages.
         <DarkSection id="handoff">
           <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-start lg:gap-16">
             <SectionHeading
@@ -793,6 +803,7 @@ export function AboutPageClient() {
             </div>
           </Reveal>
         </DarkSection>
+        */}
 
         <LightSection id="contact">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">

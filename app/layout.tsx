@@ -20,7 +20,11 @@ const playfair = Playfair_Display({
 })
 
 const SITE_NAME = 'BLACKOUT'
-const SITE_URL = 'https://blackout.example'
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : 'http://localhost:3000')
 const SITE_ICON = '/icon.svg?v=public-icon'
 const SITE_DESCRIPTION =
   "A student-led initiative preparing public reminders, survey data, and field records around Brevard County's existing Summer Fertilizer Blackout Ordinance."

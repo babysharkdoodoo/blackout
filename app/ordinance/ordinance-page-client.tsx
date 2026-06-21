@@ -291,6 +291,7 @@ function Hero() {
             draggable={false}
             referrerPolicy="no-referrer"
             loading="eager"
+            fetchPriority="high"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
             initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
@@ -441,7 +442,7 @@ export default function OrdinancePage() {
             <SectionHeader
               eyebrow="Plain language"
               title="The rule, simply."
-              body="This page explains what is restricted, when it applies, and why the rainy season matters."
+              body="This page explains what is restricted, when it applies, and why the rainy season matters. It keeps the ordinance practical for residents and businesses by focusing on the dates, the fertilizer limits, and the reason those limits exist."
             />
 
             <Reveal delay={0.1}>
@@ -488,7 +489,7 @@ export default function OrdinancePage() {
               dark
               eyebrow="Why it matters"
               title="Runoff starts here."
-              body="Heavy rain can carry nutrients from lawns into storm drains before damage is visible in the lagoon."
+              body="Heavy rain can carry nutrients from lawns into storm drains before damage is visible in the lagoon. The ordinance matters because it acts before the runoff pathway begins, not after the water-quality damage is already visible."
             />
 
             <Reveal delay={0.1}>
@@ -506,6 +507,7 @@ export default function OrdinancePage() {
           </div>
         </DarkSection>
 
+        {/* Repeated on the Problem page.
         <LightSection id="chain">
           <div className="grid gap-10 lg:grid-cols-[0.55fr_1fr] lg:items-start lg:gap-16">
             <SectionHeader
@@ -537,7 +539,9 @@ export default function OrdinancePage() {
             </div>
           </div>
         </LightSection>
+        */}
 
+        {/* Repeated on the About and Team pages.
         <DarkSection id="principles">
           <SectionHeader
             dark
@@ -562,7 +566,9 @@ export default function OrdinancePage() {
             ))}
           </div>
         </DarkSection>
+        */}
 
+        {/* Repeated across the Survey, Retail Partners, and Storm Drains pages.
         <LightSection id="activation">
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
             <SectionHeader
@@ -608,7 +614,9 @@ export default function OrdinancePage() {
             </div>
           </Reveal>
         </LightSection>
+        */}
 
+        {/* Repeated on the Team page.
         <DarkSection id="team">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
             <SectionHeader
@@ -654,13 +662,14 @@ export default function OrdinancePage() {
             </Reveal>
           </div>
         </DarkSection>
+        */}
 
         <LightSection id="closing">
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Closing"
               title="Rules need contact."
-              body="When an existing ordinance is easy to miss, the practical next step is clearer public communication."
+              body="When an existing ordinance is easy to miss, the practical next step is clearer public communication. BLACKOUT is being planned around that gap: help people understand the rule at the moments when they can still change timing."
             />
 
             <Reveal delay={0.1}>

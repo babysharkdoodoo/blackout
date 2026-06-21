@@ -314,6 +314,7 @@ function Hero() {
             draggable={false}
             referrerPolicy="no-referrer"
             loading="eager"
+            fetchPriority="high"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
             initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
@@ -464,7 +465,7 @@ export function ImpactPageClient() {
             <SectionHeader
               eyebrow="Impact snapshot"
               title="Verifiable work."
-              body="BLACKOUT will record what is measured, where materials go, and what can be handed off."
+              body="BLACKOUT will record what is measured, where materials go, and what can be handed off. This page separates planned activity from evidence, so later results can be checked against real records instead of broad claims."
             />
 
             <Reveal delay={0.1}>
@@ -504,7 +505,7 @@ export function ImpactPageClient() {
               dark
               eyebrow="Evidence streams"
               title="Every step leaves a record."
-              body="The impact story is planned around survey data, retail documentation, drain logs, photos, approvals, and the handoff package."
+              body="The impact story is planned around survey data, retail documentation, drain logs, photos, approvals, and the handoff package. Each stream answers a different question: what changed, where the message appeared, and whether the work can be repeated."
             />
 
             <Reveal delay={0.1}>
@@ -545,7 +546,7 @@ export function ImpactPageClient() {
           <SectionHeader
             eyebrow="Results tracked"
             title="Local results."
-            body="Each result connects to a concrete output: a survey comparison, store placement, marked drain, partner record, or handoff file."
+            body="Each result connects to a concrete output: a survey comparison, store placement, marked drain, partner record, or handoff file. The status labels show which records are ready, which are still being prepared, and which depend on field work."
           />
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -586,6 +587,7 @@ export function ImpactPageClient() {
           </div>
         </LightSection>
 
+        {/* Repeated across the field-work pages.
         <DarkSection id="reading">
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
             <SectionHeader
@@ -627,13 +629,14 @@ export function ImpactPageClient() {
             </Reveal>
           </div>
         </DarkSection>
+        */}
 
         <LightSection id="organization">
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Handoff value"
               title="Useful after the season."
-              body="A result matters more when someone else can review it, repeat it, or build on it. The impact record is organized for that purpose."
+              body="A result matters more when someone else can review it, repeat it, or build on it. The impact record is organized for that purpose, with enough context for a future team or county partner to understand what happened and what still needs work."
             />
 
             <Reveal delay={0.1}>

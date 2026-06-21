@@ -248,6 +248,7 @@ function Hero() {
             draggable={false}
             referrerPolicy="no-referrer"
             loading="eager"
+            fetchPriority="high"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
             initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
@@ -397,6 +398,7 @@ export function ContactPageClient() {
       <main id="main-content" tabIndex={-1} className="overflow-hidden bg-[#f7f2e8] font-sans text-[#173027] selection:bg-[#d8d0c2] selection:text-[#07100d]">
         <Hero />
 
+        {/* Repeated by the hero and directory.
         <LightSection id="overview">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
             <SectionHeader
@@ -435,6 +437,7 @@ export function ContactPageClient() {
             </div>
           </Reveal>
         </LightSection>
+        */}
 
         <DarkSection id="directory">
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
@@ -442,7 +445,7 @@ export function ContactPageClient() {
               dark
               eyebrow="Directory"
               title="Clear routing."
-              body="Use the same inbox for all messages. Include the relevant topic in the subject line so the team can route it quickly."
+              body="Use the same inbox for all messages. Include the relevant topic in the subject line so the team can route it quickly to the person handling media, retail partnership, county coordination, or replication questions."
             />
 
             <Reveal delay={0.1}>
@@ -507,7 +510,7 @@ export function ContactPageClient() {
             <SectionHeader
               eyebrow="Send a message"
               title="Send a message."
-              body="Use the directory for direct email delivery. The form keeps the message topics clear while inbox routing is being prepared."
+              body="Use the directory for direct email delivery. The form keeps the message topics clear, records the inquiry, and sends a confirmation so visitors know their message reached the project inbox."
             />
 
             <Reveal delay={0.1}>
@@ -518,6 +521,7 @@ export function ContactPageClient() {
           </div>
         </LightSection>
 
+        {/* Repeated by the home page and individual page CTAs.
         <DarkSection id="engage">
           <SectionHeader
             dark
@@ -555,7 +559,9 @@ export function ContactPageClient() {
             ))}
           </div>
         </DarkSection>
+        */}
 
+        {/* Repeated by the directory table.
         <LightSection id="routing">
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
             <SectionHeader
@@ -608,6 +614,7 @@ export function ContactPageClient() {
             </div>
           </Reveal>
         </LightSection>
+        */}
       </main>
     </SiteLayout>
   )

@@ -425,7 +425,7 @@ export function SurveyPageClient() {
             <SectionHeader
               eyebrow="Live instrument"
               title="The field form protects the baseline."
-              body="Wave 1 is planned before outreach, shelf tags, or drain markers. Wave 2 asks the same core questions after the campaign sequence."
+              body="Wave 1 is planned before outreach, shelf tags, or drain markers. Wave 2 asks the same core questions after the campaign sequence so the team can compare awareness, timing, and information sources without mixing before-and-after data."
             />
 
             <Reveal delay={0.1}>
@@ -476,6 +476,7 @@ export function SurveyPageClient() {
           </Reveal>
         </LightSection>
 
+        {/* Repeated by the live survey intro.
         <DarkSection id="snapshot">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
             <SectionHeader
@@ -511,13 +512,14 @@ export function SurveyPageClient() {
             </div>
           </Reveal>
         </DarkSection>
+        */}
 
         <LightSection id="method">
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16">
             <SectionHeader
               eyebrow="Method"
               title="Baseline first."
-              body="Wave 1 has to close first so the results show what residents knew before BLACKOUT appears in the neighborhood."
+              body="Wave 1 has to close first so the results show what residents knew before BLACKOUT appears in the neighborhood. That protects the comparison and keeps the final awareness result from being inflated by early outreach."
             />
 
             <Reveal delay={0.1}>
@@ -562,7 +564,7 @@ export function SurveyPageClient() {
             dark
             eyebrow="Technical parameters"
             title="A small set of numbers keeps the survey consistent."
-            body="The survey is short enough for door-to-door use and structured enough to compare the two waves clearly."
+            body="The survey is short enough for door-to-door use and structured enough to compare the two waves clearly. The same core questions, area, and response format make the final dataset easier to read and explain."
           />
 
           <div className="mt-10 divide-y divide-white/10 border-y border-white/10">
@@ -584,7 +586,7 @@ export function SurveyPageClient() {
             <SectionHeader
               eyebrow="Data flow"
               title="Compare the waves."
-              body="The baseline is compared with the follow-up wave. That difference becomes the evidence for what changed."
+              body="The baseline is compared with the follow-up wave. That difference becomes the evidence for what changed, while the raw responses stay organized for review, charts, and the final handoff."
             />
 
             <Reveal delay={0.1}>
@@ -614,6 +616,7 @@ export function SurveyPageClient() {
           </div>
         </LightSection>
 
+        {/* Repeated on the Impact page.
         <DarkSection id="outputs">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
             <SectionHeader
@@ -660,7 +663,9 @@ export function SurveyPageClient() {
             </div>
           </Reveal>
         </DarkSection>
+        */}
 
+        {/* Cross-page summary removed to keep the survey page focused.
         <LightSection id="closing">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
             <SectionHeader
@@ -716,6 +721,7 @@ export function SurveyPageClient() {
             </Reveal>
           </div>
         </LightSection>
+        */}
       </main>
     </SiteLayout>
   )

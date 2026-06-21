@@ -101,7 +101,7 @@ export function Navigation() {
               onClick={() => setFieldOpen((open) => !open)}
               aria-expanded={fieldOpen}
               aria-controls="field-work-menu"
-              aria-haspopup="menu"
+              aria-haspopup="true"
               className={`rounded-full px-4 py-2 text-sm font-medium transition ${fieldActive || fieldOpen
                   ? 'bg-white text-[#07100d]'
                   : 'text-white/70 hover:bg-white/10 hover:text-white'
@@ -114,7 +114,6 @@ export function Navigation() {
             {fieldOpen && (
               <div
                 id="field-work-menu"
-                role="menu"
                 className="absolute left-1/2 top-full mt-4 w-60 -translate-x-1/2 overflow-hidden rounded-3xl border border-white/12 bg-[#07100d]/95 p-2 shadow-[0_24px_70px_rgba(0,0,0,0.45)] backdrop-blur-2xl"
               >
                 <div className="px-3 pb-2 pt-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/35">
@@ -125,7 +124,6 @@ export function Navigation() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    role="menuitem"
                     aria-current={isActive(link.href) ? 'page' : undefined}
                     className={`block rounded-2xl px-4 py-3 text-sm font-medium transition ${isActive(link.href)
                         ? 'bg-[#f5efe3] text-[#07100d]'

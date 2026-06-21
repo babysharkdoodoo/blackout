@@ -287,6 +287,7 @@ function Hero() {
             draggable={false}
             referrerPolicy="no-referrer"
             loading="eager"
+            fetchPriority="high"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
             initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
@@ -437,7 +438,7 @@ export function StormDrainsPageClient() {
             <SectionHeader
               eyebrow="Marker logic"
               title="Make runoff local."
-              body="BLACKOUT markers connect each approved drain to the blackout window and the nearby lagoon impact story."
+              body="BLACKOUT markers connect each approved drain to the blackout window and the nearby lagoon impact story. The marker is meant to make an ordinary curb inlet feel connected to a real water pathway."
             />
 
             <Reveal delay={0.1}>
@@ -500,7 +501,7 @@ export function StormDrainsPageClient() {
               dark
               eyebrow="Marker specifications"
               title="Same message."
-              body="A consistent design keeps each marker easy to understand, photograph, log, and hand off."
+              body="A consistent design keeps each marker easy to understand, photograph, log, and hand off. Reusing the same fields on each marker also makes the field record easier to compare across locations."
             />
 
             <Reveal delay={0.1}>
@@ -541,7 +542,7 @@ export function StormDrainsPageClient() {
             <SectionHeader
               eyebrow="Installation process"
               title="Consistent workflow."
-              body="Each planned marker needs a selected site, calculated distance, photo record, and database entry."
+              body="Each planned marker needs a selected site, calculated distance, photo record, and database entry. The workflow is built so every installation produces the same kind of evidence, not just a finished marker."
             />
 
             <div className="divide-y divide-[#ded6c8] border-y border-[#ded6c8]">
@@ -572,7 +573,7 @@ export function StormDrainsPageClient() {
               dark
               eyebrow="Geodatabase"
               title="Each drain becomes a record."
-              body="The database stores GPS data, proximity values, photo references, installation dates, and condition notes."
+              body="The database stores GPS data, proximity values, photo references, installation dates, and condition notes. That turns the field work into a map-ready layer that can be reviewed after the markers are placed."
             />
 
             <Reveal delay={0.1}>
@@ -625,7 +626,7 @@ export function StormDrainsPageClient() {
             <SectionHeader
               eyebrow="Closing"
               title="Make drains readable."
-              body="Each marker is a reminder, a field data point, and a small piece of public infrastructure."
+              body="Each marker is a reminder, a field data point, and a small piece of public infrastructure. The goal is to help people recognize that storm drains move water outward, not away."
             />
 
             <Reveal delay={0.1}>

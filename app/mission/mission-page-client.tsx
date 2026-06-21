@@ -358,6 +358,7 @@ function Hero() {
             draggable={false}
             referrerPolicy="no-referrer"
             loading="eager"
+            fetchPriority="high"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
             initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
@@ -512,7 +513,7 @@ export default function MissionPageClient() {
                   Stop runoff early.
                 </>
               }
-              body="BLACKOUT targets one controllable gap: residents often miss the fertilizer rule before buying or applying fertilizer."
+              body="BLACKOUT targets one controllable gap: residents often miss the fertilizer rule before buying or applying fertilizer. This page follows the cause-and-effect path from a yard decision to stormwater, algae growth, seagrass loss, and manatee risk."
             />
 
             <Reveal delay={0.1}>
@@ -541,6 +542,7 @@ export default function MissionPageClient() {
           </Reveal>
         </LightSection>
 
+        {/* Repeated on the Ordinance and About pages.
         <DarkSection id="foundation">
           <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-start lg:gap-16">
             <SectionHeading
@@ -598,6 +600,7 @@ export default function MissionPageClient() {
             </div>
           </div>
         </DarkSection>
+        */}
 
         <LightSection id="problem">
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16">
@@ -608,7 +611,7 @@ export default function MissionPageClient() {
                   The problem starts upstream.
                 </>
               }
-              body="Rain can carry fertilizer through stormwater systems, feeding algae blooms and reducing the seagrass manatees depend on."
+              body="Rain can carry fertilizer through stormwater systems, feeding algae blooms and reducing the seagrass manatees depend on. The practical goal is to interrupt the chain at the easiest point: before nutrients leave the lawn."
             />
 
             <Reveal delay={0.1}>
@@ -671,7 +674,7 @@ export default function MissionPageClient() {
                   Three touchpoints.
               </>
             }
-            body="The survey measures the gap, the shelf tag reaches shoppers, and the drain marker makes runoff visible nearby."
+            body="The survey measures the gap, the shelf tag reaches shoppers, and the drain marker makes runoff visible nearby. Each touchpoint is tied to a different moment in the decision path so the project can test more than one way to improve awareness."
           />
 
           <div className="mt-10 grid gap-4 lg:grid-cols-3">
@@ -699,6 +702,7 @@ export default function MissionPageClient() {
           </div>
         </DarkSection>
 
+        {/* Repeated on the Survey page.
         <LightSection id="survey">
           <SectionHeading
             eyebrow="Survey"
@@ -731,7 +735,9 @@ export default function MissionPageClient() {
             </div>
           </Reveal>
         </LightSection>
+        */}
 
+        {/* Repeated on the Retail Partners page.
         <DarkSection id="retail">
           <SectionHeading
             dark
@@ -752,7 +758,9 @@ export default function MissionPageClient() {
             ))}
           </div>
         </DarkSection>
+        */}
 
+        {/* Repeated on the Storm Drains page.
         <LightSection id="drains">
           <SectionHeading
             eyebrow="Drain marking"
@@ -781,7 +789,9 @@ export default function MissionPageClient() {
             </div>
           </Reveal>
         </LightSection>
+        */}
 
+        {/* Repeated on the Team page.
         <DarkSection id="team">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
             <SectionHeading
@@ -831,7 +841,9 @@ export default function MissionPageClient() {
             </Reveal>
           </div>
         </DarkSection>
+        */}
 
+        {/* Repeated on the Impact and Resources pages.
         <LightSection id="documentation">
           <SectionHeading
             eyebrow="Documentation"
@@ -851,7 +863,9 @@ export default function MissionPageClient() {
             ))}
           </div>
         </LightSection>
+        */}
 
+        {/* Repeated on the Impact and Resources pages.
         <DarkSection id="handoff">
           <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-start lg:gap-16">
             <SectionHeading
@@ -905,6 +919,7 @@ export default function MissionPageClient() {
             </div>
           </Reveal>
         </DarkSection>
+        */}
 
         <LightSection id="next">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">

@@ -314,6 +314,7 @@ function Hero() {
             draggable={false}
             referrerPolicy="no-referrer"
             loading="eager"
+            fetchPriority="high"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
             initial={reduceMotion ? { opacity: 0.34, scale: 1, filter: 'none' } : { opacity: 0, scale: 1.03, filter: 'blur(14px)' }}
@@ -464,7 +465,7 @@ export function ResourcesPageClient() {
             <SectionHeader
               eyebrow="Resource archive"
               title="Trace every claim."
-              body="This page collects the ordinance references, source data, working files, and background reading behind BLACKOUT."
+              body="This page collects the ordinance references, source data, working files, and background reading behind BLACKOUT. It separates public sources from project materials so visitors can tell what supports a claim and what is still being prepared."
             />
 
             <Reveal delay={0.1}>
@@ -504,7 +505,7 @@ export function ResourcesPageClient() {
               dark
               eyebrow="Primary sources"
               title="Checkable sources."
-              body="These sources support the core claims about manatees, seagrass, ordinance language, fertilizer guidance, and lagoon value."
+              body="These sources support the core claims about manatees, seagrass, ordinance language, fertilizer guidance, and lagoon value. They give the project a source base that residents, teachers, businesses, and county contacts can verify."
             />
 
             <Reveal delay={0.1}>
@@ -547,7 +548,7 @@ export function ResourcesPageClient() {
             <SectionHeader
               eyebrow="Field materials"
               title="Working documents."
-              body="These materials are being prepared to keep surveys, shelf tags, marker specs, partner agreements, and handoff files organized."
+              body="These materials are being prepared to keep surveys, shelf tags, marker specs, partner agreements, and handoff files organized. Some are public-facing tools, while others are internal records that make the final handoff easier to audit."
           />
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -594,7 +595,7 @@ export function ResourcesPageClient() {
               dark
               eyebrow="Further reading"
               title="Grounded in science."
-              body="These readings explain the broader context: lagoon ecology, manatee mortality, fertilizer practice, compliance, seagrass decline, and model policy."
+              body="These readings explain the broader context: lagoon ecology, manatee mortality, fertilizer practice, compliance, seagrass decline, and model policy. They are not a replacement for field data, but they explain why the local work matters."
             />
 
             <Reveal delay={0.1}>
@@ -630,6 +631,7 @@ export function ResourcesPageClient() {
           </div>
         </DarkSection>
 
+        {/* Repeated on the Impact page.
         <LightSection id="organization">
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
             <SectionHeader
@@ -682,6 +684,7 @@ export function ResourcesPageClient() {
             </div>
           </Reveal>
         </LightSection>
+        */}
       </main>
     </SiteLayout>
   )

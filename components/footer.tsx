@@ -47,13 +47,13 @@ export function Footer() {
                         </p>
 
                         <div className="mt-8 max-w-md border-t border-white/10 pt-6">
-                            <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-[#6f6a60]">
+                            <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-[#a39c8b]">
                                 <span>West Shore Jr./Sr. High School</span>
                                 <span>Melbourne, Florida</span>
                                 <span>Established 2026</span>
                             </div>
 
-                            <p className="mt-4 text-xs text-[#5d584f]">Built by Faizan Ahmed.</p>
+                            <p className="mt-4 text-xs text-[#9d9686]">Built by Faizan Ahmed.</p>
                         </div>
                     </div>
 
@@ -107,7 +107,7 @@ export function Footer() {
                             </p>
                         </div>
 
-                        <div className="flex flex-col gap-2 text-sm text-[#6f6a60] sm:flex-row sm:gap-6 lg:text-right">
+                        <div className="flex flex-col gap-2 text-sm text-[#a39c8b] sm:flex-row sm:gap-6 lg:text-right">
                             <p>Brevard County Ord. &sect; 62-3601</p>
                             <p>&copy; {new Date().getFullYear()} BLACKOUT Initiative</p>
                         </div>
