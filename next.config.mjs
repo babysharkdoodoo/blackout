@@ -42,6 +42,10 @@ const nextConfig = {
         headers: immutableAssetHeaders,
       },
       {
+        source: '/team/:path*',
+        headers: immutableAssetHeaders,
+      },
+      {
         source: '/icon.svg',
         headers: immutableAssetHeaders,
       },

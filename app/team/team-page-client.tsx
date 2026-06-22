@@ -60,12 +60,11 @@ const projectNotes = [
 
 const roles = [
   {
-    name: "Student Name",
-    role: "Project Lead",
+    name: "Project Lead",
+    role: "Overall Coordination",
     summary:
       "Coordinates the full BLACKOUT timeline and keeps the team aligned with county-facing requirements.",
-    image:
-      "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=800&q=80",
+    image: "/team/team-member-1.png",
     links: [
       { label: "Project plan", href: "/impact" },
       { label: "County contact log", href: "/contact" },
@@ -75,12 +74,11 @@ const roles = [
       "Master schedule, meeting notes, county communication record, and final handoff coordination.",
   },
   {
-    name: "Student Name",
-    role: "Survey Lead",
+    name: "Survey Lead",
+    role: "Awareness Measurement",
     summary:
       "Designs the baseline and follow-up surveys so the project can measure awareness before and after outreach.",
-    image:
-      "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
+    image: "/team/team-member-2.png",
     links: [
       { label: "Survey instrument", href: "/survey" },
       { label: "Awareness report", href: "/impact" },
@@ -90,27 +88,25 @@ const roles = [
       "Wave 1 dataset, Wave 2 dataset, response logs, and pre/post awareness report.",
   },
   {
-    name: "Student Name",
-    role: "Retail Partnership Lead",
+    name: "Retail Partnership Lead",
+    role: "Store Outreach",
     summary:
       "Builds store partnerships and manages the planned shelf-tag rollout where fertilizer purchasing decisions happen.",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
+    image: "/team/team-member-3.png",
     links: [
       { label: "Partner packet", href: "/retail-partners" },
       { label: "Store reach log", href: "/impact" },
     ],
-    work: "Prepares store outreach, partner agreements, and the planned Manatee Safe shelf tag rollout.",
+    work: "Prepares store outreach, partner agreements, and the planned ordinance reminder shelf tag rollout.",
     deliverables:
       "Partner agreements, planned tag placement photos, weekly reach logs, and partner summary.",
   },
   {
-    name: "Student Name",
-    role: "Field Operations Lead",
+    name: "Field Operations Lead",
+    role: "Drain Documentation",
     summary:
       "Leads city-approved drain mapping and planned marker records so fieldwork creates usable GPS and photo documentation.",
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+    image: "/team/team-member-4.png",
     links: [
       { label: "Drain map", href: "/storm-drains" },
       { label: "Field protocol", href: "/storm-drains" },
@@ -120,12 +116,11 @@ const roles = [
       "Drain database, before/after photo archive, marker notes, and county-ready map layer.",
   },
   {
-    name: "Student Name",
-    role: "Documentation Lead",
+    name: "Documentation Lead",
+    role: "Archive and Handoff",
     summary:
       "Maintains the project archive and converts field records into a clean handoff package for future teams.",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80",
+    image: "/team/team-member-5.png",
     links: [
       { label: "Photo archive", href: "/resources" },
       { label: "Replication guide", href: "/resources" },
@@ -515,7 +510,7 @@ export function TeamPageClient() {
             dark
             eyebrow="Role map"
             title="Roles own deliverables."
-            body="The team structure prevents responsibilities from drifting. Each person has a dedicated section with their name, picture, summary, links, responsibilities, and deliverables, so the project can be reviewed by role instead of as one vague group effort."
+            body="The team structure prevents responsibilities from drifting. Each role has a dedicated section with its purpose, links, responsibilities, and deliverables, so the project can be reviewed as clear workstreams instead of one vague group effort."
           />
 
           <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">

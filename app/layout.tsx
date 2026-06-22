@@ -24,6 +24,8 @@ const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
     : 'http://localhost:3000')
 const SITE_ICON = '/icon.svg?v=public-icon'
 const SITE_DESCRIPTION =
@@ -53,8 +55,8 @@ export const metadata: Metadata = {
     template: '%s | BLACKOUT',
   },
   description: SITE_DESCRIPTION,
-  generator: 'v0.app',
   applicationName: SITE_NAME,
+  manifest: '/manifest.webmanifest',
   referrer: 'origin-when-cross-origin',
   creator: 'West Shore Jr./Sr. High School',
   publisher: 'West Shore Jr./Sr. High School',
@@ -92,9 +94,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     images: [
       {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
+        url: '/heroes/home-1.webp',
         alt: 'BLACKOUT campaign hero image',
       },
     ],
@@ -104,9 +104,7 @@ export const metadata: Metadata = {
     title: 'BLACKOUT | Protecting the Indian River Lagoon',
     description:
       "Student-led initiative preparing survey, retail, and storm drain outreach around Brevard County's Summer Fertilizer Blackout Ordinance.",
-    images: ['/og-image.png'],
-    creator: '@blackout',
-    site: '@blackout',
+    images: ['/heroes/home-1.webp'],
   },
   icons: {
     icon: [

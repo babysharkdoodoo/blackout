@@ -5,8 +5,8 @@ import { useRef, type ReactNode } from 'react'
 
 const teamMembers = [
   {
-    name: 'Add Name Here',
-    title: 'Project Lead',
+    name: 'Project Lead',
+    title: 'Overall coordination',
     summary:
       'Coordinates the full BLACKOUT timeline and keeps the team aligned across surveys, field work, partner outreach, and final handoff.',
     owns: 'Timeline, county communication, meeting notes, and team coordination.',
@@ -17,8 +17,8 @@ const teamMembers = [
     ],
   },
   {
-    name: 'Add Name Here',
-    title: 'Survey Lead',
+    name: 'Survey Lead',
+    title: 'Awareness measurement',
     summary:
       'Designs the awareness survey process and manages the before-and-after data that shows whether the campaign changed public understanding.',
     owns: 'Survey design, field logistics, and pre/post awareness analysis.',
@@ -29,8 +29,8 @@ const teamMembers = [
     ],
   },
   {
-    name: 'Add Name Here',
-    title: 'Retail Lead',
+    name: 'Retail Lead',
+    title: 'Store partnerships',
     summary:
       'Builds relationships with stores and helps place ordinance reminders where fertilizer purchasing decisions actually happen.',
     owns: 'Store outreach, shelf-tag planning, and partner documentation.',
@@ -41,8 +41,8 @@ const teamMembers = [
     ],
   },
   {
-    name: 'Add Name Here',
-    title: 'Field Lead',
+    name: 'Field Lead',
+    title: 'Storm drain records',
     summary:
       'Manages the storm drain fieldwork process, including location selection, site documentation, and approved marker sessions.',
     owns: 'Drain selection, GPS logging, site notes, and approved marker sessions.',
@@ -53,8 +53,8 @@ const teamMembers = [
     ],
   },
   {
-    name: 'Add Name Here',
-    title: 'Documentation Lead',
+    name: 'Documentation Lead',
+    title: 'Archive and handoff',
     summary:
       'Keeps the project organized by maintaining the archive, updating the website, and preparing materials for the final handoff.',
     owns: 'Photo archive, field files, website updates, and handoff package.',
@@ -188,8 +188,8 @@ export function TeamSection() {
             </Reveal>
 
             <Reveal delay={0.12}>
-              <p className="mt-6 max-w-2xl text-base leading-8 text-white/64 sm:text-[1.05rem]">
-                Each person owns a defined part of the project, so the work is
+            <p className="mt-6 max-w-2xl text-base leading-8 text-white/64 sm:text-[1.05rem]">
+                Each role owns a defined part of the project, so the work is
                 easier to coordinate, document, and hand off after the field
                 season.
               </p>
